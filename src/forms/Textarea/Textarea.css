@@ -1,0 +1,53 @@
+.zest-textarea {
+  box-sizing: border-box;
+  padding: var(--zest-space-3);
+  border: 0;
+  border-radius: var(--zest-radius-control);
+  background: var(--zest-color-field);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+  color: var(--zest-color-text-primary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-normal);
+  resize: vertical;
+  transition: box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-textarea[data-full-width] {
+  width: 100%;
+}
+
+.zest-textarea::placeholder {
+  color: var(--zest-color-text-disabled);
+}
+
+.zest-textarea:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-strong);
+}
+
+.zest-textarea:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+    var(--zest-focus-glow);
+}
+
+.zest-textarea[data-error] {
+  box-shadow: inset 0 0 0 1px var(--zest-color-error);
+}
+
+.zest-textarea[data-error]:focus-visible {
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-error),
+    var(--zest-focus-glow-error);
+}
+
+.zest-textarea:disabled {
+  background: var(--zest-color-background-neutral);
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Focused fields lift to the surface color (QA field style). */
+.zest-textarea:focus-visible {
+  background: var(--zest-color-surface);
+}

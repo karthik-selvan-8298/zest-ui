@@ -1,0 +1,85 @@
+.zest-datagrid {
+  font-family: var(--zest-font-family-sans);
+}
+
+/* ── Selection column ─────────────────────────────────────────────────── */
+.zest-datagrid .zest-datagrid__checkbox-cell {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* ── Sortable headers ─────────────────────────────────────────────────── */
+/* The whole header cell is the button: move the cell padding onto it. */
+.zest-datagrid .zest-table__header-cell.zest-datagrid__sortable-header {
+  padding: 0;
+}
+
+.zest-datagrid__sort-button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-1);
+  width: 100%;
+  padding: var(--zest-space-4);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    color var(--zest-duration-fast) var(--zest-ease-standard),
+    background-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-datagrid .zest-table[data-dense] .zest-datagrid__sort-button {
+  padding: var(--zest-space-2) var(--zest-space-4);
+}
+
+.zest-datagrid__sort-button:hover {
+  color: var(--zest-color-text-primary);
+  background: color-mix(in srgb, var(--zest-color-neutral) 8%, transparent);
+}
+
+.zest-datagrid__sort-button[data-sorted] {
+  color: var(--zest-color-text-primary);
+}
+
+.zest-datagrid__sort-button[data-align='center'] {
+  justify-content: center;
+}
+
+.zest-datagrid__sort-button[data-align='right'] {
+  justify-content: flex-end;
+}
+
+.zest-datagrid__sort-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--zest-font-size-xs);
+}
+
+/* ── Rows ─────────────────────────────────────────────────────────────── */
+.zest-datagrid .zest-table__row[data-clickable] {
+  cursor: pointer;
+}
+
+.zest-datagrid__empty-cell {
+  padding: 0;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────── */
+.zest-datagrid__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--zest-space-6);
+  padding: var(--zest-space-3) var(--zest-space-4);
+}
+
+.zest-datagrid__range {
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-sm);
+}

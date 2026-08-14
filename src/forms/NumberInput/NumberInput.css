@@ -1,0 +1,130 @@
+.zest-number-input {
+  --_height: var(--zest-field-height-md);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-number-input[data-size='sm'] {
+  --_height: var(--zest-field-height-sm);
+}
+
+.zest-number-input[data-full-width] {
+  display: flex;
+  width: 100%;
+}
+
+/* The group carries the zest-input field look. */
+.zest-number-input__group {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  height: var(--_height);
+  border-radius: var(--zest-radius-control);
+  background: var(--zest-color-field);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+  transition: box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-number-input:hover:not([data-disabled]) .zest-number-input__group {
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-strong);
+}
+
+.zest-number-input:not([data-disabled]) .zest-number-input__group:focus-within {
+  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+    var(--zest-focus-glow);
+}
+
+.zest-number-input[data-error] .zest-number-input__group {
+  box-shadow: inset 0 0 0 1px var(--zest-color-error);
+}
+
+.zest-number-input[data-error] .zest-number-input__group:focus-within {
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-error),
+    var(--zest-focus-glow-error);
+}
+
+.zest-number-input[data-disabled] .zest-number-input__group {
+  background: var(--zest-color-background-neutral);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-subtle);
+}
+
+.zest-number-input__control {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-family: inherit;
+  font-size: var(--zest-font-size-sm);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+.zest-number-input__control::placeholder {
+  color: var(--zest-color-text-disabled);
+}
+
+.zest-number-input__control[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Stepper buttons. */
+.zest-number-input__step {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: var(--_height);
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-md);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-number-input__step:first-child {
+  border-start-start-radius: var(--zest-radius-control);
+  border-end-start-radius: var(--zest-radius-control);
+}
+
+.zest-number-input__step:last-child {
+  border-start-end-radius: var(--zest-radius-control);
+  border-end-end-radius: var(--zest-radius-control);
+}
+
+.zest-number-input__step:hover:not([data-disabled]):not(:disabled) {
+  background: var(--zest-color-surface-hover);
+  color: var(--zest-color-text-primary);
+}
+
+.zest-number-input__step:active:not([data-disabled]):not(:disabled) {
+  background: var(--zest-color-surface-active);
+}
+
+.zest-number-input__step[data-disabled],
+.zest-number-input__step:disabled {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Focused fields lift to the surface color (QA field style). */
+.zest-number-input:not([data-disabled]) .zest-number-input__group:focus-within {
+  background: var(--zest-color-surface);
+}

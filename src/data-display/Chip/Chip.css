@@ -1,0 +1,155 @@
+.zest-chip {
+  --_height: 32px;
+  --_font-size: var(--zest-font-size-sm);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zest-space-1);
+  height: var(--_height);
+  padding-inline: var(--zest-space-2);
+  border: 0;
+  border-radius: var(--zest-radius-full);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--_font-size);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  vertical-align: middle;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard),
+    box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* ── Sizes ────────────────────────────────────────────────────────────── */
+.zest-chip[data-size='sm'] {
+  --_height: 24px;
+  --_font-size: var(--zest-font-size-xs);
+}
+
+/* ── Variants (accent-driven, see base.css) ───────────────────────────── */
+.zest-chip[data-variant='soft'] {
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+.zest-chip[data-variant='solid'] {
+  background: var(--zest-accent);
+  color: var(--zest-accent-contrast);
+}
+
+.zest-chip[data-variant='outlined'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zest-accent) 48%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+/* Neutral tinted text reads as plain text (matches Button). */
+.zest-chip[data-variant='soft'][data-accent='neutral'],
+.zest-chip[data-variant='outlined'][data-accent='neutral'] {
+  color: var(--zest-color-text-primary);
+}
+
+/* ── Clickable ────────────────────────────────────────────────────────── */
+.zest-chip[data-clickable] {
+  cursor: pointer;
+}
+
+.zest-chip[data-clickable][data-variant='soft']:hover:not(:disabled):not([data-disabled]) {
+  background: color-mix(in srgb, var(--zest-accent) 28%, transparent);
+}
+
+.zest-chip[data-clickable][data-variant='soft']:active:not(:disabled):not([data-disabled]) {
+  background: color-mix(in srgb, var(--zest-accent) 36%, transparent);
+}
+
+.zest-chip[data-clickable][data-variant='solid']:hover:not(:disabled):not([data-disabled]) {
+  background: var(--zest-accent-hover);
+}
+
+.zest-chip[data-clickable][data-variant='solid']:active:not(:disabled):not([data-disabled]) {
+  background: var(--zest-accent-active);
+}
+
+.zest-chip[data-clickable][data-variant='outlined']:hover:not(:disabled):not([data-disabled]) {
+  background: color-mix(in srgb, var(--zest-accent) 8%, transparent);
+  box-shadow: inset 0 0 0 1px var(--zest-accent);
+}
+
+.zest-chip[data-clickable][data-variant='outlined']:active:not(:disabled):not([data-disabled]) {
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+}
+
+/* ── Disabled ─────────────────────────────────────────────────────────── */
+.zest-chip:disabled,
+.zest-chip[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-chip[data-variant='soft']:disabled,
+.zest-chip[data-variant='solid']:disabled,
+.zest-chip[data-variant='soft'][data-disabled],
+.zest-chip[data-variant='solid'][data-disabled] {
+  background: var(--zest-color-surface-disabled);
+}
+
+.zest-chip[data-variant='outlined']:disabled,
+.zest-chip[data-variant='outlined'][data-disabled] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+}
+
+/* ── Parts ────────────────────────────────────────────────────────────── */
+.zest-chip__icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--_font-size);
+}
+
+.zest-chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zest-chip__avatar {
+  display: inline-flex;
+  align-items: center;
+  margin-left: calc(var(--zest-space-1) * -1);
+}
+
+.zest-chip__avatar .zest-avatar {
+  --_size: calc(var(--_height) - 8px);
+}
+
+.zest-chip__delete {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--_height) - 12px);
+  height: calc(var(--_height) - 12px);
+  margin-right: calc(var(--zest-space-1) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--zest-radius-full);
+  background: transparent;
+  color: inherit;
+  font-size: var(--_font-size);
+  opacity: 0.64;
+  cursor: pointer;
+  transition:
+    opacity var(--zest-duration-fast) var(--zest-ease-standard),
+    background-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-chip__delete:hover:not(:disabled) {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.zest-chip__delete:disabled {
+  cursor: not-allowed;
+}

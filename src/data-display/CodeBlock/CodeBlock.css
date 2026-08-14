@@ -1,0 +1,84 @@
+.zest-code-block {
+  /* Deliberately dark in both modes — code panels keep a single committed look. */
+  --_bg: #0b1120;
+  --_header: rgb(255 255 255 / 0.06);
+  --_text: var(--zest-gray-100);
+
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--zest-radius-surface);
+  background: var(--_bg);
+  color: var(--_text);
+  overflow: hidden;
+}
+
+.zest-code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zest-space-3);
+  padding: var(--zest-space-2) var(--zest-space-4);
+  background: var(--_header);
+}
+
+.zest-code-block__language {
+  color: var(--zest-gray-400);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.zest-code-block__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zest-space-1);
+  padding: var(--zest-space-1) var(--zest-space-2);
+  border: 0;
+  border-radius: var(--zest-radius-sm);
+  background: transparent;
+  color: var(--zest-gray-300);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-code-block__copy:hover {
+  background: rgb(255 255 255 / 0.1);
+  color: var(--zest-white);
+}
+
+/* Inner scroll: both axes contained within the panel. */
+.zest-code-block__pre {
+  margin: 0;
+  padding: var(--zest-space-4) var(--zest-space-5);
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.24) transparent;
+}
+
+.zest-code-block__pre::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.zest-code-block__pre::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.24);
+  border-radius: var(--zest-radius-full);
+}
+
+.zest-code-block__pre[data-wrap] {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.zest-code-block__code {
+  font-family: var(--zest-font-family-mono);
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-relaxed);
+}

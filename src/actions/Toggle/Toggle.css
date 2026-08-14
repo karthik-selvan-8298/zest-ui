@@ -1,0 +1,61 @@
+.zest-toggle {
+  --_size: 36px;
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_size);
+  height: var(--_size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--zest-radius-control);
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-xl);
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* ── Sizes ────────────────────────────────────────────────────────────── */
+.zest-toggle[data-size='sm'] {
+  --_size: 28px;
+  font-size: var(--zest-font-size-md);
+}
+
+.zest-toggle[data-size='lg'] {
+  --_size: 44px;
+  font-size: var(--zest-font-size-2xl);
+}
+
+/* ── States ───────────────────────────────────────────────────────────── */
+.zest-toggle:hover:not([data-disabled]) {
+  background: var(--zest-color-surface-hover);
+}
+
+/* Pressed = soft accent treatment. */
+.zest-toggle[data-pressed] {
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+.zest-toggle[data-pressed]:hover:not([data-disabled]) {
+  background: color-mix(in srgb, var(--zest-accent) 24%, transparent);
+}
+
+.zest-toggle:active:not([data-disabled]) {
+  background: color-mix(in srgb, var(--zest-accent) 32%, transparent);
+}
+
+.zest-toggle[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-toggle[data-pressed][data-disabled] {
+  background: var(--zest-color-surface-disabled);
+}

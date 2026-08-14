@@ -1,0 +1,49 @@
+.zest-button-group {
+  display: inline-flex;
+}
+
+.zest-button-group[data-orientation='vertical'] {
+  flex-direction: column;
+}
+
+.zest-button-group[data-full-width] {
+  display: flex;
+}
+
+.zest-button-group[data-full-width] > .zest-button {
+  flex: 1;
+}
+
+/* Collapse radii and separate segments with a hairline. */
+.zest-button-group[data-orientation='horizontal'] > .zest-button:not(:first-child),
+.zest-button-group[data-orientation='horizontal'] > .zest-icon-button:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.zest-button-group[data-orientation='horizontal'] > .zest-button:not(:last-child),
+.zest-button-group[data-orientation='horizontal'] > .zest-icon-button:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 1px solid color-mix(in srgb, var(--zest-accent-contrast, #fff) 32%, transparent);
+}
+
+.zest-button-group[data-orientation='vertical'] > .zest-button:not(:first-child),
+.zest-button-group[data-orientation='vertical'] > .zest-icon-button:not(:first-child) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.zest-button-group[data-orientation='vertical'] > .zest-button:not(:last-child),
+.zest-button-group[data-orientation='vertical'] > .zest-icon-button:not(:last-child) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--zest-accent-contrast, #fff) 32%, transparent);
+}
+
+/* Outlined/ghost segments separate with the border color instead. */
+.zest-button-group > .zest-button[data-variant='outlined']:not(:last-child),
+.zest-button-group > .zest-button[data-variant='ghost']:not(:last-child),
+.zest-button-group > .zest-button[data-variant='soft']:not(:last-child) {
+  border-color: color-mix(in srgb, var(--zest-accent) 32%, transparent);
+}

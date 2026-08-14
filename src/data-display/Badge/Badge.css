@@ -1,0 +1,62 @@
+.zest-badge {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.zest-badge__indicator {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--zest-space-4);
+  height: var(--zest-space-4);
+  padding-inline: var(--zest-space-1);
+  border-radius: var(--zest-radius-full);
+  background: var(--zest-accent);
+  color: var(--zest-accent-contrast);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-bold);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.zest-badge__indicator[data-dot] {
+  min-width: var(--zest-space-2);
+  width: var(--zest-space-2);
+  height: var(--zest-space-2);
+  padding: 0;
+}
+
+/* ── Anchored (wrapping) usage ────────────────────────────────────────── */
+.zest-badge__indicator[data-position] {
+  position: absolute;
+  z-index: 1;
+  box-shadow: 0 0 0 2px var(--zest-color-surface);
+}
+
+.zest-badge__indicator[data-position='top-right'] {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.zest-badge__indicator[data-position='top-left'] {
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.zest-badge__indicator[data-position='bottom-right'] {
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+
+.zest-badge__indicator[data-position='bottom-left'] {
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+}

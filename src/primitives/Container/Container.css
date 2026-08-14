@@ -1,0 +1,28 @@
+.zest-container {
+  width: 100%;
+  margin-inline: auto;
+}
+
+.zest-container[data-gutters] {
+  padding-inline: var(--zest-space-4);
+}
+
+/* Breakpoint values mirror the Zest breakpoint tokens (sm 600 / md 900 / lg 1200 / xl 1536). */
+@media (min-width: 600px) {
+  .zest-container[data-gutters] {
+    padding-inline: var(--zest-space-6);
+  }
+}
+
+.zest-container[data-max-width='sm'] {
+  max-width: var(--zest-container-sm);
+}
+.zest-container[data-max-width='md'] {
+  max-width: var(--zest-container-md);
+}
+.zest-container[data-max-width='lg'] {
+  max-width: var(--zest-container-lg);
+}
+.zest-container[data-max-width='xl'] {
+  max-width: var(--zest-container-xl);
+}

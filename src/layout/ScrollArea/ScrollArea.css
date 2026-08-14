@@ -1,0 +1,57 @@
+.zest-scroll-area {
+  position: relative;
+  overflow: hidden;
+}
+
+.zest-scroll-area__viewport {
+  height: 100%;
+  width: 100%;
+  max-height: inherit;
+  max-width: inherit;
+  overscroll-behavior: contain;
+}
+
+.zest-scroll-area__scrollbar {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  transition: opacity var(--zest-duration-fast) var(--zest-ease-standard);
+  opacity: 0;
+}
+
+.zest-scroll-area:hover .zest-scroll-area__scrollbar,
+.zest-scroll-area__scrollbar[data-scrolling] {
+  opacity: 1;
+}
+
+.zest-scroll-area__scrollbar[data-orientation='vertical'] {
+  width: 8px;
+  padding-block: 2px;
+}
+
+.zest-scroll-area__scrollbar[data-orientation='horizontal'] {
+  height: 8px;
+  flex-direction: column;
+  padding-inline: 2px;
+}
+
+.zest-scroll-area__thumb {
+  border-radius: var(--zest-radius-full);
+  background: rgb(var(--zest-gray-channel) / 0.4);
+}
+
+.zest-scroll-area__thumb:hover {
+  background: rgb(var(--zest-gray-channel) / 0.56);
+}
+
+.zest-scroll-area__scrollbar[data-orientation='vertical'] .zest-scroll-area__thumb {
+  width: 4px;
+}
+
+.zest-scroll-area__scrollbar[data-orientation='horizontal'] .zest-scroll-area__thumb {
+  height: 4px;
+}
+
+.zest-scroll-area__corner {
+  background: transparent;
+}

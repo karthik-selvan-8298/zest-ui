@@ -1,0 +1,140 @@
+/* ── Viewport ─────────────────────────────────────────────────────────────
+   `--_dir` flips the stacking direction: -1 stacks upward (bottom anchors),
+   1 stacks downward (top anchors). Toasts inherit it. */
+.zest-toaster {
+  --_dir: -1;
+
+  position: fixed;
+  z-index: var(--zest-z-toast);
+  width: 360px;
+  max-width: calc(100vw - var(--zest-space-8));
+  height: var(--toast-frontmost-height, 0px);
+  margin: 0;
+}
+
+.zest-toaster[data-position='bottom-right'] {
+  right: var(--zest-space-6);
+  bottom: var(--zest-space-6);
+}
+
+.zest-toaster[data-position='bottom-center'] {
+  left: 50%;
+  bottom: var(--zest-space-6);
+  transform: translateX(-50%);
+}
+
+.zest-toaster[data-position='top-right'] {
+  --_dir: 1;
+
+  right: var(--zest-space-6);
+  top: var(--zest-space-6);
+}
+
+/* ── Toast card ───────────────────────────────────────────────────────── */
+.zest-toast {
+  box-sizing: border-box;
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: calc(1000 - var(--toast-index, 0));
+  display: flex;
+  align-items: flex-start;
+  gap: var(--zest-space-3);
+  padding: var(--zest-space-4);
+  border-radius: var(--zest-radius-panel);
+  background: var(--zest-color-surface);
+  box-shadow: var(--zest-shadow-dropdown);
+  color: var(--zest-color-text-primary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-normal);
+  transform: translateX(var(--toast-swipe-movement-x, 0px))
+    translateY(calc(var(--toast-swipe-movement-y, 0px) + var(--toast-index, 0) * 12px * var(--_dir)))
+    scale(calc(1 - var(--toast-index, 0) * 0.05));
+  transition:
+    transform var(--zest-duration-normal) var(--zest-ease-emphasized),
+    opacity var(--zest-duration-normal) var(--zest-ease-standard);
+}
+
+.zest-toaster[data-position='top-right'] .zest-toast {
+  top: 0;
+  bottom: auto;
+}
+
+/* Hovering/focusing the viewport expands the stack into a list. */
+.zest-toast[data-expanded] {
+  transform: translateX(var(--toast-swipe-movement-x, 0px))
+    translateY(
+      calc(
+        var(--toast-swipe-movement-y, 0px) + var(--toast-offset-y, 0px) * var(--_dir) +
+          var(--toast-index, 0) * var(--zest-space-3) * var(--_dir)
+      )
+    );
+}
+
+/* Enter from the anchored edge; fade + shrink out. */
+.zest-toast[data-starting-style],
+.zest-toast[data-ending-style] {
+  opacity: 0;
+  transform: translateY(calc(150% * var(--_dir) * -1));
+}
+
+/* Toasts pushed past the provider limit stay mounted but hidden. */
+.zest-toast[data-limited] {
+  opacity: 0;
+}
+
+/* ── Parts ────────────────────────────────────────────────────────────── */
+.zest-toast__icon {
+  display: inline-flex;
+  margin-top: 1px;
+  color: var(--zest-accent);
+  font-size: var(--zest-font-size-lg);
+}
+
+.zest-toast__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.zest-toast__title {
+  margin: 0;
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-bold);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-toast__description {
+  margin: 0;
+  color: var(--zest-color-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.zest-toast__title + .zest-toast__description {
+  margin-top: var(--zest-space-1);
+}
+
+.zest-toast__action {
+  display: inline-flex;
+  align-items: center;
+  margin-top: var(--zest-space-2);
+  padding: var(--zest-space-1) var(--zest-space-2);
+  border: 0;
+  border-radius: var(--zest-radius-sm);
+  background: color-mix(in srgb, var(--zest-accent, var(--zest-color-neutral)) 16%, transparent);
+  color: var(--zest-accent-subtle-text, var(--zest-color-text-primary));
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-bold);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.zest-toast__action:hover {
+  background: color-mix(in srgb, var(--zest-accent, var(--zest-color-neutral)) 32%, transparent);
+}
+
+.zest-toast__close {
+  flex: none;
+  margin: -2px -6px 0 0;
+}

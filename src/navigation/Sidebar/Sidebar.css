@@ -1,0 +1,441 @@
+.zest-sidebar {
+  --_width: 280px;
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: var(--_width);
+  height: 100%;
+  background: var(--zest-color-surface);
+  border-right: 1px solid var(--zest-color-border-subtle);
+  font-family: var(--zest-font-family-sans);
+  transition: width var(--zest-duration-normal) var(--zest-ease-emphasized);
+}
+
+.zest-sidebar[data-collapsed] {
+  --_width: 96px;
+}
+
+.zest-sidebar__header {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  padding: var(--zest-space-4);
+}
+
+.zest-sidebar__header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.zest-sidebar__toggle {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__header {
+  justify-content: center;
+  padding-inline: var(--zest-space-2);
+}
+
+.zest-sidebar__header[data-mini] {
+  display: flex;
+  justify-content: center;
+}
+
+.zest-sidebar__nav {
+  flex: 1;
+  padding: var(--zest-space-2) var(--zest-space-3) var(--zest-space-4);
+  overflow-y: auto;
+}
+
+.zest-sidebar__footer {
+  padding: var(--zest-space-3);
+  border-top: 1px solid var(--zest-color-border-subtle);
+}
+
+/* ── Sections ─────────────────────────────────────────────────────────── */
+.zest-sidebar__section + .zest-sidebar__section {
+  margin-top: var(--zest-space-4);
+}
+
+.zest-sidebar__section-label {
+  padding: var(--zest-space-2) var(--zest-space-2);
+  color: color-mix(in srgb, var(--zest-color-text-secondary) 70%, transparent);
+  font-size: 11px;
+  font-weight: var(--zest-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.zest-sidebar__section-divider {
+  height: 1px;
+  margin: var(--zest-space-2) var(--zest-space-2);
+  background: var(--zest-color-border-subtle);
+}
+
+.zest-sidebar__list,
+.zest-sidebar__sublist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── Rows ─────────────────────────────────────────────────────────────── */
+.zest-sidebar__row {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-3);
+  width: 100%;
+  padding: var(--zest-space-2) var(--zest-space-2);
+  border: 0;
+  border-radius: var(--zest-radius-panel);
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  font-family: inherit;
+  font-size: var(--zest-font-size-sm);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-sidebar__row:hover:not([data-disabled]) {
+  background: var(--zest-color-surface-hover);
+  color: var(--zest-color-text-primary);
+}
+
+/* Active: tinted accent row, accent icon tile (QA nav style). */
+.zest-sidebar__row[data-active] {
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+  color: var(--zest-color-primary-subtle-text);
+  font-weight: var(--zest-font-weight-medium);
+}
+
+.zest-sidebar__row[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-sidebar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--zest-radius-control);
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-lg);
+  flex-shrink: 0;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* Only the active item's icon gets the tinted tile. */
+.zest-sidebar__row[data-active] .zest-sidebar__icon {
+  background: color-mix(in srgb, var(--zest-color-primary) 10%, transparent);
+  color: var(--zest-color-primary);
+}
+
+.zest-sidebar__texts {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.zest-sidebar__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zest-sidebar__caption {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--zest-color-text-disabled);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-regular);
+}
+
+.zest-sidebar__badge {
+  flex-shrink: 0;
+  padding: 2px var(--zest-space-2);
+  border-radius: var(--zest-radius-sm);
+  background: color-mix(in srgb, var(--zest-accent) 14%, transparent);
+  color: var(--zest-accent-subtle-text);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-medium);
+}
+
+.zest-sidebar__chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--zest-color-text-secondary);
+  transition: transform var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-sidebar__row[aria-expanded='true'] .zest-sidebar__chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Nested levels: guide line + dots ─────────────────────────────────── */
+.zest-sidebar__panel {
+  overflow: hidden;
+  height: var(--collapsible-panel-height);
+  transition: height var(--zest-duration-normal) var(--zest-ease-emphasized);
+}
+
+.zest-sidebar__panel[data-starting-style],
+.zest-sidebar__panel[data-ending-style] {
+  height: 0;
+}
+
+.zest-sidebar__sublist {
+  position: relative;
+  margin: var(--zest-space-1) 0 var(--zest-space-1) 22px;
+  padding-left: var(--zest-space-3);
+}
+
+.zest-sidebar__sublist::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--zest-space-1);
+  bottom: var(--zest-space-1);
+  width: 1px;
+  background: var(--zest-color-border);
+}
+
+.zest-sidebar__dot {
+  width: 6px;
+  height: 6px;
+  margin-inline: var(--zest-space-1);
+  border-radius: var(--zest-radius-full);
+  background: var(--zest-color-text-disabled);
+  flex-shrink: 0;
+  transition:
+    transform var(--zest-duration-fast) var(--zest-ease-emphasized),
+    background-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-sidebar__row[data-active] .zest-sidebar__dot {
+  background: var(--zest-color-primary);
+  transform: scale(1.35);
+}
+
+/* Nested active rows: dark emphasized text + violet dot only — no tint. */
+.zest-sidebar__sublist .zest-sidebar__row[data-active] {
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-weight: var(--zest-font-weight-bold);
+}
+
+.zest-sidebar__sublist .zest-sidebar__row[data-active]:hover {
+  background: var(--zest-color-surface-hover);
+}
+
+/* ── Mini rail (collapsed) ────────────────────────────────────────────── */
+.zest-sidebar[data-collapsed] .zest-sidebar__row {
+  flex-direction: column;
+  gap: var(--zest-space-1);
+  padding: var(--zest-space-2) var(--zest-space-1);
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__texts {
+  align-items: center;
+  flex: none;
+  width: 100%;
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__label {
+  max-width: 100%;
+  font-size: var(--zest-font-size-xs);
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__caption,
+.zest-sidebar[data-collapsed] .zest-sidebar__badge {
+  display: none;
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__chevron {
+  position: absolute;
+  top: var(--zest-space-2);
+  right: var(--zest-space-1);
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__row {
+  position: relative;
+}
+
+
+
+/* Mini rail: flyouts must escape the nav scroll area. */
+.zest-sidebar[data-collapsed] .zest-sidebar__nav {
+  overflow: visible;
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__item {
+  position: relative;
+}
+
+/* ── Flyout submenu (mini rail, on hover / focus / click) ─────────────── */
+.zest-sidebar__flyout {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 6px);
+  z-index: var(--zest-z-popover);
+  min-width: 200px;
+  padding: var(--zest-inset-panel);
+  border-radius: var(--zest-radius-panel);
+  background: var(--zest-color-surface);
+  box-shadow: var(--zest-shadow-dropdown);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-4px);
+  transition:
+    opacity var(--zest-duration-fast) var(--zest-ease-standard),
+    transform var(--zest-duration-fast) var(--zest-ease-standard),
+    visibility var(--zest-duration-fast);
+}
+
+.zest-sidebar__item:hover > .zest-sidebar__flyout,
+.zest-sidebar__item:focus-within > .zest-sidebar__flyout {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.zest-sidebar__flyout-header {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  padding: var(--zest-space-2);
+  border-bottom: 1px solid var(--zest-color-border-subtle);
+  margin-bottom: var(--zest-space-1);
+}
+
+.zest-sidebar__flyout-header .zest-sidebar__icon {
+  width: 24px;
+  height: 24px;
+  font-size: var(--zest-font-size-md);
+  background: color-mix(in srgb, var(--zest-color-primary) 10%, transparent);
+  color: var(--zest-color-primary);
+}
+
+.zest-sidebar__flyout-title {
+  color: var(--zest-color-text-primary);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+}
+
+/* Flyout children render as normal rows — no guide line, row layout restored. */
+.zest-sidebar__flyout .zest-sidebar__sublist {
+  margin: 0;
+  padding-left: 0;
+}
+
+.zest-sidebar__flyout .zest-sidebar__sublist::before {
+  display: none;
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__row {
+  flex-direction: row;
+  gap: var(--zest-space-2);
+  padding: var(--zest-space-2);
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__texts {
+  align-items: flex-start;
+  flex: 1;
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__label {
+  font-size: var(--zest-font-size-sm);
+}
+
+.zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__caption,
+.zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__badge {
+  display: initial;
+}
+
+/* ── Edge expand/collapse toggle — appears on sidebar hover ───────────── */
+.zest-sidebar__edge-toggle {
+  position: absolute;
+  top: 28px;
+  right: -12px;
+  z-index: calc(var(--zest-z-popover) + 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--zest-color-border);
+  border-radius: var(--zest-radius-full);
+  background: var(--zest-color-surface);
+  color: var(--zest-color-text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  box-shadow: var(--zest-shadow-button);
+  transition:
+    opacity var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard),
+    border-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-sidebar:hover .zest-sidebar__edge-toggle,
+.zest-sidebar__edge-toggle:focus-visible {
+  opacity: 1;
+}
+
+.zest-sidebar__edge-toggle:hover {
+  border-color: var(--zest-color-primary);
+  color: var(--zest-color-primary);
+}
+
+/* ── Mobile: off-canvas ───────────────────────────────────────────────── */
+.zest-sidebar__backdrop {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .zest-sidebar__edge-toggle {
+    display: none;
+  }
+
+  .zest-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: var(--zest-z-drawer);
+    transform: translateX(-100%);
+    transition: transform var(--zest-duration-normal) var(--zest-ease-emphasized);
+    box-shadow: var(--zest-shadow-dialog);
+  }
+
+  .zest-sidebar[data-mobile-open] {
+    transform: translateX(0);
+  }
+
+  .zest-sidebar__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--zest-z-drawer) - 1);
+    background: var(--zest-color-backdrop);
+    backdrop-filter: blur(2px);
+  }
+}

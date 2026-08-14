@@ -1,0 +1,29 @@
+/* Additions on top of the shared zest-select trigger/popup classes
+   (loaded via the Select module import). */
+.zest-time-picker.zest-select__trigger {
+  justify-content: flex-start;
+}
+
+.zest-time-picker__clock {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  color: var(--zest-color-text-secondary);
+}
+
+.zest-time-picker[data-disabled] .zest-time-picker__clock {
+  color: var(--zest-color-text-disabled);
+}
+
+.zest-time-picker__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: start;
+}
+
+.zest-time-picker__popup {
+  max-height: min(320px, var(--available-height));
+}

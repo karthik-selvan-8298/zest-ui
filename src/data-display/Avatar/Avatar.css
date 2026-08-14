@@ -1,0 +1,95 @@
+.zest-avatar {
+  --_size: 40px;
+
+  box-sizing: border-box;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--_size);
+  height: var(--_size);
+  overflow: hidden;
+  border-radius: var(--zest-radius-full);
+  font-family: var(--zest-font-family-sans);
+  user-select: none;
+  vertical-align: middle;
+}
+
+/* ── Sizes ────────────────────────────────────────────────────────────── */
+.zest-avatar[data-size='xs'] {
+  --_size: 24px;
+}
+
+.zest-avatar[data-size='sm'] {
+  --_size: 32px;
+}
+
+.zest-avatar[data-size='md'] {
+  --_size: 40px;
+}
+
+.zest-avatar[data-size='lg'] {
+  --_size: 48px;
+}
+
+.zest-avatar[data-size='xl'] {
+  --_size: 64px;
+}
+
+/* ── Shape ────────────────────────────────────────────────────────────── */
+.zest-avatar[data-shape='rounded'] {
+  border-radius: var(--zest-radius-control);
+}
+
+.zest-avatar[data-shape='rounded'][data-size='xl'] {
+  border-radius: var(--zest-radius-panel);
+}
+
+/* ── Parts ────────────────────────────────────────────────────────────── */
+.zest-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Soft tonal tint + subtle text, driven by data-accent (see base.css). */
+.zest-avatar__fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+  color: var(--zest-accent-subtle-text);
+  font-size: calc(var(--_size) * 0.38);
+  font-weight: var(--zest-font-weight-bold);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.zest-avatar__icon {
+  font-size: calc(var(--_size) * 0.45);
+}
+
+/* ── Group ────────────────────────────────────────────────────────────── */
+.zest-avatar-group {
+  display: inline-flex;
+  align-items: center;
+  /* Ring room so the first avatar's ring is not clipped by ancestors. */
+  padding-left: 2px;
+}
+
+.zest-avatar-group .zest-avatar {
+  box-shadow: 0 0 0 2px var(--zest-color-surface);
+}
+
+.zest-avatar-group .zest-avatar + .zest-avatar {
+  margin-left: calc(var(--zest-space-2) * -1);
+}
+
+/* Solid fallback — accent background with contrast initials (QA dashboard style). */
+.zest-avatar[data-variant='solid'] .zest-avatar__fallback {
+  background: var(--zest-accent);
+  color: var(--zest-accent-contrast);
+}

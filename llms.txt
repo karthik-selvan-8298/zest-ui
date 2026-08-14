@@ -1,0 +1,371 @@
+# Zest UI — AI usage reference
+
+> Machine-oriented reference for AI assistants working in projects that consume @zest/ui.
+> Read this fully before writing UI code with Zest components.
+> In a consuming project this file is at: node_modules/@zest/ui/llms.txt
+
+## What Zest UI is
+
+Company React design system. One package `@zest/ui`. ESM, tree-shakable, TypeScript.
+Styling is plain CSS with `--zest-*` CSS variables — do NOT use Tailwind classes on Zest
+components; do NOT hardcode colors/spacing, use the tokens listed at the bottom.
+React 18/19. Every interactive component is accessible and keyboard-navigable out of the box.
+
+## Required setup (once, at app entry)
+
+```tsx
+import { ZestProvider } from '@zest/ui';
+
+<ZestProvider><App /></ZestProvider>
+```
+
+ZestProvider auto-loads the design tokens and self-hosted Roboto — no CSS imports needed.
+(Standalone '@zest/ui/tokens.css' and '@zest/ui/fonts' subpaths exist only for non-React
+pages or manual CSS-order control.)
+
+ZestProvider props: theme?: ZestTheme, defaultMode?: 'light'|'dark'|'system' (default 'system'),
+mode? (controlled), onModeChange?, defaultDensity?: 'comfortable'|'compact',
+storageKey?: string|null (localStorage persistence of mode; null disables).
+
+Toasts additionally need: wrap app in `ZestToastProvider` and render `<Toaster />` once.
+
+## Import styles
+
+```tsx
+import { Button, TextField, DataGrid } from '@zest/ui';            // main entry (preferred)
+import { SearchIcon } from '@zest/ui/icons';                       // icons subpath
+import { SearchToolbar, FormSection } from '@zest/ui/patterns';    // patterns subpath
+```
+
+## Shared prop vocabulary
+
+- color (tonal components): 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'neutral'
+  (primary is violet hsl(258 84% 55%), lighter in dark mode; secondary is green; neutrals are slate)
+- size: 'sm' | 'md' | 'lg' (fields: 'sm' | 'md')
+- Controlled/uncontrolled: every stateful component supports value/defaultValue + onValueChange
+  (or checked/defaultChecked + onCheckedChange for Checkbox/Switch/Toggle-like).
+- className/style pass through everywhere. All components forwardRef.
+
+## ACTIONS
+
+Button:
+  variant: 'solid'(default)|'outlined'|'ghost'|'soft'  color size
+  loading (spinner + disabled), disabled, startIcon, endIcon, fullWidth
+  href → renders <a>. type defaults to 'button'.
+  <Button variant="soft" color="error" startIcon={<TrashIcon/>}>Delete</Button>
+
+IconButton: REQUIRES aria-label. variant ('ghost' default), color ('neutral' default), size,
+  shape: 'square'(default, rounded square)|'round'.
+  <IconButton aria-label="Close"><CloseIcon/></IconButton>
+
+ButtonGroup: wraps Buttons → segmented control. orientation, fullWidth.
+Toggle: pressed/defaultPressed/onPressedChange, color, size. Icon-button look.
+ToggleGroup: value/defaultValue/onValueChange (array), toggleMultiple.
+Link: underline 'always'|'hover'(default)|'none', color 'primary'|'inherit',
+  external (adds target=_blank + rel=noopener noreferrer),
+  as (router integration: <Link as={RouterLink} to="/x">, <Link as={NextLink} href="/x">).
+  Button also takes `as` for router links: <Button as={RouterLink} to="/new">New</Button>.
+
+## FORMS
+
+TextField (preferred field component — label/helper/error wired for a11y):
+  label, labelPlacement: 'top'(default)|'floating', helperText, errorText (sets error state),
+  required, name, size, fullWidth, disabled, placeholder, startAdornment, endAdornment, startIcon, endIcon,
+  + all native input props (value/onChange/type...).
+  <TextField label="Email" errorText={errors.email} fullWidth />
+
+Input / Textarea: bare controls (same look, no label). error, fullWidth, adornments (Input).
+PasswordInput: TextField-less bare password control with visibility toggle.
+SearchInput: value/defaultValue/onValueChange (string), clear button built in.
+NumberInput: value/defaultValue/onValueChange (number|null), min, max, step, size, error, fullWidth.
+
+Select (custom popup):
+  options: {value: string, label: ReactNode, disabled?}[]
+  value/defaultValue: string|null, onValueChange(value: string|null)
+  placeholder, size, error, fullWidth, disabled, required, name, aria-label
+  <Select options={roles} placeholder="Role" onValueChange={setRole} />
+  searchable?: adds a filter box in the popup (use for long lists); searchPlaceholder?.
+NativeSelect: same options API, native <select>.
+Combobox: Select + text filtering. Same options API + emptyMessage.
+Autocomplete: free text with suggestions: (string | {value,label})[]; value IS the input text.
+
+Checkbox: label, checked/defaultChecked/onCheckedChange, indeterminate, color, size, disabled, name.
+CheckboxGroup: value/defaultValue/onValueChange (string[] of child `name`s), wraps Checkboxes.
+Radio: value, label, color, size. Must be inside RadioGroup.
+RadioGroup: value/defaultValue/onValueChange, orientation: 'vertical'(default)|'horizontal'.
+Switch: label, checked/defaultChecked/onCheckedChange, color, size.
+Slider: value/defaultValue/onValueChange (number or number[] for range), min, max, step,
+  color, size, showValue, disabled.
+
+FileUpload: drag-and-drop + click-to-browse. accept, multiple, maxSizeMB (oversized → onReject),
+  value/defaultValue/onValueChange (File[]), disabled, error, label, description. Removable list.
+Custom fields: <FormField name invalid disabled><Label required/><Input/><HelperText/><FieldError/></FormField>
+— FormField auto-wires label/description/error aria attributes.
+
+## NAVIGATION
+
+Tabs (composition):
+  <Tabs.Root defaultValue="a" (or value/onValueChange)>
+    <Tabs.List fullWidth? variant='underline'(default)|'segmented' (solid accent pill)|'soft' (muted track, raised light chip)>
+      <Tabs.Tab value="a">A</Tabs.Tab><Tabs.Tab value="b" disabled>B</Tabs.Tab>
+    </Tabs.List>
+    <Tabs.Panel value="a">…</Tabs.Panel><Tabs.Panel value="b">…</Tabs.Panel>
+  </Tabs.Root>
+
+Breadcrumbs: items={[{label, href}]} OR <Breadcrumbs.Item href> children; separator?, maxItems?
+  (last item auto becomes current page, non-link).
+Pagination: count (total pages), page/defaultPage/onPageChange, siblingCount, boundaryCount, size, disabled.
+Menu (composition):
+  <Menu.Root><Menu.Trigger render={<Button/>}/>
+    <Menu.Content><Menu.Item onClick>…</Menu.Item><Menu.Separator/>
+      <Menu.Group><Menu.GroupLabel/>…</Menu.Group>
+      <Menu.Item destructive>Delete</Menu.Item>
+    </Menu.Content></Menu.Root>
+Sidebar (app navigation): <Sidebar.Root header logo (compact logo shown in the mini rail) footer
+  nav={SidebarNavSection[]} (data-driven — feed from an API: [{label, items: [{key, label, icon?,
+    caption?, badge?, badgeColor?, active?, disabled?, href?, onClick?, defaultExpanded?, items?}]}])
+  collapsible (edge toggle on the border, appears on hover) collapsed?/defaultCollapsed?/onCollapsedChange
+  (mini rail: items show icon+tiny label; items with children open a hover/focus flyout submenu
+  headed by the parent icon+label)
+  mobileOpen?/onMobileClose? (off-canvas + backdrop under 900px)>
+  Composition alternative: <Sidebar.Section label> + <Sidebar.Item …> (nested items render with a
+  guide line + dot indicators). Icons are bare; only the active item's icon gets a tinted tile.
+  Active NESTED rows show dark bold text + violet dot with NO background tint (top-level active
+  rows keep the tinted pill).
+Stepper: <Stepper.Root activeStep={1} orientation onStepClick?><Stepper.Step label description?/>…</Stepper.Root>
+  (completed steps clickable only when onStepClick given).
+Command (palette): <Command open onOpenChange items placeholder emptyMessage />
+  items: {id, label, group?, icon?, shortcut? ('Ctrl+K'), keywords?, onSelect}[]
+
+## OVERLAYS
+
+IMPORTANT trigger pattern: overlay Triggers take the child via `render` prop:
+  <Dialog.Trigger render={<Button>Open</Button>} />   ← NOT children.
+
+Dialog (structure = Header + Body + Footer; Content's title/description render the Header and
+children render inside the Body automatically; Dialog.Header/Dialog.Body exist for full custom layouts):
+  <Dialog.Root (open/onOpenChange for controlled)>
+    <Dialog.Trigger render={<Button>Edit</Button>} />
+    <Dialog.Content title description size='sm'|'md'|'lg' hideClose?>
+      …body…
+      <Dialog.Footer>
+        <Dialog.Close render={<Button variant="ghost" color="neutral">Cancel</Button>} />
+        <Button onClick={save}>Save</Button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  </Dialog.Root>
+
+ConfirmDialog (shortcut): trigger?, title, description, confirmLabel, cancelLabel,
+  destructive?, onConfirm, loading?, open/onOpenChange.
+AlertDialog: same parts as Dialog, no corner close, 400px.
+Drawer: Dialog-like; Drawer.Content side='right'(default)|'left'|'bottom', size 'sm'|'md'|'lg', title.
+Popover: <Popover.Root><Popover.Trigger render={…}/><Popover.Content side align>…</Popover.Content></Popover.Root>
+Tooltip: <Tooltip title="Delete" side='top'><IconButton …/></Tooltip> — child must accept a ref.
+
+## FEEDBACK
+
+Alert: severity: 'info'|'success'|'warning'|'error', variant: 'soft'(default)|'solid'|'outlined',
+  title, onClose?, action?, icon? (null hides).
+Toasts:
+  // setup once: <ZestToastProvider><App/><Toaster position="bottom-right"/></ZestToastProvider>
+  const toast = useToast();
+  toast.add({ title: 'Saved', severity: 'success', description?, action?: {label,onClick}, timeout? });
+  toast.promise(fetchPromise, { loading:{title}, success:{title}, error:{title} });
+Progress: value (0-100 or null = indeterminate), color, size, label, showValue.
+CircularProgress: value? (undefined = spinner), size (px), thickness, color.
+Spinner: size 'sm'|'md'|'lg'|number, color ('inherit' default).
+Skeleton: variant 'text'|'circular'|'rectangular'|'rounded', width, height, animation 'pulse'|'wave'|false.
+
+## DATA DISPLAY
+
+Card: <Card variant='elevated'|'outlined'><Card.Header title subtitle action/><Card.Content/><Card.Footer/><Card.Media/></Card>
+Table (manual): <Table.Root dense? striped? scrollable? stackOnMobile? (give Cells label="Col";
+  mark optional columns with hideOnMobile on both HeaderCell and Cell)><Table.Head><Table.Row><Table.HeaderCell align>
+  …<Table.Body><Table.Row hover selected><Table.Cell align>…
+DataGrid (prefer for data): generic <DataGrid<Row>
+  columns?: {key, header, render?: (row)=>ReactNode, sortable?, align?, width?}[]
+    — OMIT columns to derive them dynamically from the first row's keys (API-driven data);
+    hideOnMobile? per column hides it under 600px (keep only the essential columns on phones)
+  rows, getRowId(row)=>string
+  sort/defaultSort/onSortChange ({key, direction:'asc'|'desc'}|null), sortComparator?
+  selectable?, selected?/defaultSelected?/onSelectedChange? (string[])
+  pageSize? (enables client pagination), dense?, striped?, loading?, emptyState?, onRowClick?,
+  stackOnMobile? (rows become labeled blocks under 600px; labels auto-filled from headers)
+IconTile: rounded-square icon container before titles/rows. color: ZestColor|'gradient' (hero),
+  size 'sm'|'md'|'lg'|'xl'. <IconTile color="primary"><SettingsIcon/></IconTile>
+CodeBlock: code (string), language? ('bash'…, shown uppercase in header), title? (e.g. filename),
+  hideCopy?, maxHeight? (default 400 — content scrolls inside), wrap?, onCopy?(code).
+  Dark panel in both modes, built-in copy-to-clipboard with "Copied" feedback.
+Avatar: src, alt, name (initials fallback), size 'xs'|'sm'|'md'|'lg'|'xl', shape, color,
+  variant: 'soft'(default tint)|'solid' (accent bg + white initials).
+AvatarGroup: max? → "+N" overflow.
+Badge: count, max=99, dot?, color ('error' default), showZero?, position; wraps children or standalone pill.
+Chip: label/children, variant 'soft'(default)|'solid'|'outlined', color ('neutral' default),
+  size 'sm'|'md', startIcon, avatar, onDelete?, clickable/onClick, disabled.
+Accordion: <Accordion.Root multiple? value/defaultValue (string[])><Accordion.Item value disabled?>
+  <Accordion.Trigger>…</Accordion.Trigger><Accordion.Panel>…</Accordion.Panel></Accordion.Item></Accordion.Root>
+List: <List.Root bordered? inset?><List.Item onClick?><List.ItemIcon/><List.ItemText primary secondary/><List.ItemAction/></List.Item></List.Root>
+EmptyState: icon?, title, description?, action?, size 'sm'|'md'.
+
+## DATE & TIME (values are JS Date | null; no date library needed)
+
+Calendar: value/defaultValue/onValueChange (Date|null), month/onMonthChange, minDate, maxDate,
+  disabledDates?: (d:Date)=>boolean, locale?.
+DatePicker: same value API + placeholder, size, error, fullWidth, disabled, clearable.
+DateRangePicker: value {start: Date|null, end: Date|null} / onValueChange.
+TimePicker: value/defaultValue/onValueChange (string 'HH:mm'), step (minutes, default 30),
+  minTime/maxTime ('HH:mm'), hour12?, size, error, fullWidth.
+
+## LAYOUT & TEXT
+
+Box: polymorphic (as prop) + spacing props p px py pt pr pb pl m mx my mt mr mb ml
+  taking Zest steps 1|2|3|4|5|6|8|10|12|16 (×4px) or CSS strings.
+Stack: vertical flex; spacing (gap, default 2), direction, align, justify, divider={<Divider/>}.
+Flex: horizontal flex; gap, align, justify ('start'|'center'|'end'|'between'|…), wrap, inline.
+Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap.
+Container: maxWidth 'sm'|'md'|'lg'(default)|'xl'|false, disableGutters.
+Paper: shadow 'none'|'sm'|'md'|'lg'|'xl'|'card', bordered, radius.
+Divider: orientation, variant 'solid'|'dashed', optional children as centered label.
+Typography: variant 'display'|'heading-xl'|'heading-lg'|'heading-md'|'heading-sm'|'subtitle'|
+  'body'(default)|'body-sm'|'label'|'caption'|'overline'; color 'primary'|'secondary'|'disabled'|
+  'brand'|'success'|'warning'|'error'|'info'; align; truncate (true = 1 line, number = clamp);
+  gutterBottom; as (element override).
+
+## ICONS (@zest/ui/icons)
+
+<SearchIcon size={20} title="Search"/> — size any CSS length (default 1.25em), inherits currentColor,
+decorative (aria-hidden) unless title given. Zest icons WRAP lucide-react (strokeWidth 2.2 default) —
+any lucide-react icon can also be used directly in icon slots. Named exports: ChevronDown/Up/Left/Right,
+Close, Check, CheckCircle, InfoCircle, WarningTriangle, ErrorCircle, Search, Eye, EyeOff, Plus, Minus,
+MoreVertical, MoreHorizontal, Menu, Sun, Moon, User, Settings, Trash, Edit, Copy, ExternalLink,
+Calendar, Clock, Star, Download, Upload, Filter, ArrowRight/Left/Up/Down, Inbox, PanelLeft
+(+ createZestIcon factory for custom SVGs).
+
+## PATTERNS (@zest/ui/patterns)
+
+SearchToolbar: value/onValueChange, placeholder, filters?, actions? — list/table toolbar row.
+FormSection: title, description?, layout 'split'(default: heading left, fields right ≥900px)|'stacked'.
+DetailHeader: title, subtitle?, breadcrumbs?, actions?, media? — page header.
+
+## THEMING & MODES
+
+CSS-FIRST: the preferred way to theme an app is plain CSS overriding --zest-* variables
+(`:root { --zest-color-primary: … }` + `[data-zest-theme='dark'] { … }`) — no JS involved.
+SCOPED: <Theme theme={createTheme(...)}>subtree</Theme> — nestable per-subtree overrides.
+RUNTIME: <ZestProvider theme={createTheme(...)}> — only for themes computed at runtime
+(multi-tenant branding). Never reach for createTheme when a static CSS file would do.
+
+const { mode, resolvedMode, setMode } = useColorScheme();  // 'light'|'dark'|'system'
+const theme = createTheme({
+  colors: { primary: { main, hover, active, contrast, subtleText }, background, surface,
+            textPrimary, textSecondary, border, focusRing, … },
+  darkColors: {…}, typography: { fontFamily }, radius: { sm, md, lg, xl },
+  cssVars: { '--zest-any-token': 'value' },  // escape hatch
+});
+<ZestProvider theme={theme}>
+
+## TOKENS (use in custom CSS instead of hardcoded values)
+
+Colors: --zest-color-primary(-hover/-active/-contrast/-subtle-text), same for secondary/success/
+  warning/error/info/neutral; --zest-color-background(-neutral), --zest-color-surface(-hover/-active/
+  -disabled), --zest-color-text-primary/-secondary/-disabled, --zest-color-border(-subtle/-strong),
+  --zest-color-backdrop, --zest-color-focus-ring.
+Space: --zest-space-1..6,8,10,12,16 (4px steps).
+Radius: use the INTENT aliases — --zest-radius-control (buttons/fields/cells/tiles, 12px),
+  --zest-radius-panel (popups/menus/nav rows, 14px), --zest-radius-surface (cards/dialogs/code
+  panels, 18px); primitives sm/md/lg/xl/full exist underneath.
+Inset (padding) intents: --zest-inset-surface (card/dialog bodies, 24px), --zest-inset-panel
+  (popup/menu/pill-track inner padding, 4px), --zest-inset-control-x (field x-padding, 12px).
+Focus: --zest-color-focus-ring (theme knob) + --zest-focus-glow / --zest-focus-glow-error —
+  the single glow recipe every field uses; reuse it for custom focusable controls.
+Container widths: --zest-container-sm/md/lg/xl (600/900/1200/1536).
+Shadows: --zest-shadow-sm/md/lg/xl/button/card/dropdown/dialog (button/card/dialog are the named QA tokens). Font: --zest-font-family-sans,
+  --zest-font-size-xs..4xl, --zest-font-weight-regular/medium/bold, --zest-line-height-tight/normal/relaxed.
+Motion: --zest-duration-fast/normal/slow, --zest-ease-standard/emphasized.
+Z-index: --zest-z-appbar/drawer/modal/popover/tooltip/toast.
+Alpha tints: color-mix(in srgb, var(--zest-color-primary) 16%, transparent).
+
+## NO PLAIN HTML — element → Zest component map
+
+Never emit raw HTML elements in app code; use the Zest equivalent:
+  <button>→Button/IconButton · <a>→Link (as={RouterLink} for SPA routes) · <form>→Form ·
+  <input>→TextField/Input (+Password/Search/Number variants) · <select>→Select/NativeSelect ·
+  <textarea>→Textarea · <label>→Label · <img>→Image (fit/radius/ratio/fallback) · <kbd>→Kbd ·
+  <table>→Table/DataGrid · <ul>/<li>→List · <hr>→Divider · <details>→Collapsible ·
+  <dialog>→Dialog/AlertDialog/Drawer · <progress>→Progress · top <header> bar→AppBar ·
+  <nav sidebar>→Sidebar · <nav trail>→Breadcrumbs · scrollable div→ScrollArea ·
+  headings/paragraphs→Typography · layout divs→Box/Stack/Flex/Grid/Container/Paper.
+Form: on Base UI — onSubmit + errors={{field: message}} auto-wires into FieldError; gap 'sm'|'md'|'lg'.
+Image: fit 'cover'(default)|'contain'|'fill'|'none', radius 'none'|'control'|'surface'|'full',
+  ratio (e.g. 16/9), fallback node on load error, lazy by default.
+Kbd: <Kbd>Ctrl+K</Kbd> splits on '+' into key chips.
+Collapsible: Root(open/defaultOpen/onOpenChange) > Trigger (chevron auto) > Panel.
+ScrollArea: maxHeight/maxWidth, themed overlay scrollbars (replaces overflow:auto divs).
+AppBar: sticky(default) blurred top bar with start/center/end slots.
+
+## RECIPES — canonical page compositions (adapt, don't reinvent)
+
+App shell (no raw HTML — layout via Flex/Box):
+  <ZestProvider>
+    <Flex style={{ minHeight: '100vh' }}>
+      <Sidebar.Root header={<Logo/>} nav={navFromApi} collapsible
+        mobileOpen={open} onMobileClose={() => setOpen(false)} />
+      <Box style={{ flex: 1, minWidth: 0 }}>
+        <AppBar start={<IconButton aria-label="Menu" onClick={() => setOpen(true)}><MenuIcon/></IconButton>}
+          end={<Avatar name={user.name} variant="solid" color="primary" size="sm" />} />
+        <Container maxWidth="lg" style={{ paddingBlock: 'var(--zest-space-6)' }}>{page}</Container>
+      </Box>
+    </Flex>
+  </ZestProvider>
+
+Settings page:
+  <Stack spacing={8} divider={<Divider/>}>
+    <FormSection title="Profile" description="…">
+      <TextField label="Name" fullWidth /> …
+    </FormSection>
+    <FormSection title="Notifications" description="…">
+      <Switch label="Product updates" defaultChecked /> …
+    </FormSection>
+  </Stack>
+
+Data page (list + toolbar + grid):
+  <Stack spacing={4}>
+    <DetailHeader title="Members" actions={<Button startIcon={<PlusIcon/>}>Invite</Button>} />
+    <SearchToolbar value={q} onValueChange={setQ}
+      filters={<Select size="sm" aria-label="Role" options={roleOptions} placeholder="All roles" />} />
+    <Card variant="outlined">
+      <DataGrid rows={filtered} getRowId={(r) => r.id} selectable pageSize={10}
+        stackOnMobile loading={isLoading}
+        columns={[
+          { key: 'name', header: 'Name', sortable: true },
+          { key: 'email', header: 'Email', hideOnMobile: true },
+          { key: 'role', header: 'Role' },
+        ]} />
+    </Card>
+  </Stack>
+
+Dialog flow (create/edit):
+  <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Content title="New tool" description="…">
+      <Form onSubmit={submit} errors={serverErrors}>
+        <TextField name="name" label="Name" required fullWidth />
+        <Dialog.Footer>
+          <Dialog.Close render={<Button variant="ghost" color="neutral">Cancel</Button>} />
+          <Button type="submit" loading={saving}>Create</Button>
+        </Dialog.Footer>
+      </Form>
+    </Dialog.Content>
+  </Dialog.Root>
+
+## RULES FOR AI ASSISTANTS
+
+1. Always wrap the app in ZestProvider and import tokens.css + fonts once.
+2. Prefer TextField over raw Input; prefer DataGrid over hand-rolled Table for data.
+3. Overlay triggers use render={<Button/>}, never children.
+4. IconButton always needs aria-label; icons are decorative by default.
+5. Never hardcode hex colors, px spacing, or shadows in custom styles — use --zest-* tokens.
+6. Dark mode is automatic — never write color literals that break it; test both modes.
+7. Dates are plain Date objects; times are 'HH:mm' strings. No date library required.
+8. Mobile: dialogs become bottom sheets, drawers and Sidebar go off-canvas/full-width under
+   600px/900px automatically — don't build separate mobile modals.
+9. Don't reach into internal classes (zest-*__*) from app CSS; customize via theme/tokens.

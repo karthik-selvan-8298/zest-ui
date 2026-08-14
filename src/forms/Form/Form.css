@@ -1,0 +1,16 @@
+.zest-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.zest-form[data-gap='sm'] {
+  gap: var(--zest-space-3);
+}
+
+.zest-form[data-gap='md'] {
+  gap: var(--zest-space-4);
+}
+
+.zest-form[data-gap='lg'] {
+  gap: var(--zest-space-6);
+}

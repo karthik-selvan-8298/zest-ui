@@ -1,0 +1,159 @@
+.zest-stepper {
+  --_circle: 28px;
+
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--zest-font-family-sans);
+}
+
+/* ── Step ─────────────────────────────────────────────────────────────── */
+.zest-stepper__step {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  min-width: 0;
+}
+
+.zest-stepper__header {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  border-radius: var(--zest-radius-sm);
+}
+
+button.zest-stepper__header {
+  cursor: pointer;
+}
+
+/* ── Indicator circle ─────────────────────────────────────────────────── */
+.zest-stepper__indicator {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--_circle);
+  height: var(--_circle);
+  border-radius: var(--zest-radius-full);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard),
+    box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-stepper__step[data-status='completed'] .zest-stepper__indicator,
+.zest-stepper__step[data-status='active'] .zest-stepper__indicator {
+  background: var(--zest-color-primary);
+  color: var(--zest-color-primary-contrast);
+}
+
+.zest-stepper__step[data-status='upcoming'] .zest-stepper__indicator {
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-strong);
+}
+
+.zest-stepper__step[data-clickable] .zest-stepper__header:hover .zest-stepper__indicator {
+  background: var(--zest-color-primary-hover);
+}
+
+/* ── Text ─────────────────────────────────────────────────────────────── */
+.zest-stepper__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--_circle);
+  min-width: 0;
+}
+
+.zest-stepper__label {
+  color: var(--zest-color-text-primary);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-tight);
+}
+
+.zest-stepper__step[data-status='active'] .zest-stepper__label {
+  font-weight: var(--zest-font-weight-bold);
+}
+
+.zest-stepper__step[data-status='upcoming'] .zest-stepper__label {
+  color: var(--zest-color-text-secondary);
+  font-weight: var(--zest-font-weight-regular);
+}
+
+.zest-stepper__step[data-clickable] .zest-stepper__header:hover .zest-stepper__label {
+  color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-stepper__description {
+  margin-top: var(--zest-space-1);
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-xs);
+  line-height: var(--zest-line-height-normal);
+}
+
+/* ── Connector ────────────────────────────────────────────────────────── */
+.zest-stepper__connector {
+  background: var(--zest-color-border);
+  border-radius: var(--zest-radius-full);
+  transition: background-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* Connector after a completed step is tinted primary. */
+.zest-stepper__step[data-status='completed'] .zest-stepper__connector {
+  background: color-mix(in srgb, var(--zest-color-primary) 48%, transparent);
+}
+
+/* ── Horizontal ───────────────────────────────────────────────────────── */
+.zest-stepper[data-orientation='horizontal'] .zest-stepper__step {
+  flex: 1;
+}
+
+.zest-stepper[data-orientation='horizontal'] .zest-stepper__step:last-child {
+  flex: 0 0 auto;
+}
+
+.zest-stepper[data-orientation='horizontal'] .zest-stepper__connector {
+  flex: 1 1 auto;
+  height: 2px;
+  min-width: var(--zest-space-4);
+  margin-inline: var(--zest-space-1);
+}
+
+/* ── Vertical ─────────────────────────────────────────────────────────── */
+.zest-stepper[data-orientation='vertical'] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.zest-stepper[data-orientation='vertical'] .zest-stepper__step {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.zest-stepper[data-orientation='vertical'] .zest-stepper__header {
+  align-items: flex-start;
+}
+
+.zest-stepper[data-orientation='vertical'] .zest-stepper__connector {
+  align-self: flex-start;
+  width: 2px;
+  min-height: var(--zest-space-6);
+  margin-block: var(--zest-space-1);
+  /* Center the rail under the 28px circle. */
+  margin-left: calc((var(--_circle) - 2px) / 2);
+}

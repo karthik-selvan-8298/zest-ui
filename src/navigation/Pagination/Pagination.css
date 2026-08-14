@@ -1,0 +1,84 @@
+.zest-pagination {
+  --_item-size: 32px;
+  --_font-size: var(--zest-font-size-sm);
+}
+
+.zest-pagination[data-size='sm'] {
+  --_item-size: 26px;
+  --_font-size: var(--zest-font-size-xs);
+}
+
+.zest-pagination__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--zest-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zest-pagination__item {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--_item-size);
+  height: var(--_item-size);
+  padding: 0 var(--zest-space-1);
+  border: 0;
+  border-radius: var(--zest-radius-full);
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--_font-size);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-pagination__item:hover:not(:disabled) {
+  background: var(--zest-color-surface-hover);
+}
+
+.zest-pagination__item:active:not(:disabled) {
+  background: var(--zest-color-surface-active);
+}
+
+.zest-pagination__item[data-current] {
+  background: var(--zest-color-primary);
+  color: var(--zest-color-primary-contrast);
+}
+
+.zest-pagination__item[data-current]:hover:not(:disabled) {
+  background: var(--zest-color-primary-hover);
+}
+
+.zest-pagination__item[data-current]:active:not(:disabled) {
+  background: var(--zest-color-primary-active);
+}
+
+.zest-pagination__item:disabled {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-pagination__item[data-current]:disabled {
+  background: var(--zest-color-surface-disabled);
+}
+
+.zest-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--_item-size);
+  height: var(--_item-size);
+  color: var(--zest-color-text-secondary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--_font-size);
+  user-select: none;
+}

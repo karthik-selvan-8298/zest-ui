@@ -1,0 +1,48 @@
+.zest-divider {
+  --_color: var(--zest-color-border);
+  border: 0;
+}
+
+.zest-divider[data-orientation='horizontal'] {
+  width: 100%;
+  border-top: 1px solid var(--_color);
+}
+
+.zest-divider[data-orientation='vertical'] {
+  align-self: stretch;
+  border-left: 1px solid var(--_color);
+}
+
+.zest-divider[data-variant='dashed'][data-orientation='horizontal'] {
+  border-top-style: dashed;
+}
+
+.zest-divider[data-variant='dashed'][data-orientation='vertical'] {
+  border-left-style: dashed;
+}
+
+/* Labeled divider */
+.zest-divider[data-with-label] {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-3);
+  border: 0;
+}
+
+.zest-divider[data-with-label]::before,
+.zest-divider[data-with-label]::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--_color);
+}
+
+.zest-divider[data-with-label][data-variant='dashed']::before,
+.zest-divider[data-with-label][data-variant='dashed']::after {
+  border-top-style: dashed;
+}
+
+.zest-divider__label {
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-medium);
+}

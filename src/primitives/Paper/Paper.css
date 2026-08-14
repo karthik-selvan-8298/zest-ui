@@ -1,0 +1,40 @@
+.zest-paper {
+  background: var(--zest-color-surface);
+  color: var(--zest-color-text-primary);
+}
+
+.zest-paper[data-bordered] {
+  border: 1px solid var(--zest-color-border);
+}
+
+.zest-paper[data-radius='none'] {
+  border-radius: var(--zest-radius-none);
+}
+.zest-paper[data-radius='sm'] {
+  border-radius: var(--zest-radius-sm);
+}
+.zest-paper[data-radius='md'] {
+  border-radius: var(--zest-radius-md);
+}
+.zest-paper[data-radius='lg'] {
+  border-radius: var(--zest-radius-lg);
+}
+.zest-paper[data-radius='xl'] {
+  border-radius: var(--zest-radius-xl);
+}
+
+.zest-paper[data-shadow='sm'] {
+  box-shadow: var(--zest-shadow-sm);
+}
+.zest-paper[data-shadow='md'] {
+  box-shadow: var(--zest-shadow-md);
+}
+.zest-paper[data-shadow='lg'] {
+  box-shadow: var(--zest-shadow-lg);
+}
+.zest-paper[data-shadow='xl'] {
+  box-shadow: var(--zest-shadow-xl);
+}
+.zest-paper[data-shadow='card'] {
+  box-shadow: var(--zest-shadow-card);
+}

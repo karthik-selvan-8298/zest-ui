@@ -1,0 +1,24 @@
+.zest-popover__positioner {
+  z-index: var(--zest-z-popover);
+}
+
+.zest-popover {
+  box-sizing: border-box;
+  padding: var(--zest-space-4);
+  border-radius: var(--zest-radius-panel);
+  background: var(--zest-color-surface);
+  color: var(--zest-color-text-primary);
+  box-shadow: var(--zest-shadow-dropdown);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  transform-origin: var(--transform-origin);
+  transition:
+    transform var(--zest-duration-fast) var(--zest-ease-standard),
+    opacity var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-popover[data-starting-style],
+.zest-popover[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.96);
+}

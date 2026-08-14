@@ -1,0 +1,35 @@
+.zest-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zest-space-2);
+}
+
+.zest-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--zest-color-text-primary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-bold);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-label__asterisk {
+  color: var(--zest-color-error);
+}
+
+.zest-helper-text {
+  margin: 0;
+  color: var(--zest-color-text-secondary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-xs);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-field-error {
+  color: var(--zest-color-error);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-xs);
+  line-height: var(--zest-line-height-normal);
+}

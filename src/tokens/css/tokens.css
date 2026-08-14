@@ -1,0 +1,355 @@
+/**
+ * Zest UI design tokens.
+ * Generated from the Sigma design language (see src/tokens/primitives).
+ *
+ * Layering:
+ *   1. Primitive tokens  (--zest-gray-*, --zest-primary-*, …) — raw values, rarely consumed directly.
+ *   2. Semantic tokens   (--zest-color-*, --zest-font-*, …)   — what components consume.
+ *   3. Component tokens  (--zest-button-*, --zest-field-*)    — only where per-component customization is expected.
+ *
+ * Dark mode overrides ONLY semantic values; token names are identical in both modes.
+ */
+
+:root {
+  /* ── Primitives: color ─────────────────────────────────────────────── */
+  --zest-gray-50: #f8fafc;
+  --zest-gray-100: #f1f5f9;
+  --zest-gray-200: #e2e8f0;
+  --zest-gray-300: #cbd5e1;
+  --zest-gray-400: #94a3b8;
+  --zest-gray-500: #64748b;
+  --zest-gray-600: #475569;
+  --zest-gray-700: #334155;
+  --zest-gray-800: #1e293b;
+  --zest-gray-900: #0f172a;
+
+  /* Sigma Secondary → Zest Primary (mandated mapping) */
+  --zest-primary-100: hsl(258 84% 96%);
+  --zest-primary-300: hsl(258 84% 68%);
+  --zest-primary-500: hsl(258 84% 55%);
+  --zest-primary-700: hsl(258 84% 42%);
+  --zest-primary-900: hsl(258 84% 30%);
+
+  /* Sigma Primary (green) → Zest Secondary */
+  --zest-secondary-100: #c8fad6;
+  --zest-secondary-300: #5be49b;
+  --zest-secondary-500: #00a76f;
+  --zest-secondary-700: #007867;
+  --zest-secondary-900: #004b50;
+
+  --zest-info-100: #cafdf5;
+  --zest-info-300: #61f3f3;
+  --zest-info-500: #00b8d9;
+  --zest-info-700: #006c9c;
+  --zest-info-900: #003768;
+
+  --zest-success-100: #d3fcd2;
+  --zest-success-300: #77ed8b;
+  --zest-success-500: #22c55e;
+  --zest-success-700: #118d57;
+  --zest-success-900: #065e49;
+
+  --zest-warning-100: #fff5cc;
+  --zest-warning-300: #ffd666;
+  --zest-warning-500: #ffab00;
+  --zest-warning-700: #b76e00;
+  --zest-warning-900: #7a4100;
+
+  --zest-error-100: #ffe9d5;
+  --zest-error-300: #ffac82;
+  --zest-error-500: #ff5630;
+  --zest-error-700: #b71d18;
+  --zest-error-900: #7a0916;
+
+  --zest-white: #ffffff;
+  --zest-black: #000000;
+  /* gray-500 as an RGB channel — the Sigma alpha language for borders/shadows */
+  --zest-gray-channel: 100 116 139;
+
+  /* ── Primitives: typography ────────────────────────────────────────── */
+  --zest-font-family-sans: 'Roboto', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial,
+    sans-serif;
+  --zest-font-family-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+
+  --zest-font-size-xs: 0.75rem;
+  --zest-font-size-sm: 0.875rem;
+  --zest-font-size-md: 1rem;
+  --zest-font-size-lg: 1.125rem;
+  --zest-font-size-xl: 1.25rem;
+  --zest-font-size-2xl: 1.5rem;
+  --zest-font-size-3xl: 2rem;
+  --zest-font-size-4xl: 2.5rem;
+
+  --zest-font-weight-regular: 400;
+  --zest-font-weight-medium: 500;
+  --zest-font-weight-bold: 700;
+
+  --zest-line-height-tight: 1.25;
+  --zest-line-height-normal: 1.5;
+  --zest-line-height-relaxed: 1.6;
+
+  /* ── Primitives: space / radius / motion / z ───────────────────────── */
+  --zest-space-1: 4px;
+  --zest-space-2: 8px;
+  --zest-space-3: 12px;
+  --zest-space-4: 16px;
+  --zest-space-5: 20px;
+  --zest-space-6: 24px;
+  --zest-space-8: 32px;
+  --zest-space-10: 40px;
+  --zest-space-12: 48px;
+  --zest-space-16: 64px;
+
+  --zest-radius-none: 0px;
+  --zest-radius-sm: 6px;
+  --zest-radius-md: 12px;
+  --zest-radius-lg: 14px;
+  --zest-radius-xl: 18px;
+  --zest-radius-full: 999px;
+
+  /* Intent aliases — components use ONLY these three; retune the whole
+     system by moving an alias to a different step. */
+  --zest-radius-control: var(--zest-radius-md); /* buttons, fields, cells, tiles */
+  --zest-radius-panel: var(--zest-radius-lg); /* popups, menus, nav rows, flyouts */
+  --zest-radius-surface: var(--zest-radius-xl); /* cards, dialogs, drawers, code panels */
+
+  /* Inset (padding) intents — same idea for interior spacing. */
+  --zest-inset-surface: var(--zest-space-6); /* card/dialog/drawer bodies */
+  --zest-inset-panel: var(--zest-space-1); /* popup/menu/pill-track inner padding */
+  --zest-inset-control-x: var(--zest-space-3); /* field horizontal padding */
+
+  --zest-duration-fast: 150ms;
+  --zest-duration-normal: 250ms;
+  --zest-duration-slow: 400ms;
+  --zest-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --zest-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  --zest-z-appbar: 1100;
+  --zest-z-drawer: 1200;
+  --zest-z-modal: 1300;
+  --zest-z-popover: 1400;
+  --zest-z-tooltip: 1500;
+  --zest-z-toast: 1600;
+
+  /* ── Component tokens (customization points only) ──────────────────── */
+  --zest-container-sm: 600px;
+  --zest-container-md: 900px;
+  --zest-container-lg: 1200px;
+  --zest-container-xl: 1536px;
+
+  --zest-button-height-sm: 30px;
+  --zest-button-height-md: 36px;
+  --zest-button-height-lg: 48px;
+  --zest-field-height-sm: 40px;
+  --zest-field-height-md: 48px;
+  --zest-focus-ring-width: 2px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Semantic tokens — LIGHT (default)
+   ═══════════════════════════════════════════════════════════════════════ */
+:root,
+[data-zest-theme='light'] {
+  color-scheme: light;
+
+  --zest-color-primary: var(--zest-primary-500);
+  --zest-color-primary-hover: var(--zest-primary-700);
+  --zest-color-primary-active: var(--zest-primary-900);
+  --zest-color-primary-contrast: var(--zest-white);
+  --zest-color-primary-subtle-text: var(--zest-primary-700);
+
+  --zest-color-secondary: var(--zest-secondary-500);
+  --zest-color-secondary-hover: var(--zest-secondary-700);
+  --zest-color-secondary-active: var(--zest-secondary-900);
+  --zest-color-secondary-contrast: var(--zest-white);
+  --zest-color-secondary-subtle-text: var(--zest-secondary-700);
+
+  --zest-color-success: var(--zest-success-500);
+  --zest-color-success-hover: var(--zest-success-700);
+  --zest-color-success-active: var(--zest-success-900);
+  --zest-color-success-contrast: var(--zest-white);
+  --zest-color-success-subtle-text: var(--zest-success-700);
+
+  --zest-color-warning: var(--zest-warning-500);
+  --zest-color-warning-hover: var(--zest-warning-700);
+  --zest-color-warning-active: var(--zest-warning-900);
+  --zest-color-warning-contrast: var(--zest-gray-800);
+  --zest-color-warning-subtle-text: var(--zest-warning-700);
+
+  --zest-color-error: var(--zest-error-500);
+  --zest-color-error-hover: var(--zest-error-700);
+  --zest-color-error-active: var(--zest-error-900);
+  --zest-color-error-contrast: var(--zest-white);
+  --zest-color-error-subtle-text: var(--zest-error-700);
+
+  --zest-color-info: var(--zest-info-500);
+  --zest-color-info-hover: var(--zest-info-700);
+  --zest-color-info-active: var(--zest-info-900);
+  --zest-color-info-contrast: var(--zest-white);
+  --zest-color-info-subtle-text: var(--zest-info-700);
+
+  --zest-color-neutral: var(--zest-gray-600);
+  --zest-color-neutral-hover: var(--zest-gray-700);
+  --zest-color-neutral-active: var(--zest-gray-800);
+  --zest-color-neutral-contrast: var(--zest-white);
+  --zest-color-neutral-subtle-text: var(--zest-gray-700);
+
+  --zest-color-background: var(--zest-gray-50);
+  --zest-color-background-neutral: var(--zest-gray-200);
+  --zest-color-surface: var(--zest-white);
+  --zest-color-field: var(--zest-gray-50);
+  --zest-color-surface-hover: rgb(var(--zest-gray-channel) / 0.08);
+  --zest-color-surface-active: rgb(var(--zest-gray-channel) / 0.16);
+  --zest-color-surface-disabled: rgb(var(--zest-gray-channel) / 0.24);
+
+  --zest-color-text-primary: var(--zest-gray-900);
+  --zest-color-text-secondary: var(--zest-gray-600);
+  --zest-color-text-disabled: var(--zest-gray-500);
+
+  --zest-color-border: rgb(var(--zest-gray-channel) / 0.2);
+  --zest-color-border-subtle: rgb(var(--zest-gray-channel) / 0.12);
+  --zest-color-border-strong: rgb(var(--zest-gray-channel) / 0.32);
+
+  --zest-color-backdrop: rgb(2 6 23 / 0.5);
+  --zest-color-focus-ring: var(--zest-primary-500);
+
+  /* Shared focus glow recipe (fields append it after their 1px accent border). */
+  --zest-focus-glow: 0 0 0 4px color-mix(in srgb, var(--zest-color-focus-ring) 13%, transparent),
+    0 0 10px 2px color-mix(in srgb, var(--zest-color-focus-ring) 12%, transparent);
+  --zest-focus-glow-error: 0 0 0 4px color-mix(in srgb, var(--zest-color-error) 13%, transparent),
+    0 0 10px 2px color-mix(in srgb, var(--zest-color-error) 12%, transparent);
+
+  /* Elevation — Sigma shadow language (gray channel in light, black in dark) */
+  --zest-shadow-channel: var(--zest-gray-channel);
+  --zest-shadow-none: none;
+  --zest-shadow-sm: 0 1px 2px 0 rgb(var(--zest-shadow-channel) / 0.16);
+  --zest-shadow-md: 0 8px 16px 0 rgb(var(--zest-shadow-channel) / 0.16);
+  --zest-shadow-lg: 0 12px 24px -4px rgb(var(--zest-shadow-channel) / 0.16);
+  --zest-shadow-xl: 0 24px 48px 0 rgb(var(--zest-shadow-channel) / 0.16);
+  --zest-shadow-button: 0 1px 2px rgb(20 25 40 / 0.05), 0 2px 4px rgb(20 25 40 / 0.04);
+  --zest-shadow-card: 0 1px 2px rgb(20 25 40 / 0.04), 0 12px 24px -8px rgb(20 25 40 / 0.06);
+  --zest-shadow-dropdown: 0 4px 8px -2px rgb(20 25 40 / 0.05),
+    0 20px 32px -12px rgb(20 25 40 / 0.1);
+  --zest-shadow-dialog: 0 4px 8px -2px rgb(20 25 40 / 0.05),
+    0 20px 32px -12px rgb(20 25 40 / 0.1);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Semantic tokens — DARK (explicit)
+   ═══════════════════════════════════════════════════════════════════════ */
+[data-zest-theme='dark'] {
+  color-scheme: dark;
+
+  --zest-color-primary: var(--zest-primary-300);
+  --zest-color-primary-hover: var(--zest-primary-500);
+  --zest-color-primary-active: var(--zest-primary-700);
+  --zest-color-primary-subtle-text: var(--zest-primary-300);
+  --zest-color-secondary-subtle-text: var(--zest-secondary-300);
+  --zest-color-success-subtle-text: var(--zest-success-300);
+  --zest-color-warning-subtle-text: var(--zest-warning-300);
+  --zest-color-error-subtle-text: var(--zest-error-300);
+  --zest-color-info-subtle-text: var(--zest-info-300);
+  --zest-color-neutral-subtle-text: var(--zest-gray-300);
+
+  --zest-color-background: var(--zest-gray-900);
+  --zest-color-background-neutral: rgb(var(--zest-gray-channel) / 0.12);
+  --zest-color-surface: var(--zest-gray-800);
+  --zest-color-field: rgb(var(--zest-gray-channel) / 0.08);
+
+  --zest-color-text-primary: var(--zest-white);
+  --zest-color-text-secondary: var(--zest-gray-500);
+  --zest-color-text-disabled: var(--zest-gray-600);
+
+  --zest-color-focus-ring: var(--zest-primary-300);
+
+  --zest-shadow-channel: 0 0 0;
+}
+
+/* System appearance: apply dark semantics when the OS prefers dark and no
+   explicit choice was made (ZestProvider stamps data-zest-theme for explicit modes). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-zest-theme='light']):not([data-zest-theme='dark']) {
+    color-scheme: dark;
+
+    --zest-color-primary: var(--zest-primary-300);
+    --zest-color-primary-hover: var(--zest-primary-500);
+    --zest-color-primary-active: var(--zest-primary-700);
+    --zest-color-primary-subtle-text: var(--zest-primary-300);
+    --zest-color-secondary-subtle-text: var(--zest-secondary-300);
+    --zest-color-success-subtle-text: var(--zest-success-300);
+    --zest-color-warning-subtle-text: var(--zest-warning-300);
+    --zest-color-error-subtle-text: var(--zest-error-300);
+    --zest-color-info-subtle-text: var(--zest-info-300);
+    --zest-color-neutral-subtle-text: var(--zest-gray-300);
+
+    --zest-color-background: var(--zest-gray-900);
+    --zest-color-background-neutral: rgb(var(--zest-gray-channel) / 0.12);
+    --zest-color-surface: var(--zest-gray-800);
+    --zest-color-field: rgb(var(--zest-gray-channel) / 0.08);
+
+    --zest-color-text-primary: var(--zest-white);
+    --zest-color-text-secondary: var(--zest-gray-500);
+    --zest-color-text-disabled: var(--zest-gray-600);
+
+    --zest-color-focus-ring: var(--zest-primary-300);
+
+    --zest-shadow-channel: 0 0 0;
+  }
+}
+
+/* ── Density ──────────────────────────────────────────────────────────── */
+[data-zest-density='compact'] {
+  --zest-button-height-sm: 26px;
+  --zest-button-height-md: 32px;
+  --zest-button-height-lg: 40px;
+  --zest-field-height-sm: 34px;
+  --zest-field-height-md: 40px;
+}
+
+/* ── Base document defaults ───────────────────────────────────────────── */
+.zest-root {
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-md);
+  line-height: var(--zest-line-height-normal);
+  color: var(--zest-color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Thin rounded scrollbars — the Sigma dashboard scrollbar language. */
+.zest-root * {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--zest-gray-channel) / 0.4) transparent;
+}
+
+.zest-root ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.zest-root ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.zest-root ::-webkit-scrollbar-thumb {
+  background: rgb(var(--zest-gray-channel) / 0.4);
+  border-radius: var(--zest-radius-full);
+}
+
+.zest-root ::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--zest-gray-channel) / 0.56);
+}
+
+/* Respect reduced motion globally for all Zest components. */
+@media (prefers-reduced-motion: reduce) {
+  [class^='zest-'],
+  [class*=' zest-'],
+  [class^='zest-']::before,
+  [class*=' zest-']::before,
+  [class^='zest-']::after,
+  [class*=' zest-']::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

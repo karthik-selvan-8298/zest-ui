@@ -1,0 +1,33 @@
+.zest-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zest-space-4);
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-form-section__title {
+  margin: 0;
+  font-size: var(--zest-font-size-md);
+  font-weight: var(--zest-font-weight-bold);
+  color: var(--zest-color-text-primary);
+}
+
+.zest-form-section__description {
+  margin: var(--zest-space-1) 0 0;
+  font-size: var(--zest-font-size-sm);
+  color: var(--zest-color-text-secondary);
+}
+
+.zest-form-section__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zest-space-4);
+}
+
+@media (min-width: 900px) {
+  .zest-form-section[data-layout='split'] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--zest-space-8);
+  }
+}

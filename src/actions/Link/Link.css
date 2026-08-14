@@ -1,0 +1,24 @@
+.zest-link {
+  border-radius: var(--zest-radius-sm);
+  font-family: var(--zest-font-family-sans);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.zest-link[data-color='primary'] {
+  color: var(--zest-color-primary);
+}
+
+.zest-link[data-color='inherit'] {
+  color: inherit;
+}
+
+.zest-link[data-underline='always'] {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.zest-link[data-underline='hover']:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

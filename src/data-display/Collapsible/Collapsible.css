@@ -1,0 +1,47 @@
+.zest-collapsible {
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-collapsible__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zest-space-2);
+  width: 100%;
+  padding: var(--zest-space-2) 0;
+  border: 0;
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-family: inherit;
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  text-align: left;
+  cursor: pointer;
+}
+
+.zest-collapsible__chevron {
+  color: var(--zest-color-text-secondary);
+  transition: transform var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-collapsible__trigger[data-panel-open] .zest-collapsible__chevron {
+  transform: rotate(180deg);
+}
+
+.zest-collapsible__panel {
+  overflow: hidden;
+  height: var(--collapsible-panel-height);
+  transition: height var(--zest-duration-normal) var(--zest-ease-emphasized);
+}
+
+.zest-collapsible__panel[data-starting-style],
+.zest-collapsible__panel[data-ending-style] {
+  height: 0;
+}
+
+.zest-collapsible__content {
+  padding: var(--zest-space-1) 0 var(--zest-space-2);
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-normal);
+}

@@ -1,0 +1,84 @@
+.zest-accordion {
+  box-sizing: border-box;
+  font-family: var(--zest-font-family-sans);
+  color: var(--zest-color-text-primary);
+}
+
+/* Divider between items. */
+.zest-accordion__item + .zest-accordion__item {
+  border-top: 1px solid var(--zest-color-border-subtle);
+}
+
+.zest-accordion__header {
+  margin: 0;
+  font: inherit;
+}
+
+.zest-accordion__trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zest-space-3);
+  width: 100%;
+  padding: var(--zest-space-3) var(--zest-space-1);
+  border: 0;
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-tight);
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-accordion__trigger:hover:not([data-disabled]) {
+  color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-accordion__trigger[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-accordion__trigger-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.zest-accordion__chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--zest-color-text-secondary);
+  transition: transform var(--zest-duration-normal) var(--zest-ease-standard);
+}
+
+.zest-accordion__trigger[data-panel-open] .zest-accordion__chevron {
+  transform: rotate(180deg);
+}
+
+.zest-accordion__trigger[data-disabled] .zest-accordion__chevron {
+  color: var(--zest-color-text-disabled);
+}
+
+/* Height animation driven by Base UI's measured panel height variable. */
+.zest-accordion__panel {
+  box-sizing: border-box;
+  height: var(--accordion-panel-height);
+  overflow: hidden;
+  transition: height var(--zest-duration-normal) var(--zest-ease-standard);
+}
+
+.zest-accordion__panel[data-starting-style],
+.zest-accordion__panel[data-ending-style] {
+  height: 0;
+}
+
+.zest-accordion__panel-content {
+  padding: 0 var(--zest-space-1) var(--zest-space-4);
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-normal);
+}

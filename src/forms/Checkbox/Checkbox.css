@@ -1,0 +1,98 @@
+.zest-checkbox {
+  --_size: 20px;
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_size);
+  height: var(--_size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--zest-radius-sm);
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--zest-color-text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-checkbox[data-size='sm'] {
+  --_size: 16px;
+}
+
+.zest-checkbox[data-checked],
+.zest-checkbox[data-indeterminate] {
+  background: var(--zest-accent);
+  box-shadow: none;
+}
+
+.zest-checkbox[data-disabled] {
+  box-shadow: inset 0 0 0 2px var(--zest-color-border);
+  cursor: not-allowed;
+}
+
+.zest-checkbox[data-checked][data-disabled],
+.zest-checkbox[data-indeterminate][data-disabled] {
+  background: var(--zest-color-surface-disabled);
+}
+
+.zest-checkbox__indicator {
+  display: flex;
+  width: 80%;
+  height: 80%;
+  color: var(--zest-accent-contrast);
+  opacity: 0;
+  transition: opacity var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-checkbox[data-checked] .zest-checkbox__indicator,
+.zest-checkbox[data-indeterminate] .zest-checkbox__indicator {
+  opacity: 1;
+}
+
+.zest-checkbox__indicator svg {
+  width: 100%;
+  height: 100%;
+}
+
+.zest-checkbox__check {
+  display: none;
+}
+
+.zest-checkbox[data-checked] .zest-checkbox__check {
+  display: block;
+}
+
+.zest-checkbox__dash {
+  display: none;
+}
+
+.zest-checkbox[data-indeterminate] .zest-checkbox__dash {
+  display: block;
+}
+
+/* ── Label wrapper ────────────────────────────────────────────────────── */
+.zest-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  color: var(--zest-color-text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.zest-checkbox-label:has(.zest-checkbox[data-disabled]) {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zest-space-2);
+}

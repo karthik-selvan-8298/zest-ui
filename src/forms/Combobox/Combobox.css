@@ -1,0 +1,176 @@
+.zest-combobox {
+  --_height: var(--zest-field-height-md);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  min-width: 160px;
+  height: var(--_height);
+  padding-inline: var(--zest-inset-control-x);
+  border-radius: var(--zest-radius-control);
+  background: var(--zest-color-field);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+  font-family: var(--zest-font-family-sans);
+  transition: box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-combobox[data-size='sm'] {
+  --_height: var(--zest-field-height-sm);
+}
+
+.zest-combobox[data-full-width] {
+  display: flex;
+  width: 100%;
+}
+
+.zest-combobox:hover:not([data-disabled]) {
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-strong);
+}
+
+.zest-combobox:focus-within:not([data-disabled]),
+.zest-combobox[data-popup-open]:not([data-disabled]) {
+  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+    var(--zest-focus-glow);
+}
+
+.zest-combobox[data-error] {
+  box-shadow: inset 0 0 0 1px var(--zest-color-error);
+}
+
+.zest-combobox[data-error]:focus-within {
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-error),
+    var(--zest-focus-glow-error);
+}
+
+.zest-combobox[data-disabled] {
+  background: var(--zest-color-background-neutral);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-subtle);
+}
+
+.zest-combobox__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-family: inherit;
+  font-size: var(--zest-font-size-sm);
+  outline: none;
+}
+
+.zest-combobox__input::placeholder {
+  color: var(--zest-color-text-disabled);
+}
+
+.zest-combobox__input[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-combobox__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  cursor: pointer;
+}
+
+.zest-combobox__trigger[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-combobox__icon {
+  display: inline-flex;
+  transition: transform var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-combobox[data-popup-open] .zest-combobox__icon {
+  transform: rotate(180deg);
+}
+
+.zest-combobox__positioner {
+  z-index: var(--zest-z-popover);
+}
+
+.zest-combobox__popup {
+  box-sizing: border-box;
+  min-width: var(--anchor-width);
+  max-height: min(var(--available-height), 320px);
+  padding: var(--zest-inset-panel);
+  border-radius: var(--zest-radius-panel);
+  background: var(--zest-color-surface);
+  box-shadow: var(--zest-shadow-dropdown);
+  overflow-y: auto;
+  transform-origin: var(--transform-origin);
+  transition:
+    transform var(--zest-duration-fast) var(--zest-ease-standard),
+    opacity var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-combobox__popup[data-starting-style],
+.zest-combobox__popup[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.zest-combobox__empty {
+  padding: var(--zest-space-2) var(--zest-space-2);
+  color: var(--zest-color-text-secondary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+}
+
+.zest-combobox__empty:empty {
+  padding: 0;
+}
+
+.zest-combobox__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zest-space-3);
+  padding: var(--zest-space-2) var(--zest-space-2);
+  border-radius: var(--zest-radius-sm);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  color: var(--zest-color-text-primary);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.zest-combobox__item[data-highlighted]:not([data-selected]) {
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+  color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-combobox__item[data-selected][data-highlighted] {
+  background: var(--zest-color-surface-hover);
+}
+
+.zest-combobox__item[data-selected] {
+  font-weight: var(--zest-font-weight-medium);
+}
+
+.zest-combobox__item[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-combobox__item-indicator {
+  display: inline-flex;
+  color: var(--zest-color-primary);
+}
+
+/* Focused fields lift to the surface color (QA field style). */
+.zest-combobox[data-popup-open]:not([data-disabled]) {
+  background: var(--zest-color-surface);
+}

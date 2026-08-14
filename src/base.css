@@ -1,0 +1,108 @@
+/**
+ * Shared component plumbing.
+ *
+ * Accent indirection: any Zest component with a `color` prop stamps
+ * `data-accent="<tone>"` and its CSS reads the --zest-accent-* locals below.
+ * One mapping block serves every tonal component (Button, Chip, Badge, Alert…),
+ * keeping per-component CSS free of tone duplication.
+ */
+[data-accent='primary'] {
+  --zest-accent: var(--zest-color-primary);
+  --zest-accent-hover: var(--zest-color-primary-hover);
+  --zest-accent-active: var(--zest-color-primary-active);
+  --zest-accent-contrast: var(--zest-color-primary-contrast);
+  --zest-accent-subtle-text: var(--zest-color-primary-subtle-text);
+}
+
+[data-accent='secondary'] {
+  --zest-accent: var(--zest-color-secondary);
+  --zest-accent-hover: var(--zest-color-secondary-hover);
+  --zest-accent-active: var(--zest-color-secondary-active);
+  --zest-accent-contrast: var(--zest-color-secondary-contrast);
+  --zest-accent-subtle-text: var(--zest-color-secondary-subtle-text);
+}
+
+[data-accent='success'] {
+  --zest-accent: var(--zest-color-success);
+  --zest-accent-hover: var(--zest-color-success-hover);
+  --zest-accent-active: var(--zest-color-success-active);
+  --zest-accent-contrast: var(--zest-color-success-contrast);
+  --zest-accent-subtle-text: var(--zest-color-success-subtle-text);
+}
+
+[data-accent='warning'] {
+  --zest-accent: var(--zest-color-warning);
+  --zest-accent-hover: var(--zest-color-warning-hover);
+  --zest-accent-active: var(--zest-color-warning-active);
+  --zest-accent-contrast: var(--zest-color-warning-contrast);
+  --zest-accent-subtle-text: var(--zest-color-warning-subtle-text);
+}
+
+[data-accent='error'] {
+  --zest-accent: var(--zest-color-error);
+  --zest-accent-hover: var(--zest-color-error-hover);
+  --zest-accent-active: var(--zest-color-error-active);
+  --zest-accent-contrast: var(--zest-color-error-contrast);
+  --zest-accent-subtle-text: var(--zest-color-error-subtle-text);
+}
+
+[data-accent='info'] {
+  --zest-accent: var(--zest-color-info);
+  --zest-accent-hover: var(--zest-color-info-hover);
+  --zest-accent-active: var(--zest-color-info-active);
+  --zest-accent-contrast: var(--zest-color-info-contrast);
+  --zest-accent-subtle-text: var(--zest-color-info-subtle-text);
+}
+
+[data-accent='neutral'] {
+  --zest-accent: var(--zest-color-neutral);
+  --zest-accent-hover: var(--zest-color-neutral-hover);
+  --zest-accent-active: var(--zest-color-neutral-active);
+  --zest-accent-contrast: var(--zest-color-neutral-contrast);
+  --zest-accent-subtle-text: var(--zest-color-neutral-subtle-text);
+}
+
+/* ── Press ripple (see utils/ripple.ts) ───────────────────────────────── */
+.zest-ripple-host {
+  position: relative;
+  overflow: hidden;
+}
+
+.zest-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  pointer-events: none;
+  transform: scale(0);
+  animation: zest-ripple 550ms var(--zest-ease-standard) forwards;
+}
+
+@keyframes zest-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.24;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Shared focus-visible ring for all interactive Zest components. */
+.zest-focusable:focus-visible {
+  outline: var(--zest-focus-ring-width) solid var(--zest-color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Visually hidden (screen-reader only) utility. */
+.zest-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

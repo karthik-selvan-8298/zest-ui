@@ -1,0 +1,68 @@
+.zest-progress {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zest-space-2);
+  width: 100%;
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-progress__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zest-space-2);
+}
+
+.zest-progress__label {
+  color: var(--zest-color-text-primary);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-progress__value {
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-progress__track {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--zest-radius-full);
+  background: rgb(var(--zest-gray-channel) / 0.2);
+}
+
+.zest-progress[data-size='sm'] .zest-progress__track {
+  height: 4px;
+}
+
+/* Determinate: Base UI sets the inline width (%); we style the fill. */
+.zest-progress__indicator {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--zest-accent);
+  transition: width var(--zest-duration-normal) var(--zest-ease-standard);
+}
+
+/* Indeterminate: a 40%-wide segment slides across the track. */
+.zest-progress__indicator[data-indeterminate] {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 40%;
+  animation: zest-progress-slide 1.4s var(--zest-ease-standard) infinite;
+}
+
+@keyframes zest-progress-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    /* Element is 40% of the track wide; 250% of itself clears the far edge. */
+    transform: translateX(250%);
+  }
+}

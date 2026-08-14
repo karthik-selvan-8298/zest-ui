@@ -1,0 +1,69 @@
+.zest-alert {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--zest-space-3);
+  padding: var(--zest-space-3) var(--zest-space-4);
+  border-radius: var(--zest-radius-control);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-alert[data-variant='soft'] {
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+.zest-alert[data-variant='solid'] {
+  background: var(--zest-accent);
+  color: var(--zest-accent-contrast);
+}
+
+.zest-alert[data-variant='outlined'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zest-accent) 48%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+.zest-alert__icon {
+  display: inline-flex;
+  margin-top: 1px;
+  font-size: var(--zest-font-size-lg);
+}
+
+.zest-alert__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.zest-alert__title {
+  font-weight: var(--zest-font-weight-bold);
+}
+
+.zest-alert__title + .zest-alert__message {
+  margin-top: var(--zest-space-1);
+}
+
+.zest-alert__message {
+  overflow-wrap: break-word;
+}
+
+/* Body copy stays readable on tinted backgrounds. */
+.zest-alert[data-variant='soft'] .zest-alert__message,
+.zest-alert[data-variant='outlined'] .zest-alert__message {
+  color: var(--zest-color-text-primary);
+}
+
+.zest-alert__action {
+  display: inline-flex;
+  align-items: center;
+}
+
+.zest-alert__close {
+  margin: -2px -6px 0 0;
+}
+
+.zest-alert[data-variant='solid'] .zest-alert__close {
+  color: var(--zest-accent-contrast);
+}

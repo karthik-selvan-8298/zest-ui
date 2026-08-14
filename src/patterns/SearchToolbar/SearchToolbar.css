@@ -1,0 +1,24 @@
+.zest-search-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-3);
+  flex-wrap: wrap;
+}
+
+.zest-search-toolbar__input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.zest-search-toolbar__filters {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+}
+
+.zest-search-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  margin-left: auto;
+}

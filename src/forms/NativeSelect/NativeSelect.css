@@ -1,0 +1,87 @@
+.zest-native-select {
+  --_height: var(--zest-field-height-md);
+
+  box-sizing: border-box;
+  position: relative;
+  display: inline-flex;
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-native-select[data-size='sm'] {
+  --_height: var(--zest-field-height-sm);
+}
+
+.zest-native-select[data-full-width] {
+  display: flex;
+  width: 100%;
+}
+
+.zest-native-select__control {
+  box-sizing: border-box;
+  appearance: none;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: var(--_height);
+  padding-inline: var(--zest-space-3) var(--zest-space-8);
+  border: 0;
+  border-radius: var(--zest-radius-control);
+  background: var(--zest-color-field);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+  color: var(--zest-color-text-primary);
+  font-family: inherit;
+  font-size: var(--zest-font-size-sm);
+  cursor: pointer;
+  transition: box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-native-select__control:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-strong);
+}
+
+.zest-native-select__control:focus {
+  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+    var(--zest-focus-glow);
+}
+
+.zest-native-select[data-error] .zest-native-select__control {
+  box-shadow: inset 0 0 0 1px var(--zest-color-error);
+}
+
+.zest-native-select[data-error] .zest-native-select__control:focus {
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-error),
+    var(--zest-focus-glow-error);
+}
+
+.zest-native-select__control:disabled {
+  background: var(--zest-color-background-neutral);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-subtle);
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Placeholder (empty disabled option selected). */
+.zest-native-select__control:has(option[value='']:checked) {
+  color: var(--zest-color-text-disabled);
+}
+
+.zest-native-select__icon {
+  position: absolute;
+  inset-inline-end: var(--zest-space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-md);
+  pointer-events: none;
+}
+
+.zest-native-select[data-disabled] .zest-native-select__icon {
+  color: var(--zest-color-text-disabled);
+}
+
+/* Focused fields lift to the surface color (QA field style). */
+.zest-native-select__control:focus {
+  background: var(--zest-color-surface);
+}

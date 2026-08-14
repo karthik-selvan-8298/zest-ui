@@ -1,0 +1,87 @@
+.zest-slider {
+  --_thumb-size: 18px;
+
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-3);
+  width: 100%;
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-slider[data-size='sm'] {
+  --_thumb-size: 14px;
+}
+
+.zest-slider__control {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: calc(var(--_thumb-size) + var(--zest-space-2));
+  touch-action: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.zest-slider[data-disabled] .zest-slider__control {
+  cursor: not-allowed;
+}
+
+/* 4px rounded rail. */
+.zest-slider__track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  border-radius: var(--zest-radius-full);
+  background: rgb(var(--zest-gray-channel) / 0.2);
+}
+
+/* Accent fill. */
+.zest-slider__indicator {
+  height: 100%;
+  border-radius: var(--zest-radius-full);
+  background: var(--zest-accent);
+}
+
+.zest-slider[data-disabled] .zest-slider__indicator {
+  background: var(--zest-color-text-disabled);
+}
+
+/* White circle with an accent ring. */
+.zest-slider__thumb {
+  box-sizing: border-box;
+  width: var(--_thumb-size);
+  height: var(--_thumb-size);
+  border-radius: var(--zest-radius-full);
+  background: var(--zest-white);
+  box-shadow:
+    inset 0 0 0 2px var(--zest-accent),
+    var(--zest-shadow-sm);
+  transition: box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-slider__thumb[data-dragging] {
+  box-shadow:
+    inset 0 0 0 2px var(--zest-accent),
+    0 0 0 6px color-mix(in srgb, var(--zest-accent) 16%, transparent);
+}
+
+.zest-slider[data-disabled] .zest-slider__thumb {
+  box-shadow:
+    inset 0 0 0 2px var(--zest-color-text-disabled),
+    var(--zest-shadow-sm);
+}
+
+.zest-slider__value {
+  flex-shrink: 0;
+  font-size: var(--zest-font-size-sm);
+  color: var(--zest-color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.zest-slider[data-disabled] .zest-slider__value {
+  color: var(--zest-color-text-disabled);
+}

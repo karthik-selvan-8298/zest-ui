@@ -1,0 +1,109 @@
+.zest-list {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--zest-font-family-sans);
+  color: var(--zest-color-text-primary);
+}
+
+.zest-list[data-bordered] {
+  border: 1px solid var(--zest-color-border-subtle);
+  border-radius: var(--zest-radius-panel);
+  overflow: hidden;
+}
+
+.zest-list[data-bordered] .zest-list__item + .zest-list__item {
+  border-top: 1px solid var(--zest-color-border-subtle);
+}
+
+.zest-list[data-inset] {
+  padding: var(--zest-space-2);
+}
+
+/* ── Item ─────────────────────────────────────────────────────────────── */
+.zest-list__item {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-3);
+  padding: var(--zest-space-2) var(--zest-space-3);
+}
+
+/* Clickable rows: the button carries layout, the li is a bare shell. */
+.zest-list__item[data-clickable] {
+  display: block;
+  padding: 0;
+}
+
+.zest-list__item-button {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-3);
+  width: 100%;
+  padding: var(--zest-space-2) var(--zest-space-3);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-list__item-button:hover {
+  background: var(--zest-color-surface-hover);
+}
+
+.zest-list__item-button:active {
+  background: var(--zest-color-surface-active);
+}
+
+.zest-list[data-inset] .zest-list__item,
+.zest-list[data-inset] .zest-list__item-button {
+  border-radius: var(--zest-radius-control);
+}
+
+/* ── Slots ────────────────────────────────────────────────────────────── */
+.zest-list__item-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-lg);
+}
+
+.zest-list__item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.zest-list__item-primary {
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-normal);
+  color: var(--zest-color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zest-list__item-secondary {
+  font-size: var(--zest-font-size-xs);
+  line-height: var(--zest-line-height-normal);
+  color: var(--zest-color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zest-list__item-action {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--zest-color-text-secondary);
+}

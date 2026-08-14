@@ -1,0 +1,63 @@
+.zest-skeleton {
+  display: block;
+  background: rgb(var(--zest-gray-channel) / 0.16);
+}
+
+/* ── Shapes ───────────────────────────────────────────────────────────── */
+.zest-skeleton[data-variant='text'] {
+  height: 1.2em;
+  border-radius: var(--zest-radius-sm);
+}
+
+.zest-skeleton[data-variant='circular'] {
+  border-radius: var(--zest-radius-full);
+}
+
+.zest-skeleton[data-variant='rectangular'] {
+  border-radius: var(--zest-radius-none);
+}
+
+.zest-skeleton[data-variant='rounded'] {
+  border-radius: var(--zest-radius-control);
+}
+
+/* ── Animations ───────────────────────────────────────────────────────── */
+/* Reduced motion is handled globally in tokens.css. */
+.zest-skeleton[data-animation='pulse'] {
+  animation: zest-skeleton-pulse 2s var(--zest-ease-standard) 0.5s infinite;
+}
+
+@keyframes zest-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.zest-skeleton[data-animation='wave'] {
+  position: relative;
+  overflow: hidden;
+}
+
+.zest-skeleton[data-animation='wave']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--zest-gray-channel) / 0.16),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: zest-skeleton-wave 1.6s linear 0.5s infinite;
+}
+
+@keyframes zest-skeleton-wave {
+  to {
+    transform: translateX(100%);
+  }
+}

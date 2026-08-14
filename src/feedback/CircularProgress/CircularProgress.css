@@ -1,0 +1,54 @@
+.zest-circular-progress {
+  display: inline-flex;
+  flex: none;
+  color: var(--zest-accent);
+}
+
+.zest-circular-progress svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Determinate arcs start at 12 o'clock. */
+  transform: rotate(-90deg);
+}
+
+.zest-circular-progress__track {
+  stroke: rgb(var(--zest-gray-channel) / 0.2);
+}
+
+.zest-circular-progress__arc {
+  stroke: currentColor;
+  transition: stroke-dashoffset var(--zest-duration-normal) var(--zest-ease-standard);
+}
+
+/* ── Indeterminate: whole ring rotates while the arc grows and shrinks. ── */
+.zest-circular-progress[data-indeterminate] svg {
+  transform: none;
+  animation: zest-circular-progress-rotate 1.4s linear infinite;
+}
+
+.zest-circular-progress[data-indeterminate] .zest-circular-progress__arc {
+  animation: zest-circular-progress-dash 1.4s ease-in-out infinite;
+}
+
+@keyframes zest-circular-progress-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dash values are in pathLength units (circumference = 100). */
+@keyframes zest-circular-progress-dash {
+  0% {
+    stroke-dasharray: 1 158;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 79 158;
+    stroke-dashoffset: -12;
+  }
+  100% {
+    stroke-dasharray: 79 158;
+    stroke-dashoffset: -99;
+  }
+}

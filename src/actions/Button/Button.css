@@ -1,0 +1,203 @@
+.zest-button {
+  --_height: var(--zest-button-height-md);
+  --_px: var(--zest-space-4);
+  --_font-size: var(--zest-font-size-sm);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--zest-space-2);
+  height: var(--_height);
+  padding-inline: var(--_px);
+  border: 0;
+  border-radius: var(--zest-radius-control);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--_font-size);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard),
+    border-color var(--zest-duration-fast) var(--zest-ease-standard),
+    box-shadow var(--zest-duration-fast) var(--zest-ease-standard),
+    transform var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* Tactile press feedback on every button (guide: active:scale-[0.98]). */
+.zest-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* ── Sizes ────────────────────────────────────────────────────────────── */
+.zest-button[data-size='sm'] {
+  --_height: var(--zest-button-height-sm);
+  --_px: var(--zest-space-2);
+  --_font-size: var(--zest-font-size-xs);
+}
+
+.zest-button[data-size='lg'] {
+  --_height: var(--zest-button-height-lg);
+  --_px: var(--zest-space-5);
+  --_font-size: var(--zest-font-size-md);
+}
+
+.zest-button[data-full-width] {
+  width: 100%;
+}
+
+/* ── Variants ─────────────────────────────────────────────────────────── */
+.zest-button[data-variant='solid'] {
+  background: var(--zest-accent);
+  color: var(--zest-accent-contrast);
+  box-shadow: var(--zest-shadow-button);
+}
+
+/* Guide: filled hover = bg/90 (slightly translucent over the page). */
+.zest-button[data-variant='solid']:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-accent) 90%, transparent);
+}
+
+.zest-button[data-variant='solid']:active:not(:disabled) {
+  background: var(--zest-accent-active);
+}
+
+/* Outlined: filled surface + hairline + faint lift (QA Toolkit button language). */
+.zest-button[data-variant='outlined'] {
+  background: var(--zest-color-surface);
+  color: var(--zest-accent-subtle-text);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--zest-accent) 40%, transparent),
+    var(--zest-shadow-button);
+}
+
+.zest-button[data-variant='outlined']:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-accent) 6%, var(--zest-color-surface));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--zest-accent) 64%, transparent),
+    var(--zest-shadow-button);
+}
+
+.zest-button[data-variant='outlined']:active:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-accent) 12%, var(--zest-color-surface));
+}
+
+.zest-button[data-variant='outlined'][data-accent='neutral'] {
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-border-strong),
+    var(--zest-shadow-button);
+}
+
+.zest-button[data-variant='outlined'][data-accent='neutral']:hover:not(:disabled) {
+  background: var(--zest-color-surface-hover);
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-border-strong),
+    var(--zest-shadow-button);
+}
+
+.zest-button[data-variant='ghost'] {
+  background: transparent;
+  color: var(--zest-accent-subtle-text);
+}
+
+.zest-button[data-variant='ghost']:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-accent) 8%, transparent);
+}
+
+.zest-button[data-variant='ghost']:active:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+}
+
+.zest-button[data-variant='soft'] {
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+.zest-button[data-variant='soft']:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-accent) 32%, transparent);
+}
+
+.zest-button[data-variant='soft']:active:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-accent) 40%, transparent);
+}
+
+/* Neutral solid buttons follow the Sigma "default" look: dark surface. */
+.zest-button[data-variant='solid'][data-accent='neutral'] {
+  background: var(--zest-color-text-primary);
+  color: var(--zest-color-background);
+}
+
+.zest-button[data-variant='solid'][data-accent='neutral']:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--zest-color-text-primary) 90%, transparent);
+}
+
+/* Neutral non-solid variants use plain text color instead of tinted text. */
+.zest-button[data-variant='outlined'][data-accent='neutral'],
+.zest-button[data-variant='ghost'][data-accent='neutral'],
+.zest-button[data-variant='soft'][data-accent='neutral'] {
+  color: var(--zest-color-text-primary);
+}
+
+/* ── States ───────────────────────────────────────────────────────────── */
+.zest-button:disabled {
+  cursor: not-allowed;
+  color: var(--zest-color-text-disabled);
+}
+
+.zest-button[data-variant='solid']:disabled {
+  background: var(--zest-color-surface-disabled);
+  box-shadow: none;
+}
+
+.zest-button[data-variant='outlined']:disabled {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+}
+
+.zest-button[data-variant='ghost']:disabled,
+.zest-button[data-variant='soft']:disabled {
+  background: var(--zest-color-surface-disabled);
+}
+
+.zest-button[data-variant='ghost']:disabled {
+  background: transparent;
+}
+
+/* Loading: hide nothing, add spinner (width stays stable). */
+.zest-button[data-loading] .zest-button__label {
+  opacity: 0.72;
+}
+
+.zest-button__spinner {
+  display: inline-flex;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.zest-button__spinner svg {
+  width: 100%;
+  height: 100%;
+  animation: zest-button-spin 0.8s linear infinite;
+}
+
+@keyframes zest-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Icons ────────────────────────────────────────────────────────────── */
+.zest-button__icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.1em;
+}
+
+.zest-button__label {
+  display: inline-flex;
+  align-items: center;
+}

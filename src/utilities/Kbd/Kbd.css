@@ -1,0 +1,21 @@
+.zest-kbd-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zest-space-1);
+}
+
+.zest-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  padding: 2px var(--zest-space-1);
+  border: 1px solid var(--zest-color-border);
+  border-bottom-width: 2px;
+  border-radius: var(--zest-radius-sm);
+  background: var(--zest-color-field);
+  color: var(--zest-color-text-secondary);
+  font-family: var(--zest-font-family-mono);
+  font-size: var(--zest-font-size-xs);
+  line-height: 1.4;
+}
