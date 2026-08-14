@@ -1,10 +1,10 @@
 /**
- * @zest/ui — company design system.
+ * zest-ui — company design system.
  *
  * Consumers:
- *   import '@zest/ui/tokens.css';
- *   import '@zest/ui/fonts';
- *   import { ZestProvider, Button } from '@zest/ui';
+ *   import 'zest-ui/tokens.css';
+ *   import 'zest-ui/fonts';
+ *   import { ZestProvider, Button } from 'zest-ui';
  */
 
 // Theme

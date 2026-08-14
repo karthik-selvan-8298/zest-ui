@@ -34,8 +34,8 @@ npm install file:../zest-ui
 ## Quick Start
 
 ```tsx
-import { ZestProvider, Button } from '@zest/ui';
-import { PlusIcon } from '@zest/ui/icons';
+import { ZestProvider, Button } from 'zest-ui';
+import { PlusIcon } from 'zest-ui/icons';
 
 export default function App() {
   return (
@@ -56,7 +56,7 @@ export default function App() {
 // src/main.tsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ZestProvider } from '@zest/ui';
+import { ZestProvider } from 'zest-ui';
 import App from './App';
 
 createRoot(document.getElementById('root')!).render(
@@ -76,7 +76,7 @@ createRoot(document.getElementById('root')!).render(
 // app/providers.tsx
 'use client';
 
-import { ZestProvider } from '@zest/ui';
+import { ZestProvider } from 'zest-ui';
 
 export function Providers({
   children,
@@ -111,13 +111,13 @@ export default function RootLayout({
 If you don't use `ZestProvider`, import the design tokens directly:
 
 ```css
-@import '@zest/ui/tokens.css';
+@import 'zest-ui/tokens.css';
 ```
 
 Font assets are also available from:
 
 ```text
-@zest/ui/fonts
+zest-ui/fonts
 ```
 
 ---
@@ -138,7 +138,7 @@ Zest provides ~65 reusable components for common UI patterns.
 | 🖼 **Media** | Image · Kbd · ScrollArea |
 | 📐 **Layout** | Box · Stack · Flex · Grid · Container · Paper · Divider · Center · Spacer · AspectRatio · Typography |
 | 🧩 **Patterns** | SearchToolbar · FormSection · DetailHeader |
-| ✒️ **Icons** | Pre-wrapped Lucide icons via `@zest/ui/icons` |
+| ✒️ **Icons** | Pre-wrapped Lucide icons via `zest-ui/icons` |
 
 ---
 
@@ -176,7 +176,7 @@ Import the theme after Zest so your values take precedence:
 
 ```tsx
 // src/main.tsx
-import { ZestProvider } from '@zest/ui';
+import { ZestProvider } from 'zest-ui';
 import './theme.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -193,7 +193,7 @@ Only override the tokens you need. Zest provides defaults for the rest.
 Apply a theme to a specific subtree:
 
 ```tsx
-import { Theme, createTheme } from '@zest/ui';
+import { Theme, createTheme } from 'zest-ui';
 
 const greenTheme = createTheme({
   colors: {
@@ -310,7 +310,7 @@ Zest ships with `llms.txt` — a machine-readable reference containing component
 For AI-assisted development, add this to your project's `CLAUDE.md` or equivalent rules file:
 
 ```md
-When writing UI, read node_modules/@zest/ui/llms.txt
+When writing UI, read node_modules/zest-ui/llms.txt
 and follow it for all Zest UI usage.
 ```
 

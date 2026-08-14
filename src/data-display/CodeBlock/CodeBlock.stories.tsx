@@ -56,7 +56,7 @@ export const Variants: Story = {
   args: { code: '' },
   render: () => (
     <Stack spacing={4}>
-      <CodeBlock title="install.sh" language="bash" code={'npm install @zest/ui'} />
+      <CodeBlock title="install.sh" language="bash" code={'npm install zest-ui'} />
       <CodeBlock hideCopy language="tsx" code={`<Button color="primary">Save</Button>`} />
       <CodeBlock
         language="bash"

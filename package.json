@@ -1,7 +1,7 @@
 {
-  "name": "@zest/ui",
+  "name": "zest-ui",
   "version": "0.1.0",
-  "description": "Zest UI — company design system. Base UI powered, Sigma-inspired, token-driven.",
+  "description": "A modern, accessible UI component framework for building consistent interfaces — one package, ~65 components, zero raw HTML. Violet-forward, slate-neutral, built on Base UI primitives and Lucide icons.",
   "license": "UNLICENSED",
   "type": "module",
   "main": "./dist/index.js",

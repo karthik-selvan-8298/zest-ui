@@ -1,12 +1,12 @@
 # Zest UI — AI usage reference
 
-> Machine-oriented reference for AI assistants working in projects that consume @zest/ui.
+> Machine-oriented reference for AI assistants working in projects that consume zest-ui.
 > Read this fully before writing UI code with Zest components.
-> In a consuming project this file is at: node_modules/@zest/ui/llms.txt
+> In a consuming project this file is at: node_modules/zest-ui/llms.txt
 
 ## What Zest UI is
 
-Company React design system. One package `@zest/ui`. ESM, tree-shakable, TypeScript.
+Company React design system. One package `zest-ui`. ESM, tree-shakable, TypeScript.
 Styling is plain CSS with `--zest-*` CSS variables — do NOT use Tailwind classes on Zest
 components; do NOT hardcode colors/spacing, use the tokens listed at the bottom.
 React 18/19. Every interactive component is accessible and keyboard-navigable out of the box.
@@ -14,13 +14,13 @@ React 18/19. Every interactive component is accessible and keyboard-navigable ou
 ## Required setup (once, at app entry)
 
 ```tsx
-import { ZestProvider } from '@zest/ui';
+import { ZestProvider } from 'zest-ui';
 
 <ZestProvider><App /></ZestProvider>
 ```
 
 ZestProvider auto-loads the design tokens and self-hosted Roboto — no CSS imports needed.
-(Standalone '@zest/ui/tokens.css' and '@zest/ui/fonts' subpaths exist only for non-React
+(Standalone 'zest-ui/tokens.css' and 'zest-ui/fonts' subpaths exist only for non-React
 pages or manual CSS-order control.)
 
 ZestProvider props: theme?: ZestTheme, defaultMode?: 'light'|'dark'|'system' (default 'system'),
@@ -32,9 +32,9 @@ Toasts additionally need: wrap app in `ZestToastProvider` and render `<Toaster /
 ## Import styles
 
 ```tsx
-import { Button, TextField, DataGrid } from '@zest/ui';            // main entry (preferred)
-import { SearchIcon } from '@zest/ui/icons';                       // icons subpath
-import { SearchToolbar, FormSection } from '@zest/ui/patterns';    // patterns subpath
+import { Button, TextField, DataGrid } from 'zest-ui';            // main entry (preferred)
+import { SearchIcon } from 'zest-ui/icons';                       // icons subpath
+import { SearchToolbar, FormSection } from 'zest-ui/patterns';    // patterns subpath
 ```
 
 ## Shared prop vocabulary
@@ -231,7 +231,7 @@ Typography: variant 'display'|'heading-xl'|'heading-lg'|'heading-md'|'heading-sm
   'brand'|'success'|'warning'|'error'|'info'; align; truncate (true = 1 line, number = clamp);
   gutterBottom; as (element override).
 
-## ICONS (@zest/ui/icons)
+## ICONS (zest-ui/icons)
 
 <SearchIcon size={20} title="Search"/> — size any CSS length (default 1.25em), inherits currentColor,
 decorative (aria-hidden) unless title given. Zest icons WRAP lucide-react (strokeWidth 2.2 default) —
@@ -241,7 +241,7 @@ MoreVertical, MoreHorizontal, Menu, Sun, Moon, User, Settings, Trash, Edit, Copy
 Calendar, Clock, Star, Download, Upload, Filter, ArrowRight/Left/Up/Down, Inbox, PanelLeft
 (+ createZestIcon factory for custom SVGs).
 
-## PATTERNS (@zest/ui/patterns)
+## PATTERNS (zest-ui/patterns)
 
 SearchToolbar: value/onValueChange, placeholder, filters?, actions? — list/table toolbar row.
 FormSection: title, description?, layout 'split'(default: heading left, fields right ≥900px)|'stacked'.
