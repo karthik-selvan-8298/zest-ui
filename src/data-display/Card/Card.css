@@ -9,8 +9,8 @@
   overflow: hidden;
 }
 
+/* Borderless: the card shadow's 2px ambient ring is the edge (Minimals). */
 .zest-card[data-variant='elevated'] {
-  border: 1px solid var(--zest-color-border-subtle);
   box-shadow: var(--zest-shadow-card);
 }
 

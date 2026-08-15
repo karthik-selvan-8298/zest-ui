@@ -12,7 +12,12 @@ export interface GridOwnProps {
   gap?: SpaceValue;
   rowGap?: SpaceValue;
   columnGap?: SpaceValue;
+  /** Cross-axis alignment of items within their tracks (`align-items`). */
   align?: React.CSSProperties['alignItems'];
+  /** Main-axis distribution of the column tracks (`justify-content`). */
+  justify?: React.CSSProperties['justifyContent'];
+  /** Shorthand: center items on both axes. `align`/`justify` still win if set. */
+  center?: boolean;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -32,6 +37,8 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
     rowGap,
     columnGap,
     align,
+    justify,
+    center,
     className,
     style,
     children,
@@ -55,7 +62,8 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
         gap: resolveSpace(gap),
         rowGap: resolveSpace(rowGap),
         columnGap: resolveSpace(columnGap),
-        alignItems: align,
+        alignItems: align ?? (center ? 'center' : undefined),
+        justifyContent: justify ?? (center ? 'center' : undefined),
         ...style,
       }}
       {...rest}

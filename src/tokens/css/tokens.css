@@ -220,19 +220,31 @@
   --zest-focus-glow-error: 0 0 0 4px color-mix(in srgb, var(--zest-color-error) 13%, transparent),
     0 0 10px 2px color-mix(in srgb, var(--zest-color-error) 12%, transparent);
 
-  /* Elevation — Sigma shadow language (gray channel in light, black in dark) */
-  --zest-shadow-channel: var(--zest-gray-channel);
+  /* Elevation — Sigma shadow language (Minimals customShadows; grey-500
+     channel 145 158 171 in light, black in dark). Card = tight ambient ring
+     + soft drop; dropdown/dialog are directional to the lower-left. */
+  --zest-shadow-channel: 145 158 171;
   --zest-shadow-none: none;
   --zest-shadow-sm: 0 1px 2px 0 rgb(var(--zest-shadow-channel) / 0.16);
   --zest-shadow-md: 0 8px 16px 0 rgb(var(--zest-shadow-channel) / 0.16);
   --zest-shadow-lg: 0 12px 24px -4px rgb(var(--zest-shadow-channel) / 0.16);
   --zest-shadow-xl: 0 24px 48px 0 rgb(var(--zest-shadow-channel) / 0.16);
-  --zest-shadow-button: 0 1px 2px rgb(20 25 40 / 0.05), 0 2px 4px rgb(20 25 40 / 0.04);
-  --zest-shadow-card: 0 1px 2px rgb(20 25 40 / 0.04), 0 12px 24px -8px rgb(20 25 40 / 0.06);
-  --zest-shadow-dropdown: 0 4px 8px -2px rgb(20 25 40 / 0.05),
-    0 20px 32px -12px rgb(20 25 40 / 0.1);
-  --zest-shadow-dialog: 0 4px 8px -2px rgb(20 25 40 / 0.05),
-    0 20px 32px -12px rgb(20 25 40 / 0.1);
+  --zest-shadow-button: 0 1px 2px 0 rgb(var(--zest-shadow-channel) / 0.16);
+  --zest-shadow-card:
+    0 0 2px 0 rgb(var(--zest-shadow-channel) / 0.2),
+    0 12px 24px -4px rgb(var(--zest-shadow-channel) / 0.12);
+  --zest-shadow-dropdown:
+    0 0 2px 0 rgb(var(--zest-shadow-channel) / 0.24),
+    -20px 20px 40px -4px rgb(var(--zest-shadow-channel) / 0.24);
+  --zest-shadow-dialog: -40px 40px 80px -8px rgb(0 0 0 / 0.24);
+
+  /* Colored glows — Minimals "z8" accents for emphasized surfaces. */
+  --zest-shadow-primary: 0 8px 16px 0 color-mix(in srgb, var(--zest-color-primary) 24%, transparent);
+  --zest-shadow-secondary: 0 8px 16px 0 color-mix(in srgb, var(--zest-secondary-500) 24%, transparent);
+  --zest-shadow-info: 0 8px 16px 0 color-mix(in srgb, var(--zest-info-500) 24%, transparent);
+  --zest-shadow-success: 0 8px 16px 0 color-mix(in srgb, var(--zest-success-500) 24%, transparent);
+  --zest-shadow-warning: 0 8px 16px 0 color-mix(in srgb, var(--zest-warning-500) 24%, transparent);
+  --zest-shadow-error: 0 8px 16px 0 color-mix(in srgb, var(--zest-error-500) 24%, transparent);
 }
 
 /* ════════════════════════════════════════════════════════════════════════

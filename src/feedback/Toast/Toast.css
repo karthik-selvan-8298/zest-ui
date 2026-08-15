@@ -43,7 +43,7 @@
   padding: var(--zest-space-4);
   border-radius: var(--zest-radius-panel);
   background: var(--zest-color-surface);
-  box-shadow: var(--zest-shadow-dropdown);
+  box-shadow: var(--zest-shadow-md);
   color: var(--zest-color-text-primary);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);

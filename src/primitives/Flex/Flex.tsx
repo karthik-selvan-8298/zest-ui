@@ -27,7 +27,13 @@ export interface FlexOwnProps {
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   align?: Align;
   justify?: Justify;
+  /** Shorthand: center children on both axes. `align`/`justify` still win if set. */
+  center?: boolean;
   wrap?: boolean;
+  /** Grow to fill the available space along the parent's main axis (`flex: 1`). */
+  grow?: boolean;
+  /** Fill the cross axis (`width`/`height: 100%` depending on parent direction). */
+  fullWidth?: boolean;
   /** Gap between children — Zest space step or CSS length. */
   gap?: SpaceValue;
   inline?: boolean;
@@ -47,7 +53,10 @@ export const Flex = React.forwardRef(function Flex<E extends React.ElementType =
     direction = 'row',
     align,
     justify,
+    center,
     wrap,
+    grow,
+    fullWidth,
     gap,
     inline,
     className,
@@ -63,9 +72,11 @@ export const Flex = React.forwardRef(function Flex<E extends React.ElementType =
       style={{
         display: inline ? 'inline-flex' : undefined,
         flexDirection: direction === 'row' ? undefined : direction,
-        alignItems: align ? alignMap[align] : undefined,
-        justifyContent: justify ? justifyMap[justify] : undefined,
+        alignItems: align ? alignMap[align] : center ? 'center' : undefined,
+        justifyContent: justify ? justifyMap[justify] : center ? 'center' : undefined,
         flexWrap: wrap ? 'wrap' : undefined,
+        flex: grow ? 1 : undefined,
+        width: fullWidth ? '100%' : undefined,
         gap: resolveSpace(gap),
         ...style,
       }}

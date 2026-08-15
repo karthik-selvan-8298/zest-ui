@@ -269,6 +269,12 @@
   display: none;
 }
 
+/* Single highlight only: the row tile carries the active tint, so drop the
+   icon's own tinted tile (it would read as a second nested highlight). */
+.zest-sidebar[data-collapsed] .zest-sidebar__row[data-active] .zest-sidebar__icon {
+  background: transparent;
+}
+
 
 
 /* Mini rail: flyouts must escape the nav scroll area. */
