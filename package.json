@@ -1,7 +1,7 @@
 {
   "name": "zest-ui",
   "version": "0.1.0",
-  "description": "A modern, accessible UI component framework for building consistent interfaces — one package, ~65 components, zero raw HTML. Violet-forward, slate-neutral, built on Base UI primitives and Lucide icons.",
+  "description": "A modern, accessible UI component framework for building consistent interfaces \u2014 one package, ~65 components, zero raw HTML. Violet-forward, slate-neutral, built on Base UI primitives and Lucide icons.",
   "license": "UNLICENSED",
   "type": "module",
   "main": "./dist/index.js",
@@ -39,7 +39,7 @@
     "registry": "https://npm.zoho-internal.example.com/"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node scripts/copy-css.mjs src dist",
+    "build": "tsc -p tsconfig.build.json && node scripts/copy-css.mjs src dist && node scripts/fix-esm.mjs dist",
     "prepare": "npm run build",
     "test:visual": "test-storybook --url http://localhost:6006",
     "test:visual:update": "test-storybook --url http://localhost:6006 -u",

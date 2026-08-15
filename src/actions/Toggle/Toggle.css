@@ -5,8 +5,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--_size);
+  width: auto;
+  min-width: var(--_size);
   height: var(--_size);
+  padding-inline: var(--zest-space-2);
+  gap: var(--zest-space-2);
   padding: 0;
   border: 0;
   border-radius: var(--zest-radius-control);

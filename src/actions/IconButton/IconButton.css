@@ -20,13 +20,9 @@
     transform var(--zest-duration-fast) var(--zest-ease-emphasized);
 }
 
-/* Sigma icon-button feel: grow on hover, sink on press. */
-.zest-icon-button:hover:not(:disabled) {
-  transform: scale(1.08);
-}
-
+/* Same tactile press language as Button (active-only, no hover growth). */
 .zest-icon-button:active:not(:disabled) {
-  transform: scale(0.94);
+  transform: scale(0.98);
 }
 
 .zest-icon-button[data-shape='round'] {
