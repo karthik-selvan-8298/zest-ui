@@ -14,7 +14,7 @@
 }
 
 .zest-sidebar[data-collapsed] {
-  --_width: 96px;
+  --_width: 64px;
 }
 
 .zest-sidebar__header {
@@ -250,10 +250,15 @@
 }
 
 /* ── Mini rail (collapsed): icon only, label surfaced via tooltip ─────── */
+.zest-sidebar[data-collapsed] .zest-sidebar__nav {
+  padding-inline: var(--zest-space-2);
+}
+
 .zest-sidebar[data-collapsed] .zest-sidebar__row {
   position: relative;
   justify-content: center;
-  padding: var(--zest-space-2);
+  padding: var(--zest-space-1);
+  border-radius: var(--zest-radius-control);
 }
 
 /* Hide everything but the icon; label lives in a tooltip, submenu in a flyout. */
@@ -383,7 +388,15 @@
     border-color var(--zest-duration-fast) var(--zest-ease-standard);
 }
 
-.zest-sidebar:hover .zest-sidebar__edge-toggle,
+/* Enlarged invisible hotspot so hovering *near* the toggle reveals it. */
+.zest-sidebar__edge-toggle::before {
+  content: '';
+  position: absolute;
+  inset: -12px -16px;
+}
+
+/* Reveal only when hovering near the toggle (not the whole sidebar). */
+.zest-sidebar__edge-toggle:hover,
 .zest-sidebar__edge-toggle:focus-visible {
   opacity: 1;
 }
