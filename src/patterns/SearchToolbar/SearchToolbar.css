@@ -1,13 +1,23 @@
 .zest-search-toolbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: var(--zest-space-3);
-  flex-wrap: wrap;
+  gap: var(--zest-space-2);
+}
+
+.zest-search-toolbar:has(.zest-search-toolbar__filters),
+.zest-search-toolbar:has(.zest-search-toolbar__actions) {
+  grid-template-columns: 1fr auto;
+}
+
+.zest-search-toolbar:has(.zest-search-toolbar__filters):has(
+    .zest-search-toolbar__actions
+  ) {
+  grid-template-columns: 1fr auto auto;
 }
 
 .zest-search-toolbar__input {
-  flex: 1;
-  min-width: 200px;
+  min-width: 0;
 }
 
 .zest-search-toolbar__filters {
@@ -20,5 +30,16 @@
   display: flex;
   align-items: center;
   gap: var(--zest-space-2);
-  margin-left: auto;
+}
+
+/* Stack search, filters, and actions each on their own row on mobile. */
+@media (max-width: 600px) {
+  .zest-search-toolbar,
+  .zest-search-toolbar:has(.zest-search-toolbar__filters),
+  .zest-search-toolbar:has(.zest-search-toolbar__actions),
+  .zest-search-toolbar:has(.zest-search-toolbar__filters):has(
+      .zest-search-toolbar__actions
+    ) {
+    grid-template-columns: 1fr;
+  }
 }

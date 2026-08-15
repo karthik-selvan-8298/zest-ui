@@ -70,6 +70,7 @@
   box-sizing: border-box;
   width: var(--anchor-width);
   min-width: var(--anchor-width);
+  max-width: var(--available-width);
   max-height: var(--available-height);
   padding: var(--zest-inset-panel);
   border-radius: var(--zest-radius-panel);
@@ -178,10 +179,4 @@
 .zest-select__empty:empty {
   display: none;
   padding: 0;
-}
-
-@media (max-width: 600px) {
-  .zest-select__popup {
-    max-width: calc(100vw - 16px);
-  }
 }

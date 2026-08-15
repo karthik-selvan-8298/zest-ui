@@ -4,6 +4,7 @@
 
 .zest-popover {
   box-sizing: border-box;
+  max-width: var(--available-width);
   padding: var(--zest-space-4);
   border-radius: var(--zest-radius-panel);
   background: var(--zest-color-surface);

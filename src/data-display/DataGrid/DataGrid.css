@@ -72,11 +72,19 @@
 
 /* ── Footer ───────────────────────────────────────────────────────────── */
 .zest-datagrid__footer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: flex-end;
-  gap: var(--zest-space-6);
+  gap: var(--zest-space-2);
   padding: var(--zest-space-3) var(--zest-space-4);
+}
+
+/* Stack the range summary above the pagination on narrow screens. */
+@media (max-width: 600px) {
+  .zest-datagrid__footer {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
 }
 
 .zest-datagrid__range {

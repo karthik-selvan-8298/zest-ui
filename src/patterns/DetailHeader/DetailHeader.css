@@ -6,10 +6,28 @@
 }
 
 .zest-detail-header__row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  gap: var(--zest-space-4);
-  flex-wrap: wrap;
+  gap: var(--zest-space-2);
+}
+
+/* With a leading media slot, add an auto column in front of the heading. */
+.zest-detail-header__row:has(.zest-detail-header__media) {
+  grid-template-columns: auto 1fr auto;
+}
+
+/* Stack the actions under the heading on narrow screens instead of letting
+   them run off the right edge. */
+@media (max-width: 600px) {
+  .zest-detail-header__row,
+  .zest-detail-header__row:has(.zest-detail-header__media) {
+    grid-template-columns: 1fr;
+  }
+
+  .zest-detail-header__actions {
+    justify-self: start;
+  }
 }
 
 .zest-detail-header__heading {
@@ -36,5 +54,4 @@
   display: flex;
   align-items: center;
   gap: var(--zest-space-2);
-  margin-left: auto;
 }

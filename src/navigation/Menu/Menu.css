@@ -5,6 +5,7 @@
 .zest-menu__popup {
   box-sizing: border-box;
   min-width: 160px;
+  max-width: var(--available-width);
   max-height: var(--available-height);
   padding: var(--zest-inset-panel);
   border-radius: var(--zest-radius-panel);

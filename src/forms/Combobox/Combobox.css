@@ -103,6 +103,7 @@
 .zest-combobox__popup {
   box-sizing: border-box;
   min-width: var(--anchor-width);
+  max-width: var(--available-width);
   max-height: min(var(--available-height), 320px);
   padding: var(--zest-inset-panel);
   border-radius: var(--zest-radius-panel);

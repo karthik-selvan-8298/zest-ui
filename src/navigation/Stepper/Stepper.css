@@ -118,6 +118,15 @@ button.zest-stepper__header {
 }
 
 /* ── Horizontal ───────────────────────────────────────────────────────── */
+.zest-stepper[data-orientation='horizontal'] {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.zest-stepper[data-orientation='horizontal']::-webkit-scrollbar {
+  display: none;
+}
+
 .zest-stepper[data-orientation='horizontal'] .zest-stepper__step {
   flex: 1;
 }

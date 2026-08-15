@@ -8,6 +8,12 @@
   display: flex;
   gap: var(--zest-space-6);
   border-bottom: 1px solid var(--zest-color-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.zest-tabs__list::-webkit-scrollbar {
+  display: none;
 }
 
 .zest-tabs__list[data-full-width] {
@@ -24,6 +30,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--zest-space-2);
+  flex-shrink: 0;
   height: 48px;
   padding: 0 var(--zest-space-1);
   border: 0;

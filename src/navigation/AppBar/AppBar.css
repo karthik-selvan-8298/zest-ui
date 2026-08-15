@@ -1,8 +1,9 @@
 .zest-app-bar {
   box-sizing: border-box;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: var(--zest-space-4);
+  gap: var(--zest-space-2);
   min-height: 64px;
   padding-inline: var(--zest-space-6);
   background: color-mix(in srgb, var(--zest-color-background) 80%, transparent);
@@ -10,6 +11,12 @@
   font-family: var(--zest-font-family-sans);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+@media (max-width: 600px) {
+  .zest-app-bar {
+    padding-inline: var(--zest-space-4);
+  }
 }
 
 .zest-app-bar[data-sticky] {
@@ -30,13 +37,20 @@
   align-items: center;
   justify-content: center;
   gap: var(--zest-space-3);
-  flex: 1;
   min-width: 0;
+}
+
+/* Let the center content (e.g. a search field) shrink instead of overlapping
+   the start/end clusters on narrow screens. */
+.zest-app-bar__center > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .zest-app-bar__end {
   display: flex;
   align-items: center;
   gap: var(--zest-space-2);
-  margin-left: auto;
+  justify-self: end;
+  min-width: 0;
 }

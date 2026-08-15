@@ -49,7 +49,7 @@
 
 .zest-radio-label {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--zest-space-2);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
@@ -74,5 +74,6 @@
 
 .zest-radio-group[data-orientation='horizontal'] {
   flex-direction: row;
+  flex-wrap: wrap;
   gap: var(--zest-space-4);
 }
