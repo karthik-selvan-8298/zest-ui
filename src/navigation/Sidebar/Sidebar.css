@@ -242,41 +242,26 @@
   font-weight: var(--zest-font-weight-bold);
 }
 
-.zest-sidebar__sublist .zest-sidebar__row[data-active]:hover {
-  background: var(--zest-color-surface-hover);
+/* Sub-menu rows: no background highlight on hover — the dot + text carry the
+   affordance. Keep a subtle text-color shift only. */
+.zest-sidebar__sublist .zest-sidebar__row:hover:not([data-disabled]) {
+  background: transparent;
+  color: var(--zest-color-text-primary);
 }
 
-/* ── Mini rail (collapsed) ────────────────────────────────────────────── */
-.zest-sidebar[data-collapsed] .zest-sidebar__row {
-  flex-direction: column;
-  gap: var(--zest-space-1);
-  padding: var(--zest-space-2) var(--zest-space-1);
-}
-
-.zest-sidebar[data-collapsed] .zest-sidebar__texts {
-  align-items: center;
-  flex: none;
-  width: 100%;
-}
-
-.zest-sidebar[data-collapsed] .zest-sidebar__label {
-  max-width: 100%;
-  font-size: var(--zest-font-size-xs);
-}
-
-.zest-sidebar[data-collapsed] .zest-sidebar__caption,
-.zest-sidebar[data-collapsed] .zest-sidebar__badge {
-  display: none;
-}
-
-.zest-sidebar[data-collapsed] .zest-sidebar__chevron {
-  position: absolute;
-  top: var(--zest-space-2);
-  right: var(--zest-space-1);
-}
-
+/* ── Mini rail (collapsed): icon only, label surfaced via tooltip ─────── */
 .zest-sidebar[data-collapsed] .zest-sidebar__row {
   position: relative;
+  justify-content: center;
+  padding: var(--zest-space-2);
+}
+
+/* Hide everything but the icon; label lives in a tooltip, submenu in a flyout. */
+.zest-sidebar[data-collapsed] .zest-sidebar__texts,
+.zest-sidebar[data-collapsed] .zest-sidebar__caption,
+.zest-sidebar[data-collapsed] .zest-sidebar__badge,
+.zest-sidebar[data-collapsed] .zest-sidebar__chevron {
+  display: none;
 }
 
 
@@ -310,8 +295,8 @@
     visibility var(--zest-duration-fast);
 }
 
-.zest-sidebar__item:hover > .zest-sidebar__flyout,
-.zest-sidebar__item:focus-within > .zest-sidebar__flyout {
+/* Opened by clicking the rail item (see SidebarItem), not on hover. */
+.zest-sidebar__flyout[data-open] {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
@@ -352,11 +337,14 @@
 
 .zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__row {
   flex-direction: row;
+  justify-content: flex-start;
   gap: var(--zest-space-2);
   padding: var(--zest-space-2);
 }
 
+/* Restore the label/caption inside the flyout (hidden on the rail itself). */
 .zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__texts {
+  display: flex;
   align-items: flex-start;
   flex: 1;
 }
@@ -383,7 +371,7 @@
   height: 24px;
   padding: 0;
   border: 1px solid var(--zest-color-border);
-  border-radius: var(--zest-radius-full);
+  border-radius: var(--zest-radius-sm);
   background: var(--zest-color-surface);
   color: var(--zest-color-text-secondary);
   cursor: pointer;

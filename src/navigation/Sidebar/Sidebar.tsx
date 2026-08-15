@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Collapsible } from '@base-ui/react/collapsible';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '../../icons';
+import { Tooltip } from '../../overlays/Tooltip/Tooltip';
 import { cx, useControllableState } from '../../utils';
 import '../../base.css';
 import './Sidebar.css';
@@ -228,6 +229,43 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
   const collapsed = React.useContext(CollapsedContext);
   const hasChildren = React.Children.count(children) > 0;
 
+  // Mini-rail flyout: opens on click (label lives in a tooltip instead).
+  const itemRef = React.useRef<HTMLLIElement | null>(null);
+  const [flyoutOpen, setFlyoutOpen] = React.useState(false);
+
+  const setItemRef = React.useCallback(
+    (node: HTMLLIElement | null) => {
+      itemRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) (ref as React.MutableRefObject<HTMLLIElement | null>).current = node;
+    },
+    [ref]
+  );
+
+  // Collapsing the rail dismisses any open flyout.
+  React.useEffect(() => {
+    if (!collapsed) setFlyoutOpen(false);
+  }, [collapsed]);
+
+  // Close the flyout on outside pointer-down or Escape.
+  React.useEffect(() => {
+    if (!flyoutOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (itemRef.current && !itemRef.current.contains(event.target as Node)) {
+        setFlyoutOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setFlyoutOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [flyoutOpen]);
+
   const badgeNode =
     badge === undefined ? null : typeof badge === 'string' || typeof badge === 'number' ? (
       <span className="zest-sidebar__badge" data-accent={badgeColor}>
@@ -272,24 +310,45 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
     </DepthContext.Provider>
   ) : null;
 
+  // In the mini rail, the label is hidden — surface it as a tooltip instead.
+  const withTooltip = (trigger: React.ReactElement) =>
+    collapsed ? (
+      <Tooltip title={label} side="right">
+        {trigger}
+      </Tooltip>
+    ) : (
+      trigger
+    );
+
   return (
     <li
-      ref={ref}
+      ref={setItemRef}
       className={cx('zest-sidebar__item', className)}
       data-depth={depth}
       {...props}
     >
       {hasChildren && collapsed ? (
         <>
-          <button
-            type="button"
-            aria-haspopup="true"
-            disabled={disabled}
-            {...rowProps}
+          {withTooltip(
+            <button
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={flyoutOpen}
+              disabled={disabled}
+              {...rowProps}
+              onClick={(event) => {
+                onClick?.(event);
+                setFlyoutOpen((open) => !open);
+              }}
+            >
+              {rowContent}
+            </button>
+          )}
+          <div
+            className="zest-sidebar__flyout"
+            data-open={flyoutOpen ? '' : undefined}
+            onClick={() => setFlyoutOpen(false)}
           >
-            {rowContent}
-          </button>
-          <div className="zest-sidebar__flyout">
             <div className="zest-sidebar__flyout-header">
               {icon ? (
                 <span className="zest-sidebar__icon" aria-hidden>
@@ -311,13 +370,17 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
           <Collapsible.Panel className="zest-sidebar__panel">{nested}</Collapsible.Panel>
         </Collapsible.Root>
       ) : href && !disabled ? (
-        <a href={href} {...rowProps}>
-          {rowContent}
-        </a>
+        withTooltip(
+          <a href={href} {...rowProps}>
+            {rowContent}
+          </a>
+        )
       ) : (
-        <button type="button" disabled={disabled} {...rowProps}>
-          {rowContent}
-        </button>
+        withTooltip(
+          <button type="button" disabled={disabled} {...rowProps}>
+            {rowContent}
+          </button>
+        )
       )}
     </li>
   );
