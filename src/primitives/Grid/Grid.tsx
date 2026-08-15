@@ -49,8 +49,9 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
     <Component
       ref={ref}
       className={cx('zest-grid', className)}
+      data-fixed-columns={typeof columns === 'number' && !minChildWidth ? '' : undefined}
       style={{
-        gridTemplateColumns: template,
+        ['--zest-grid-columns' as string]: template,
         gap: resolveSpace(gap),
         rowGap: resolveSpace(rowGap),
         columnGap: resolveSpace(columnGap),

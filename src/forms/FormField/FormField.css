@@ -10,8 +10,8 @@
   gap: 2px;
   color: var(--zest-color-text-primary);
   font-family: var(--zest-font-family-sans);
-  font-size: var(--zest-font-size-sm);
-  font-weight: var(--zest-font-weight-bold);
+  font-size: 13px;
+  font-weight: var(--zest-font-weight-medium);
   line-height: var(--zest-line-height-normal);
 }
 
@@ -32,4 +32,17 @@
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-xs);
   line-height: var(--zest-line-height-normal);
+}
+
+/* Inside a Grid, fields share row tracks so a wrapping label can't push its
+   control out of line with siblings. */
+@supports (grid-template-rows: subgrid) {
+  .zest-grid > .zest-form-field {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+    gap: 0;
+    row-gap: var(--zest-space-2);
+    align-content: start;
+  }
 }

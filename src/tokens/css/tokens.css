@@ -142,7 +142,7 @@
   --zest-button-height-md: 36px;
   --zest-button-height-lg: 48px;
   --zest-field-height-sm: 40px;
-  --zest-field-height-md: 48px;
+  --zest-field-height-md: 44px;
   --zest-focus-ring-width: 2px;
 }
 
@@ -198,7 +198,7 @@
   --zest-color-background: var(--zest-gray-50);
   --zest-color-background-neutral: var(--zest-gray-200);
   --zest-color-surface: var(--zest-white);
-  --zest-color-field: var(--zest-gray-50);
+  --zest-color-field: var(--zest-color-surface);
   --zest-color-surface-hover: rgb(var(--zest-gray-channel) / 0.08);
   --zest-color-surface-active: rgb(var(--zest-gray-channel) / 0.16);
   --zest-color-surface-disabled: rgb(var(--zest-gray-channel) / 0.24);

@@ -67,3 +67,8 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Tighter rhythm when content follows a header. */
+.zest-card__header + .zest-card__content {
+  padding-top: var(--zest-space-4);
+}
