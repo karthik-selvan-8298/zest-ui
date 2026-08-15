@@ -410,9 +410,43 @@
   display: none;
 }
 
+/* Close button — mobile off-canvas only. */
+.zest-sidebar__mobile-close {
+  display: none;
+  position: absolute;
+  top: var(--zest-space-3);
+  right: var(--zest-space-3);
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--zest-radius-control);
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-sidebar__mobile-close:hover {
+  background: var(--zest-color-surface-hover);
+  color: var(--zest-color-text-primary);
+}
+
 @media (max-width: 900px) {
   .zest-sidebar__edge-toggle {
     display: none;
+  }
+
+  .zest-sidebar[data-mobile-open] .zest-sidebar__mobile-close {
+    display: inline-flex;
+  }
+
+  /* Keep header content clear of the close button. */
+  .zest-sidebar[data-mobile-open] .zest-sidebar__header {
+    padding-right: var(--zest-space-12);
   }
 
   .zest-sidebar {

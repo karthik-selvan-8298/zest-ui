@@ -137,3 +137,11 @@
 .zest-input:focus-within:not([data-disabled]) {
   background: var(--zest-color-surface);
 }
+
+/* type="search": suppress the native WebKit cancel/decoration controls —
+   SearchInput renders its own themed clear button. */
+.zest-input__control[type='search']::-webkit-search-cancel-button,
+.zest-input__control[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}

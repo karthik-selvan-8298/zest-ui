@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Collapsible } from '@base-ui/react/collapsible';
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '../../icons';
+import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '../../icons';
 import { cx, useControllableState } from '../../utils';
 import '../../base.css';
 import './Sidebar.css';
@@ -131,6 +131,16 @@ const SidebarRoot = React.forwardRef<HTMLElement, SidebarRootProps>(function Sid
             onClick={() => setCollapsed(!collapsed)}
           >
             {collapsed ? <ChevronRightIcon size={14} /> : <ChevronLeftIcon size={14} />}
+          </button>
+        ) : null}
+        {onMobileClose ? (
+          <button
+            type="button"
+            aria-label="Close navigation"
+            className="zest-sidebar__mobile-close zest-focusable"
+            onClick={onMobileClose}
+          >
+            <CloseIcon size={18} />
           </button>
         ) : null}
         {header && !collapsed ? <div className="zest-sidebar__header">{header}</div> : null}
