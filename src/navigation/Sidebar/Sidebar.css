@@ -24,16 +24,6 @@
   padding: var(--zest-space-4);
 }
 
-.zest-sidebar__header-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.zest-sidebar__toggle {
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
 .zest-sidebar[data-collapsed] .zest-sidebar__header {
   justify-content: center;
   padding-inline: var(--zest-space-2);
@@ -52,7 +42,21 @@
 
 .zest-sidebar__footer {
   padding: var(--zest-space-3);
-  border-top: 1px solid var(--zest-color-border-subtle);
+}
+
+/* Small inset divider above the footer — never edge-to-edge. */
+.zest-sidebar__footer::before {
+  content: '';
+  display: block;
+  height: 1px;
+  margin: 0 var(--zest-space-2) var(--zest-space-2);
+  background: var(--zest-color-border-subtle);
+}
+
+/* Mini rail: shrink it to the section-divider width, centered. */
+.zest-sidebar[data-collapsed] .zest-sidebar__footer::before {
+  width: 32px;
+  margin: 0 auto var(--zest-space-2);
 }
 
 /* ── Sections ─────────────────────────────────────────────────────────── */
@@ -297,11 +301,17 @@
     visibility var(--zest-duration-fast);
 }
 
-/* Opened by clicking the rail item (see SidebarItem), not on hover. */
+/* Opened from the rail item on hover (click on touch — see SidebarItem). */
 .zest-sidebar__flyout[data-open] {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
+}
+
+/* Footer items sit at the screen edge — their flyout grows upward instead. */
+.zest-sidebar__footer .zest-sidebar__flyout {
+  top: auto;
+  bottom: 0;
 }
 
 .zest-sidebar__flyout-header {
@@ -338,8 +348,12 @@
 .zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__row {
   flex-direction: row;
   justify-content: flex-start;
+  width: 100%;
+  min-height: 36px;
+  margin-inline: 0;
   gap: var(--zest-space-2);
   padding: var(--zest-space-2);
+  border-radius: var(--zest-radius-row);
 }
 
 /* Restore the label/caption inside the flyout (hidden on the rail itself). */

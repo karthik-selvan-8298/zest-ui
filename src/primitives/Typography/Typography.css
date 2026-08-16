@@ -125,6 +125,16 @@
 }
 
 /* ── Modifiers ────────────────────────────────────────────────────────── */
+.zest-typography[data-align='left'] {
+  text-align: left;
+}
+.zest-typography[data-align='center'] {
+  text-align: center;
+}
+.zest-typography[data-align='right'] {
+  text-align: right;
+}
+
 .zest-typography[data-truncate] {
   overflow: hidden;
   text-overflow: ellipsis;

@@ -8,25 +8,25 @@
  * use lighter/light/main/dark/darker, so a denser scale would be dead weight.
  */
 export const gray = {
-  50: '#F8FAFC',
-  100: '#F1F5F9',
-  200: '#E2E8F0',
-  300: '#CBD5E1',
-  400: '#94A3B8',
-  500: '#64748B',
-  600: '#475569',
-  700: '#334155',
-  800: '#1E293B',
-  900: '#0F172A',
+  50: '#FCFDFD',
+  100: '#F9FAFB',
+  200: '#F4F6F8',
+  300: '#DFE3E8',
+  400: '#C4CDD5',
+  500: '#919EAB',
+  600: '#637381',
+  700: '#454F5B',
+  800: '#1C252E',
+  900: '#141A21',
 } as const;
 
-/** Sigma Secondary → Zest Primary. */
+/** Zest brand violet (#662CED main) — overrides the Minimals secondary hue. */
 export const primary = {
-  100: 'hsl(258 84% 96%)',
-  300: 'hsl(258 84% 68%)',
-  500: 'hsl(258 84% 55%)',
-  700: 'hsl(258 84% 42%)',
-  900: 'hsl(258 84% 30%)',
+  100: '#F1ECFD',
+  300: '#9269F2',
+  500: '#662CED',
+  700: '#4711C5',
+  900: '#330C8D',
 } as const;
 
 /** Sigma Primary (green) → Zest Secondary. */
@@ -76,7 +76,4 @@ export const common = {
 } as const;
 
 /** RGB channel of gray-500, used by the Sigma shadow/border alpha language. */
-export const grayChannel = '100 116 139';
-
-export type ColorScale = typeof primary;
-export type GrayScale = typeof gray;
+export const grayChannel = '145 158 171';

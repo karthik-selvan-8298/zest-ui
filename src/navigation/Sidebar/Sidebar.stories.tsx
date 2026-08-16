@@ -106,6 +106,11 @@ export const DataDriven: Story = {
           </Avatar>
         }
         nav={navData}
+        footer={
+          <Sidebar.Section>
+            <Sidebar.Item icon={<SettingsIcon />} label="Settings" />
+          </Sidebar.Section>
+        }
         collapsible
       />
       <div style={{ padding: 24 }}>
@@ -129,6 +134,15 @@ export const Composition: Story = {
             <SettingsIcon />
           </Avatar>
         }
+        footer={
+          <Sidebar.Section>
+            <Sidebar.Item icon={<SettingsIcon />} label="Settings" active defaultExpanded>
+              <Sidebar.Item label="Personal" active />
+              <Sidebar.Item label="Users" />
+              <Sidebar.Item label="Credentials" />
+            </Sidebar.Item>
+          </Sidebar.Section>
+        }
         collapsible
       >
         <Sidebar.Section label="Overview">
@@ -137,13 +151,6 @@ export const Composition: Story = {
             <Sidebar.Item label="Tools" />
           </Sidebar.Item>
           <Sidebar.Item icon={<StarIcon />} label="Webhooks" />
-        </Sidebar.Section>
-        <Sidebar.Section label="Settings">
-          <Sidebar.Item icon={<SettingsIcon />} label="Settings" active defaultExpanded>
-            <Sidebar.Item label="Personal" active />
-            <Sidebar.Item label="Users" />
-            <Sidebar.Item label="Credentials" />
-          </Sidebar.Item>
         </Sidebar.Section>
       </Sidebar.Root>
       <div style={{ padding: 24 }}>

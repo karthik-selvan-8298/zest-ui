@@ -40,7 +40,8 @@ import { SearchToolbar, FormSection } from 'zest-ui/patterns';    // patterns su
 ## Shared prop vocabulary
 
 - color (tonal components): 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'neutral'
-  (primary is violet hsl(258 84% 55%), lighter in dark mode; secondary is green; neutrals are slate)
+  (primary is brand violet #662CED, lighter in dark mode; secondary is green #00A76F; neutrals are
+  the Minimals grey scale #F9FAFB…#141A21)
 - size: 'sm' | 'md' | 'lg' (fields: 'sm' | 'md')
 - Controlled/uncontrolled: every stateful component supports value/defaultValue + onValueChange
   (or checked/defaultChecked + onCheckedChange for Checkbox/Switch/Toggle-like).
@@ -125,13 +126,15 @@ Sidebar (app navigation): <Sidebar.Root header logo (compact logo shown in the m
   nav={SidebarNavSection[]} (data-driven — feed from an API: [{label, items: [{key, label, icon?,
     caption?, badge?, badgeColor?, active?, disabled?, href?, onClick?, defaultExpanded?, items?}]}])
   collapsible (edge toggle on the border, appears on hover) collapsed?/defaultCollapsed?/onCollapsedChange
-  (mini rail: items show icon+tiny label; items with children open a hover/focus flyout submenu
-  headed by the parent icon+label)
+  (mini rail: icon-only rows with tooltips; items with children open their flyout submenu on hover,
+  headed by the parent icon+label — no tooltip there)
   mobileOpen?/onMobileClose? (off-canvas + backdrop under 900px)>
   Composition alternative: <Sidebar.Section label> + <Sidebar.Item …> (nested items render with a
-  guide line + dot indicators). Icons are bare; only the active item's icon gets a tinted tile.
-  Active NESTED rows show dark bold text + violet dot with NO background tint (top-level active
-  rows keep the tinted pill).
+  guide line + dot indicators). One highlight per row: the active row gets the tinted pill and its
+  icon only picks up the accent color. Active NESTED rows show dark bold text + violet dot, no tint.
+  Pin utility items (Settings, user card) to the bottom: footer={<Sidebar.Section><Sidebar.Item
+  icon={<SettingsIcon/>} label="Settings"/></Sidebar.Section>} — the footer sits below the
+  scrollable nav under a small inset divider and collapses with the rail.
 Stepper: <Stepper.Root activeStep={1} orientation onStepClick?><Stepper.Step label description?/>…</Stepper.Root>
   (completed steps clickable only when onStepClick given).
 Command (palette): <Command open onOpenChange items placeholder emptyMessage />
@@ -223,8 +226,8 @@ Stack: vertical flex; spacing (gap, default 2), direction, align, justify, divid
   stackOnMobile (direction="row" collapses to a column <600px).
 Flex: horizontal flex; gap, align, justify ('start'|'center'|'end'|'between'|…), wrap, inline,
   stackOnMobile (row → column <600px, children stretch full-width).
-Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap.
-  Numeric columns auto-adjust: max 2 columns <900px, single column <600px.
+Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap (both-axis
+  gutter like MUI spacing; default 4 = 16px). Numeric columns auto-adjust: max 2 <900px, 1 <600px.
 Container: maxWidth 'sm'|'md'|'lg'(default)|'xl'|false, disableGutters.
 Paper: shadow 'none'|'sm'|'md'|'lg'|'xl'|'card', bordered, radius.
 Divider: orientation, variant 'solid'|'dashed', optional children as centered label.
@@ -361,7 +364,7 @@ Dialog flow (create/edit):
 
 ## RULES FOR AI ASSISTANTS
 
-1. Always wrap the app in ZestProvider and import tokens.css + fonts once.
+1. Always wrap the app in ZestProvider — it auto-imports tokens.css and fonts (no manual imports).
 2. Prefer TextField over raw Input; prefer DataGrid over hand-rolled Table for data.
 3. Overlay triggers use render={<Button/>}, never children.
 4. IconButton always needs aria-label; icons are decorative by default.

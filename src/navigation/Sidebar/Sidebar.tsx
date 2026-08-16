@@ -24,6 +24,8 @@ import './Sidebar.css';
 
 const DepthContext = React.createContext(0);
 const CollapsedContext = React.createContext(false);
+/** True for items rendered inside a mini-rail flyout — labels are visible there. */
+const FlyoutContext = React.createContext(false);
 
 /** One nav entry in the data-driven API. Nested `items` become expandable children. */
 export interface SidebarNavEntry {
@@ -227,11 +229,33 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
 ) {
   const depth = React.useContext(DepthContext);
   const collapsed = React.useContext(CollapsedContext);
+  const insideFlyout = React.useContext(FlyoutContext);
   const hasChildren = React.Children.count(children) > 0;
 
-  // Mini-rail flyout: opens on click (label lives in a tooltip instead).
+  // Mini-rail flyout: opens on hover (with a short grace period so the
+  // pointer can cross the gap into the panel); click toggles it for touch.
   const itemRef = React.useRef<HTMLLIElement | null>(null);
   const [flyoutOpen, setFlyoutOpen] = React.useState(false);
+  const closeTimer = React.useRef<number | null>(null);
+
+  const cancelClose = React.useCallback(() => {
+    if (closeTimer.current !== null) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  }, []);
+
+  const openFlyout = React.useCallback(() => {
+    cancelClose();
+    setFlyoutOpen(true);
+  }, [cancelClose]);
+
+  const scheduleFlyoutClose = React.useCallback(() => {
+    cancelClose();
+    closeTimer.current = window.setTimeout(() => setFlyoutOpen(false), 150);
+  }, [cancelClose]);
+
+  React.useEffect(() => cancelClose, [cancelClose]);
 
   const setItemRef = React.useCallback(
     (node: HTMLLIElement | null) => {
@@ -310,9 +334,11 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
     </DepthContext.Provider>
   ) : null;
 
-  // In the mini rail, the label is hidden — surface it as a tooltip instead.
+  // Icon-only rail leaves surface their hidden label as a tooltip. Items
+  // inside a flyout show their label, and submenu triggers show it in the
+  // flyout header — no tooltip for either.
   const withTooltip = (trigger: React.ReactElement) =>
-    collapsed ? (
+    collapsed && !insideFlyout ? (
       <Tooltip title={label} side="right">
         {trigger}
       </Tooltip>
@@ -328,22 +354,24 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
       {...props}
     >
       {hasChildren && collapsed ? (
-        <>
-          {withTooltip(
-            <button
-              type="button"
-              aria-haspopup="menu"
-              aria-expanded={flyoutOpen}
-              disabled={disabled}
-              {...rowProps}
-              onClick={(event) => {
-                onClick?.(event);
-                setFlyoutOpen((open) => !open);
-              }}
-            >
-              {rowContent}
-            </button>
-          )}
+        <div
+          className="zest-sidebar__flyout-anchor"
+          onPointerEnter={disabled ? undefined : openFlyout}
+          onPointerLeave={disabled ? undefined : scheduleFlyoutClose}
+        >
+          <button
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded={flyoutOpen}
+            disabled={disabled}
+            {...rowProps}
+            onClick={(event) => {
+              onClick?.(event);
+              setFlyoutOpen((open) => !open);
+            }}
+          >
+            {rowContent}
+          </button>
           <div
             className="zest-sidebar__flyout"
             data-open={flyoutOpen ? '' : undefined}
@@ -357,9 +385,9 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
               ) : null}
               <span className="zest-sidebar__flyout-title">{label}</span>
             </div>
-            {nested}
+            <FlyoutContext.Provider value={true}>{nested}</FlyoutContext.Provider>
           </div>
-        </>
+        </div>
       ) : hasChildren ? (
         <Collapsible.Root defaultOpen={defaultExpanded} disabled={disabled}>
           <Collapsible.Trigger

@@ -9,6 +9,10 @@ export interface GridOwnProps {
   columns?: number | string;
   /** Auto-fit columns with a minimum child width (e.g. "240px"). Overrides `columns`. */
   minChildWidth?: string;
+  /**
+   * Gutter between cells, applied on BOTH axes (like MUI's `spacing`).
+   * @default 4 (16px — MUI `spacing={2}`)
+   */
   gap?: SpaceValue;
   rowGap?: SpaceValue;
   columnGap?: SpaceValue;
@@ -33,7 +37,7 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
     as,
     columns,
     minChildWidth,
-    gap = 3,
+    gap = 4,
     rowGap,
     columnGap,
     align,
@@ -57,15 +61,18 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
       ref={ref}
       className={cx('zest-grid', className)}
       data-fixed-columns={typeof columns === 'number' && !minChildWidth ? '' : undefined}
+      /* All dynamic styling flows through custom properties consumed by
+         Grid.css — mixing them with regular props in one inline style object
+         proved unreliable (regular props were dropped at commit time). */
       style={{
         ['--zest-grid-columns' as string]: template,
         ['--zest-grid-fixed-count' as string]:
-          typeof columns === 'number' && !minChildWidth ? columns : undefined,
-        gap: resolveSpace(gap),
-        rowGap: resolveSpace(rowGap),
-        columnGap: resolveSpace(columnGap),
-        alignItems: align ?? (center ? 'center' : undefined),
-        justifyContent: justify ?? (center ? 'center' : undefined),
+          typeof columns === 'number' && !minChildWidth ? String(columns) : undefined,
+        ['--zest-grid-gap' as string]: resolveSpace(gap),
+        ['--zest-grid-row-gap' as string]: resolveSpace(rowGap),
+        ['--zest-grid-column-gap' as string]: resolveSpace(columnGap),
+        ['--zest-grid-align' as string]: align ?? (center ? 'center' : undefined),
+        ['--zest-grid-justify' as string]: justify ?? (center ? 'center' : undefined),
         ...style,
       }}
       {...rest}

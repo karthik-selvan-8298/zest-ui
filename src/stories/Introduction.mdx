@@ -15,11 +15,11 @@ import { Meta } from '@storybook/addon-docs/blocks';
   >
     Zest UI
   </h1>
-  <p style={{ margin: '16px 0 0', fontSize: 16, lineHeight: 1.6, maxWidth: 640, color: '#64748b' }}>
+  <div style={{ margin: '16px 0 0', fontSize: 16, lineHeight: 1.6, maxWidth: 640, color: '#637381' }}>
     A modern, accessible component framework for building consistent product
     interfaces — one package, ~65 components, zero raw HTML. Violet-forward,
-    slate-neutral, built on Base UI primitives and Lucide icons.
-  </p>
+    grey-neutral, built on Base UI primitives.
+  </div>
 </div>
 
 ## Install
@@ -29,7 +29,7 @@ npm install zest-ui
 ```
 
 ```tsx
-import 'zest-ui/tokens.css';
+// ZestProvider auto-imports the design tokens and Roboto fonts.
 import { ZestProvider, Button } from 'zest-ui';
 
 export function App() {

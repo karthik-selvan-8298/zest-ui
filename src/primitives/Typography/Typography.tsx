@@ -88,9 +88,10 @@ export const Typography = React.forwardRef(function Typography<
       data-truncate={truncate === true ? '' : undefined}
       data-clamp={clampLines !== undefined ? '' : undefined}
       data-gutter={gutterBottom ? '' : undefined}
+      data-align={align}
       style={
-        align || clampLines !== undefined
-          ? ({ textAlign: align, '--zest-clamp-lines': clampLines, ...style } as React.CSSProperties)
+        clampLines !== undefined
+          ? ({ '--zest-clamp-lines': String(clampLines), ...style } as React.CSSProperties)
           : style
       }
       {...rest}

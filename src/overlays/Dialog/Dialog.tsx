@@ -38,6 +38,15 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
     { title, description, size = 'md', hideClose = false, className, children, ...props },
     ref
   ) {
+    // A Dialog.Footer child is lifted out of the scrollable body so it stays
+    // pinned below it, mirroring the fixed header above.
+    const childArray = React.Children.toArray(children);
+    const footerChildren = childArray.filter(
+      (child) => React.isValidElement(child) && child.type === DialogFooter
+    );
+    const bodyChildren = childArray.filter(
+      (child) => !(React.isValidElement(child) && child.type === DialogFooter)
+    );
     return (
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className="zest-dialog__backdrop" />
@@ -68,7 +77,8 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
               ) : null}
             </header>
           ) : null}
-          <div className="zest-dialog__body">{children}</div>
+          <div className="zest-dialog__body">{bodyChildren}</div>
+          {footerChildren}
         </BaseDialog.Popup>
       </BaseDialog.Portal>
     );

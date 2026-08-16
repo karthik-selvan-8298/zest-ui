@@ -89,6 +89,16 @@
   transform: scale(0.96);
 }
 
+/* Long selected labels ellipsize instead of stretching the trigger. */
+.zest-select__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
 .zest-select__item {
   display: flex;
   align-items: center;

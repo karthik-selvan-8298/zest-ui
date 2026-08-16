@@ -2,9 +2,11 @@
  * zest-ui — company design system.
  *
  * Consumers:
- *   import 'zest-ui/tokens.css';
- *   import 'zest-ui/fonts';
  *   import { ZestProvider, Button } from 'zest-ui';
+ *
+ * ZestProvider auto-imports tokens.css and the Roboto fonts. The
+ * 'zest-ui/tokens.css' and 'zest-ui/fonts' subpaths exist only for
+ * non-React pages or manual CSS-order control.
  */
 
 // Theme

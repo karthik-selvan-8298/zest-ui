@@ -1,6 +1,6 @@
 /**
- * Zest UI design tokens.
- * Generated from the Sigma design language (see src/tokens/primitives).
+ * Zest UI design tokens — hand-maintained source of truth.
+ * (src/tokens/primitives/colors.ts mirrors the color scales for the token gallery story.)
  *
  * Layering:
  *   1. Primitive tokens  (--zest-gray-*, --zest-primary-*, …) — raw values, rarely consumed directly.
@@ -12,23 +12,23 @@
 
 :root {
   /* ── Primitives: color ─────────────────────────────────────────────── */
-  --zest-gray-50: #f8fafc;
-  --zest-gray-100: #f1f5f9;
-  --zest-gray-200: #e2e8f0;
-  --zest-gray-300: #cbd5e1;
-  --zest-gray-400: #94a3b8;
-  --zest-gray-500: #64748b;
-  --zest-gray-600: #475569;
-  --zest-gray-700: #334155;
-  --zest-gray-800: #1e293b;
-  --zest-gray-900: #0f172a;
+  --zest-gray-50: #fcfdfd;
+  --zest-gray-100: #f9fafb;
+  --zest-gray-200: #f4f6f8;
+  --zest-gray-300: #dfe3e8;
+  --zest-gray-400: #c4cdd5;
+  --zest-gray-500: #919eab;
+  --zest-gray-600: #637381;
+  --zest-gray-700: #454f5b;
+  --zest-gray-800: #1c252e;
+  --zest-gray-900: #141a21;
 
   /* Sigma Secondary → Zest Primary (mandated mapping) */
-  --zest-primary-100: hsl(258 84% 96%);
-  --zest-primary-300: hsl(258 84% 68%);
-  --zest-primary-500: hsl(258 84% 55%);
-  --zest-primary-700: hsl(258 84% 42%);
-  --zest-primary-900: hsl(258 84% 30%);
+  --zest-primary-100: #f1ecfd;
+  --zest-primary-300: #9269f2;
+  --zest-primary-500: #662ced;
+  --zest-primary-700: #4711c5;
+  --zest-primary-900: #330c8d;
 
   /* Sigma Primary (green) → Zest Secondary */
   --zest-secondary-100: #c8fad6;
@@ -64,7 +64,7 @@
   --zest-white: #ffffff;
   --zest-black: #000000;
   /* gray-500 as an RGB channel — the Sigma alpha language for borders/shadows */
-  --zest-gray-channel: 100 116 139;
+  --zest-gray-channel: 145 158 171;
 
   /* ── Primitives: typography ────────────────────────────────────────── */
   /* Roboto ships with the package via @fontsource/roboto (400/500/700) —
@@ -151,7 +151,7 @@
   --zest-focus-ring-width: 2px;
 
   /* Code panels stay dark in both themes — retune here to rebrand them. */
-  --zest-color-code-surface: #0b1120;
+  --zest-color-code-surface: #141a21;
   --zest-color-code-header: color-mix(in srgb, var(--zest-white) 6%, transparent);
 }
 
@@ -212,7 +212,7 @@
   --zest-color-surface-active: rgb(var(--zest-gray-channel) / 0.16);
   --zest-color-surface-disabled: rgb(var(--zest-gray-channel) / 0.24);
 
-  --zest-color-text-primary: var(--zest-gray-900);
+  --zest-color-text-primary: var(--zest-gray-800);
   --zest-color-text-secondary: var(--zest-gray-600);
   --zest-color-text-disabled: var(--zest-gray-500);
 
@@ -220,7 +220,7 @@
   --zest-color-border-subtle: rgb(var(--zest-gray-channel) / 0.12);
   --zest-color-border-strong: rgb(var(--zest-gray-channel) / 0.32);
 
-  --zest-color-backdrop: rgb(2 6 23 / 0.5);
+  --zest-color-backdrop: rgb(28 37 46 / 0.48);
   --zest-color-focus-ring: var(--zest-primary-500);
 
   /* Shared focus glow recipe (fields append it after their 1px accent border). */

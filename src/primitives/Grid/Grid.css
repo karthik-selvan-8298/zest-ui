@@ -2,6 +2,11 @@
   display: grid;
   min-width: 0;
   grid-template-columns: var(--zest-grid-columns, none);
+  /* MUI-style both-axis gutter; row/column overrides fall back to the gap. */
+  row-gap: var(--zest-grid-row-gap, var(--zest-grid-gap, var(--zest-space-4)));
+  column-gap: var(--zest-grid-column-gap, var(--zest-grid-gap, var(--zest-space-4)));
+  align-items: var(--zest-grid-align, stretch);
+  justify-content: var(--zest-grid-justify, normal);
 }
 
 /* Fixed column counts adjust on their own: tablets cap at two columns,

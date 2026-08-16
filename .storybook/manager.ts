@@ -1,7 +1,7 @@
 import { addons } from 'storybook/manager-api';
 import { create } from 'storybook/theming';
 
-/* Zest-branded manager UI — violet-forward, slate-neutral, matching the
+/* Zest-branded manager UI — violet-forward, grey-neutral, matching the
    library's own tokens (see src/tokens/css/tokens.css). */
 const zestTheme = create({
   base: 'light',
@@ -13,10 +13,10 @@ const zestTheme = create({
   colorSecondary: '#662ced',
 
   // UI chrome
-  appBg: '#f8fafc',
+  appBg: '#f9fafb',
   appContentBg: '#ffffff',
   appPreviewBg: '#ffffff',
-  appBorderColor: '#e2e8f0',
+  appBorderColor: '#dfe3e8',
   appBorderRadius: 12,
 
   // Typography
@@ -24,20 +24,20 @@ const zestTheme = create({
   fontCode: "ui-monospace, 'SF Mono', 'Cascadia Code', monospace",
 
   // Text
-  textColor: '#0f172a',
+  textColor: '#1c252e',
   textInverseColor: '#ffffff',
-  textMutedColor: '#64748b',
+  textMutedColor: '#637381',
 
   // Toolbar
-  barTextColor: '#64748b',
+  barTextColor: '#637381',
   barSelectedColor: '#662ced',
   barHoverColor: '#662ced',
   barBg: '#ffffff',
 
   // Form inputs in the addons panel
   inputBg: '#ffffff',
-  inputBorder: '#e2e8f0',
-  inputTextColor: '#0f172a',
+  inputBorder: '#dfe3e8',
+  inputTextColor: '#1c252e',
   inputBorderRadius: 8,
 });
 

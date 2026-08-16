@@ -96,7 +96,8 @@
   padding: 0 var(--zest-inset-surface) var(--zest-inset-surface);
 }
 
-/* A Footer placed inside the padded body aligns flush with the dialog edge. */
+/* Footers rendered by hand inside the padded body (custom composition)
+   still align flush with the dialog edge. */
 .zest-dialog__body > .zest-dialog__footer {
   margin: var(--zest-space-6) calc(-1 * var(--zest-space-6)) calc(-1 * var(--zest-space-6));
   padding: 0 var(--zest-inset-surface) var(--zest-inset-surface);

@@ -4,7 +4,7 @@
 
 One package · ~65 components · zero raw HTML.
 
-Zest UI is a **violet-forward, slate-neutral** design system built on top of **Base UI** primitives, providing a consistent and production-ready component layer.
+Zest UI is a **violet-forward, grey-neutral** design system built on top of **Base UI** primitives, providing a consistent and production-ready component layer.
 
 Components are designed to be:
 
@@ -138,7 +138,7 @@ Zest provides ~65 reusable components for common UI patterns.
 | 🖼 **Media** | Image · Kbd · ScrollArea |
 | 📐 **Layout** | Box · Stack · Flex · Grid · Container · Paper · Divider · AspectRatio · Typography |
 | 🧩 **Patterns** | SearchToolbar · FormSection · DetailHeader |
-| ✒️ **Icons** | Pre-wrapped Lucide icons via `zest-ui/icons` |
+| ✒️ **Icons** | Consistent, pre-wrapped icon set via `zest-ui/icons` |
 
 ---
 
