@@ -2,3 +2,12 @@
   display: flex;
   min-width: 0;
 }
+
+/* stackOnMobile: row layouts become a column on phones. Children stretch so
+   fields/buttons fill the width instead of hugging their content. */
+@media (max-width: 600px) {
+  .zest-flex[data-stack-mobile] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

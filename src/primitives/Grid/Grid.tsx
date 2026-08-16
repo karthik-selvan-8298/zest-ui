@@ -59,6 +59,8 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
       data-fixed-columns={typeof columns === 'number' && !minChildWidth ? '' : undefined}
       style={{
         ['--zest-grid-columns' as string]: template,
+        ['--zest-grid-fixed-count' as string]:
+          typeof columns === 'number' && !minChildWidth ? columns : undefined,
         gap: resolveSpace(gap),
         rowGap: resolveSpace(rowGap),
         columnGap: resolveSpace(columnGap),

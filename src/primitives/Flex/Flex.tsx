@@ -36,6 +36,11 @@ export interface FlexOwnProps {
   fullWidth?: boolean;
   /** Gap between children — Zest space step or CSS length. */
   gap?: SpaceValue;
+  /**
+   * Row layouts switch to a column on phones (<600px). Only meaningful with
+   * the default `direction="row"` — explicit column directions already stack.
+   */
+  stackOnMobile?: boolean;
   inline?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -58,6 +63,7 @@ export const Flex = React.forwardRef(function Flex<E extends React.ElementType =
     grow,
     fullWidth,
     gap,
+    stackOnMobile,
     inline,
     className,
     style,
@@ -69,6 +75,7 @@ export const Flex = React.forwardRef(function Flex<E extends React.ElementType =
     <Component
       ref={ref}
       className={cx('zest-flex', className)}
+      data-stack-mobile={stackOnMobile ? '' : undefined}
       style={{
         display: inline ? 'inline-flex' : undefined,
         flexDirection: direction === 'row' ? undefined : direction,

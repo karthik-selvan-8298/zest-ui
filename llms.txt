@@ -219,9 +219,12 @@ TimePicker: value/defaultValue/onValueChange (string 'HH:mm'), step (minutes, de
 
 Box: polymorphic (as prop) + spacing props p px py pt pr pb pl m mx my mt mr mb ml
   taking Zest steps 1|2|3|4|5|6|8|10|12|16 (×4px) or CSS strings.
-Stack: vertical flex; spacing (gap, default 2), direction, align, justify, divider={<Divider/>}.
-Flex: horizontal flex; gap, align, justify ('start'|'center'|'end'|'between'|…), wrap, inline.
+Stack: vertical flex; spacing (gap, default 2), direction, align, justify, divider={<Divider/>},
+  stackOnMobile (direction="row" collapses to a column <600px).
+Flex: horizontal flex; gap, align, justify ('start'|'center'|'end'|'between'|…), wrap, inline,
+  stackOnMobile (row → column <600px, children stretch full-width).
 Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap.
+  Numeric columns auto-adjust: max 2 columns <900px, single column <600px.
 Container: maxWidth 'sm'|'md'|'lg'(default)|'xl'|false, disableGutters.
 Paper: shadow 'none'|'sm'|'md'|'lg'|'xl'|'card', bordered, radius.
 Divider: orientation, variant 'solid'|'dashed', optional children as centered label.

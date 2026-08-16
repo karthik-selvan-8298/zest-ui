@@ -13,6 +13,8 @@ export type StackProps<E extends React.ElementType = 'div'> = Omit<FlexProps<E>,
 
 /**
  * Vertical (by default) one-dimensional layout with consistent spacing.
+ * Horizontal stacks (`direction="row"`) can collapse back to a column on
+ * phones via `stackOnMobile`.
  */
 export const Stack = React.forwardRef(function Stack<E extends React.ElementType = 'div'>(
   props: StackProps<E>,

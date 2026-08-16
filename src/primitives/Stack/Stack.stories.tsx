@@ -38,6 +38,23 @@ export const Basic: Story = {
   ),
 };
 
+export const ResponsiveRow: Story = {
+  render: () => (
+    <Stack direction="row" spacing={2} stackOnMobile>
+      <Demo>Filters</Demo>
+      <Demo>Date range</Demo>
+      <Demo>Export</Demo>
+    </Stack>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'With `stackOnMobile`, a horizontal stack collapses to a column under 600px.',
+      },
+    },
+  },
+};
+
 export const WithDivider: Story = {
   render: () => (
     <Stack spacing={2} divider={<Divider variant="dashed" />} style={{ maxWidth: 360 }}>
