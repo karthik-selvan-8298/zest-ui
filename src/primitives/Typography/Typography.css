@@ -3,66 +3,74 @@
   font-family: var(--zest-font-family-sans);
 }
 
-/* ── Semantic text styles (Sigma scale, Roboto-normalized) ────────────── */
-.zest-typography[data-variant='display'],
-.zest-typography[data-variant='heading-xl'],
-.zest-typography[data-variant='heading-lg'],
-.zest-typography[data-variant='heading-md'] {
+/* ── MUI-style type scale (Roboto-normalized, Zest tokens) ───────────────
+   h1–h4 tighten letter-spacing the way large Roboto wants; h1/h2 step up
+   on wide screens (responsive ramp below). */
+.zest-typography[data-variant='h1'],
+.zest-typography[data-variant='h2'],
+.zest-typography[data-variant='h3'],
+.zest-typography[data-variant='h4'] {
   letter-spacing: -0.015em;
 }
 
-.zest-typography[data-variant='display'] {
+.zest-typography[data-variant='h1'] {
   font-size: var(--zest-font-size-4xl);
   font-weight: var(--zest-font-weight-bold);
   line-height: var(--zest-line-height-tight);
 }
 
-.zest-typography[data-variant='heading-xl'] {
+.zest-typography[data-variant='h2'] {
   font-size: var(--zest-font-size-3xl);
   font-weight: var(--zest-font-weight-bold);
   line-height: var(--zest-line-height-tight);
 }
 
-.zest-typography[data-variant='heading-lg'] {
+.zest-typography[data-variant='h3'] {
   font-size: var(--zest-font-size-2xl);
   font-weight: var(--zest-font-weight-bold);
   line-height: var(--zest-line-height-normal);
 }
 
-.zest-typography[data-variant='heading-md'] {
+.zest-typography[data-variant='h4'] {
   font-size: var(--zest-font-size-xl);
   font-weight: var(--zest-font-weight-bold);
   line-height: var(--zest-line-height-normal);
 }
 
-.zest-typography[data-variant='heading-sm'] {
+.zest-typography[data-variant='h5'] {
   font-size: var(--zest-font-size-lg);
   font-weight: var(--zest-font-weight-medium);
   line-height: var(--zest-line-height-normal);
 }
 
-.zest-typography[data-variant='subtitle'] {
+.zest-typography[data-variant='h6'] {
+  font-size: var(--zest-font-size-md);
+  font-weight: var(--zest-font-weight-bold);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-typography[data-variant='subtitle1'] {
   font-size: var(--zest-font-size-md);
   font-weight: var(--zest-font-weight-medium);
   line-height: var(--zest-line-height-normal);
 }
 
-.zest-typography[data-variant='body'] {
+.zest-typography[data-variant='subtitle2'] {
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-typography[data-variant='body1'] {
   font-size: var(--zest-font-size-md);
   font-weight: var(--zest-font-weight-regular);
   line-height: var(--zest-line-height-normal);
 }
 
-.zest-typography[data-variant='body-sm'] {
+.zest-typography[data-variant='body2'] {
   font-size: var(--zest-font-size-sm);
   font-weight: var(--zest-font-weight-regular);
   line-height: var(--zest-line-height-relaxed);
-}
-
-.zest-typography[data-variant='label'] {
-  font-size: var(--zest-font-size-sm);
-  font-weight: var(--zest-font-weight-medium);
-  line-height: var(--zest-line-height-normal);
 }
 
 .zest-typography[data-variant='caption'] {
@@ -80,12 +88,12 @@
   letter-spacing: 0.08em;
 }
 
-/* Responsive display/headings, following the Sigma responsive type ramp. */
+/* Responsive headline ramp. */
 @media (min-width: 900px) {
-  .zest-typography[data-variant='display'] {
+  .zest-typography[data-variant='h1'] {
     font-size: 3rem;
   }
-  .zest-typography[data-variant='heading-xl'] {
+  .zest-typography[data-variant='h2'] {
     font-size: 2.25rem;
   }
 }

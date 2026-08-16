@@ -23,7 +23,7 @@ function Demo({ children }: { children?: React.ReactNode }) {
         background: 'color-mix(in srgb, var(--zest-color-primary) 8%, transparent)',
       }}
     >
-      <Typography variant="body-sm">{children}</Typography>
+      <Typography variant="body2">{children}</Typography>
     </Paper>
   );
 }

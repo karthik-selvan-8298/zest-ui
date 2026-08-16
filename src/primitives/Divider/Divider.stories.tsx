@@ -15,9 +15,9 @@ type Story = StoryObj<typeof meta>;
 export const Variants: Story = {
   render: () => (
     <Stack spacing={5} style={{ maxWidth: 420 }}>
-      <Typography variant="body-sm">Solid</Typography>
+      <Typography variant="body2">Solid</Typography>
       <Divider />
-      <Typography variant="body-sm">Dashed</Typography>
+      <Typography variant="body2">Dashed</Typography>
       <Divider variant="dashed" />
       <Divider>With a label</Divider>
     </Stack>
@@ -27,9 +27,9 @@ export const Variants: Story = {
 export const Vertical: Story = {
   render: () => (
     <Flex gap={4} align="center" style={{ height: 40 }}>
-      <Typography variant="body-sm">Left</Typography>
+      <Typography variant="body2">Left</Typography>
       <Divider orientation="vertical" />
-      <Typography variant="body-sm">Right</Typography>
+      <Typography variant="body2">Right</Typography>
     </Flex>
   ),
 };

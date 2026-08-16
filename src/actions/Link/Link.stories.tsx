@@ -32,7 +32,7 @@ export const Underline: Story = {
 
 export const InheritColor: Story = {
   render: () => (
-    <Typography variant="body-sm" color="secondary">
+    <Typography variant="body2" color="secondary">
       Body copy with an{' '}
       <Link href="#" color="inherit" underline="always">
         inherited-color link

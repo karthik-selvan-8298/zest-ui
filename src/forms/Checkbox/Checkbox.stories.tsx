@@ -35,7 +35,7 @@ export const Colors: Story = {
 export const Group: Story = {
   render: () => (
     <Stack spacing={2}>
-      <Typography variant="label">Email me about</Typography>
+      <Typography variant="subtitle2">Email me about</Typography>
       <CheckboxGroup defaultValue={['alerts']}>
         <Checkbox name="alerts" label="Product alerts" />
         <Checkbox name="digest" label="Weekly digest" />

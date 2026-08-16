@@ -22,7 +22,7 @@ export const Elevations: Story = {
           radius="lg"
           style={{ padding: 'var(--zest-space-5)', minWidth: 120 }}
         >
-          <Typography variant="label">{shadow}</Typography>
+          <Typography variant="subtitle2">{shadow}</Typography>
         </Paper>
       ))}
     </Flex>

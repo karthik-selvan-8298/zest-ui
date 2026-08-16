@@ -12,15 +12,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const variants: TypographyVariant[] = [
-  'display',
-  'heading-xl',
-  'heading-lg',
-  'heading-md',
-  'heading-sm',
-  'subtitle',
-  'body',
-  'body-sm',
-  'label',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'subtitle1',
+  'subtitle2',
+  'body1',
+  'body2',
   'caption',
   'overline',
 ];

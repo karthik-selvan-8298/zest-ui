@@ -67,9 +67,11 @@
   --zest-gray-channel: 100 116 139;
 
   /* ── Primitives: typography ────────────────────────────────────────── */
+  /* Roboto ships with the package via @fontsource/roboto (400/500/700) —
+     the only bundled font. The rest are system fallbacks. */
   --zest-font-family-sans: 'Roboto', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial,
     sans-serif;
-  --zest-font-family-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Consolas,
+  --zest-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
     monospace;
 
   --zest-font-size-xs: 0.75rem;

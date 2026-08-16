@@ -23,7 +23,7 @@ function ControlledDemo() {
   return (
     <Stack spacing={2} style={{ maxWidth: 240 }}>
       <TimePicker aria-label="Start time" value={time} onValueChange={setTime} fullWidth />
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         Value: {time ?? 'null'}
       </Typography>
     </Stack>

@@ -26,7 +26,7 @@ export const Default: Story = {
         }
       />
       <Card.Content>
-        <Typography color="secondary" variant="body-sm">
+        <Typography color="secondary" variant="body2">
           Cards use the Sigma surface language: 16px radius and the soft two-layer card shadow.
         </Typography>
       </Card.Content>
@@ -60,22 +60,22 @@ export const WithSections: Story = {
       <Card.Content>
         <Stack spacing={3} divider={<Divider variant="dashed" />}>
           <Stack direction="row" justify="between">
-            <Typography variant="body-sm" color="secondary">
+            <Typography variant="body2" color="secondary">
               API calls
             </Typography>
-            <Typography variant="label">128,441</Typography>
+            <Typography variant="subtitle2">128,441</Typography>
           </Stack>
           <Stack direction="row" justify="between">
-            <Typography variant="body-sm" color="secondary">
+            <Typography variant="body2" color="secondary">
               Storage
             </Typography>
-            <Typography variant="label">18.2 GB</Typography>
+            <Typography variant="subtitle2">18.2 GB</Typography>
           </Stack>
           <Stack direction="row" justify="between">
-            <Typography variant="body-sm" color="secondary">
+            <Typography variant="body2" color="secondary">
               Seats
             </Typography>
-            <Typography variant="label">12 / 20</Typography>
+            <Typography variant="subtitle2">12 / 20</Typography>
           </Stack>
         </Stack>
       </Card.Content>

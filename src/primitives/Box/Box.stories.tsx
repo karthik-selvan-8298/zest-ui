@@ -21,7 +21,7 @@ export const SpacingProps: Story = {
         borderRadius: 'var(--zest-radius-surface)',
       }}
     >
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         A polymorphic element with token-aware spacing props — this one has p={'{6}'} and mx=
         {'{2}'}.
       </Typography>
@@ -32,7 +32,7 @@ export const SpacingProps: Story = {
 export const AsElement: Story = {
   render: () => (
     <Box as="section" py={4} px={6} style={{ background: 'var(--zest-color-background-neutral)' }}>
-      <Typography variant="body-sm">Rendered as a semantic &lt;section&gt;.</Typography>
+      <Typography variant="body2">Rendered as a semantic &lt;section&gt;.</Typography>
     </Box>
   ),
 };

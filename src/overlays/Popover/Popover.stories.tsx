@@ -16,10 +16,10 @@ export const Default: Story = {
     <Popover.Root>
       <Popover.Trigger render={<Button variant="soft">Open popover</Button>} />
       <Popover.Content style={{ maxWidth: 260 }}>
-        <Popover.Title render={<Typography variant="label" as="h4" />}>
+        <Popover.Title render={<Typography variant="subtitle2" as="h4" />}>
           Quick settings
         </Popover.Title>
-        <Typography variant="body-sm" color="secondary" as="p" style={{ marginBottom: 0 }}>
+        <Typography variant="body2" color="secondary" as="p" style={{ marginBottom: 0 }}>
           Anchored, dismissible, and focus-managed by Base UI.
         </Typography>
       </Popover.Content>

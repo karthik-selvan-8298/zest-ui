@@ -15,7 +15,7 @@ export const Default: Story = {
     <ScrollArea maxHeight={200} style={{ maxWidth: 420 }}>
       <Stack spacing={2} style={{ paddingRight: 12 }}>
         {Array.from({ length: 20 }, (_, i) => (
-          <Typography key={i} variant="body-sm" color="secondary">
+          <Typography key={i} variant="body2" color="secondary">
             Row {i + 1} — themed overlay scrollbars instead of a raw overflow div.
           </Typography>
         ))}

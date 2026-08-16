@@ -31,7 +31,7 @@ function ControlledDemo() {
   return (
     <Stack spacing={2}>
       <Select aria-label="Role" options={roles} value={value} onValueChange={setValue} />
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         Selected: {value ?? 'none'}
       </Typography>
     </Stack>

@@ -20,7 +20,7 @@ function ControlledDemo() {
   return (
     <Stack spacing={2} style={{ maxWidth: 320 }}>
       <SearchInput aria-label="Search" value={value} onValueChange={setValue} fullWidth />
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         Query: “{value}” — the clear button resets it.
       </Typography>
     </Stack>

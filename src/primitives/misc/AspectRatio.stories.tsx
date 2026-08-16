@@ -21,7 +21,7 @@ function Demo({ label }: { label: string }) {
         borderRadius: 'var(--zest-radius-surface)',
       }}
     >
-      <Typography variant="label" color="secondary">
+      <Typography variant="subtitle2" color="secondary">
         {label}
       </Typography>
     </Flex>

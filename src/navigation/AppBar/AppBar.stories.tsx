@@ -24,14 +24,14 @@ export const Default: Story = {
             <IconButton aria-label="Menu">
               <MenuIcon />
             </IconButton>
-            <Typography variant="label">Dashboard</Typography>
+            <Typography variant="subtitle2">Dashboard</Typography>
           </>
         }
         center={<TextField placeholder="Search…" startIcon={<SearchIcon />} size="sm" />}
         end={<Avatar name="Karthikselvan N" variant="solid" color="primary" size="sm" />}
       />
       <div style={{ height: 240, padding: 24 }}>
-        <Typography color="secondary" variant="body-sm">
+        <Typography color="secondary" variant="body2">
           Content scrolls under the sticky, blurred bar.
         </Typography>
       </div>

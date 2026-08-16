@@ -228,8 +228,8 @@ Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap.
 Container: maxWidth 'sm'|'md'|'lg'(default)|'xl'|false, disableGutters.
 Paper: shadow 'none'|'sm'|'md'|'lg'|'xl'|'card', bordered, radius.
 Divider: orientation, variant 'solid'|'dashed', optional children as centered label.
-Typography: variant 'display'|'heading-xl'|'heading-lg'|'heading-md'|'heading-sm'|'subtitle'|
-  'body'(default)|'body-sm'|'label'|'caption'|'overline'; color 'primary'|'secondary'|'disabled'|
+Typography: MUI-style variant 'h1'|'h2'|'h3'|'h4'|'h5'|'h6'|'subtitle1'|'subtitle2'|
+  'body1'(default)|'body2'|'caption'|'overline'; color 'primary'|'secondary'|'disabled'|
   'brand'|'success'|'warning'|'error'|'info'; align; truncate (true = 1 line, number = clamp);
   gutterBottom; as (element override).
 

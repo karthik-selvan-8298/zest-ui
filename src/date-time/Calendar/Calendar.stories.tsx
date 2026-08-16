@@ -23,7 +23,7 @@ function ControlledDemo() {
   return (
     <Stack spacing={2}>
       <Calendar value={date} onValueChange={setDate} aria-label="Delivery date" />
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         Selected: {date ? date.toDateString() : 'none'}
       </Typography>
     </Stack>

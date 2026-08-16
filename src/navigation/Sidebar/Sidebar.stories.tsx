@@ -86,7 +86,7 @@ function SidebarHeader() {
         <SettingsIcon />
       </Avatar>
       <div>
-        <Typography variant="label">QA Toolkit</Typography>
+        <Typography variant="subtitle2">QA Toolkit</Typography>
         <Typography variant="caption" as="div">
           MCP · Webhook
         </Typography>
@@ -109,8 +109,8 @@ export const DataDriven: Story = {
         collapsible
       />
       <div style={{ padding: 24 }}>
-        <Typography variant="heading-md">Content area</Typography>
-        <Typography color="secondary" variant="body-sm">
+        <Typography variant="h4">Content area</Typography>
+        <Typography color="secondary" variant="body2">
           The nav is a plain data array (`nav` prop) — feed it straight from an API. The panel
           toggle in the header collapses it to a mini rail.
         </Typography>
@@ -147,7 +147,7 @@ export const Composition: Story = {
         </Sidebar.Section>
       </Sidebar.Root>
       <div style={{ padding: 24 }}>
-        <Typography variant="heading-md">Content area</Typography>
+        <Typography variant="h4">Content area</Typography>
       </div>
     </div>
   ),
@@ -161,7 +161,7 @@ function MobileDemo() {
         <IconButton aria-label="Open navigation" onClick={() => setOpen(true)}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="label">Resize below 900px — the sidebar slides in</Typography>
+        <Typography variant="subtitle2">Resize below 900px — the sidebar slides in</Typography>
       </Flex>
       <Sidebar.Root
         header={<SidebarHeader />}

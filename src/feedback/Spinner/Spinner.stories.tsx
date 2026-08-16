@@ -54,7 +54,7 @@ export const InheritsColor: Story = {
   render: () => (
     <Flex gap={2} align="center" style={{ color: 'var(--zest-color-info)' }}>
       <Spinner size="sm" />
-      <Typography variant="body-sm" color="inherit">
+      <Typography variant="body2" color="inherit">
         Loading results…
       </Typography>
     </Flex>

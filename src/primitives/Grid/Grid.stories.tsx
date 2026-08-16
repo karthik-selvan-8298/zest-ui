@@ -24,7 +24,7 @@ export const FixedColumns: Story = {
             background: 'color-mix(in srgb, var(--zest-color-primary) 8%, transparent)',
           }}
         >
-          <Typography variant="body-sm">Cell {i + 1}</Typography>
+          <Typography variant="body2">Cell {i + 1}</Typography>
         </Paper>
       ))}
     </Grid>
@@ -52,7 +52,7 @@ export const AutoFit: Story = {
             background: 'color-mix(in srgb, var(--zest-color-primary) 8%, transparent)',
           }}
         >
-          <Typography variant="body-sm">Cell {i + 1}</Typography>
+          <Typography variant="body2">Cell {i + 1}</Typography>
         </Paper>
       ))}
     </Grid>

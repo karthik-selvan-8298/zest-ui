@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => (
     <Flex gap={4} align="center">
-      <Typography variant="body-sm">Open the palette with</Typography>
+      <Typography variant="body2">Open the palette with</Typography>
       <Kbd>Ctrl+K</Kbd>
       <Kbd>⏎</Kbd>
     </Flex>

@@ -47,7 +47,7 @@ function ControlledDemo() {
         onValueChange={setValue}
         placeholder="Search components…"
       />
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         Text: {value || '(empty)'}
       </Typography>
     </Stack>

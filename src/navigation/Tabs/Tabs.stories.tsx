@@ -45,12 +45,12 @@ export const Segmented: Story = {
         <Tabs.Tab value="raw">Raw</Tabs.Tab>
       </Tabs.List>
       <Tabs.Panel value="wrapped">
-        <Typography variant="body-sm" color="secondary">
+        <Typography variant="body2" color="secondary">
           Wraps input as {'{ tool, input, caller }'} — the default envelope.
         </Typography>
       </Tabs.Panel>
       <Tabs.Panel value="raw">
-        <Typography variant="body-sm" color="secondary">
+        <Typography variant="body2" color="secondary">
           Sends the input exactly as provided.
         </Typography>
       </Tabs.Panel>

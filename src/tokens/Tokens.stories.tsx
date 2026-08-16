@@ -24,7 +24,7 @@ export const Colors: Story = {
     <Stack spacing={6}>
       {Object.entries(scales).map(([name, scale]) => (
         <Stack key={name} spacing={2}>
-          <Typography variant="heading-sm" style={{ textTransform: 'capitalize' }}>
+          <Typography variant="h5" style={{ textTransform: 'capitalize' }}>
             {name}
           </Typography>
           <Flex gap={2} wrap>
@@ -46,7 +46,7 @@ export const Colors: Story = {
         </Stack>
       ))}
       <Stack spacing={2}>
-        <Typography variant="heading-sm">Gray</Typography>
+        <Typography variant="h5">Gray</Typography>
         <Flex gap={2} wrap>
           {Object.entries(colors.gray).map(([stop, value]) => (
             <Stack key={stop} spacing={1} align="center">
@@ -83,7 +83,7 @@ export const Shadows: Story = {
             boxShadow: `var(--zest-shadow-${name})`,
           }}
         >
-          <Typography variant="label">{name}</Typography>
+          <Typography variant="subtitle2">{name}</Typography>
         </Paper>
       ))}
     </Grid>

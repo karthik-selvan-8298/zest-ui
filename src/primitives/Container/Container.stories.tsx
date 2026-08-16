@@ -19,7 +19,7 @@ export const WithPaper: Story = {
     <Container maxWidth="md">
       <Paper shadow="card" radius="xl" style={{ padding: 'var(--zest-inset-surface)' }}>
         <Stack spacing={2}>
-          <Typography variant="heading-md">Paper in a md container</Typography>
+          <Typography variant="h4">Paper in a md container</Typography>
           <Typography color="secondary">
             The Sigma card language: surface radius with the soft card shadow.
           </Typography>

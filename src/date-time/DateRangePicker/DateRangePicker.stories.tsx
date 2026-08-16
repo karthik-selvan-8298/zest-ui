@@ -40,7 +40,7 @@ function ControlledDemo() {
         clearable
         fullWidth
       />
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         Start: {range.start ? range.start.toDateString() : 'null'} — End:{' '}
         {range.end ? range.end.toDateString() : 'null'}
       </Typography>

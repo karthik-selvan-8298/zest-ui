@@ -3,16 +3,18 @@ import { cx } from '../../utils';
 import type { PolymorphicProps } from '../polymorphic';
 import './Typography.css';
 
+/** MUI-style type scale. */
 export type TypographyVariant =
-  | 'display'
-  | 'heading-xl'
-  | 'heading-lg'
-  | 'heading-md'
-  | 'heading-sm'
-  | 'subtitle'
-  | 'body'
-  | 'body-sm'
-  | 'label'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'subtitle1'
+  | 'subtitle2'
+  | 'body1'
+  | 'body2'
   | 'caption'
   | 'overline';
 
@@ -28,15 +30,16 @@ export type TypographyColor =
   | 'info';
 
 const defaultElement: Record<TypographyVariant, React.ElementType> = {
-  display: 'h1',
-  'heading-xl': 'h1',
-  'heading-lg': 'h2',
-  'heading-md': 'h3',
-  'heading-sm': 'h4',
-  subtitle: 'h6',
-  body: 'p',
-  'body-sm': 'p',
-  label: 'span',
+  h1: 'h1',
+  h2: 'h2',
+  h3: 'h3',
+  h4: 'h4',
+  h5: 'h5',
+  h6: 'h6',
+  subtitle1: 'h6',
+  subtitle2: 'h6',
+  body1: 'p',
+  body2: 'p',
   caption: 'span',
   overline: 'span',
 };
@@ -64,7 +67,7 @@ export const Typography = React.forwardRef(function Typography<
 >(props: TypographyProps<E>, ref: React.ForwardedRef<Element>) {
   const {
     as,
-    variant = 'body',
+    variant = 'body1',
     color = 'inherit',
     align,
     truncate,

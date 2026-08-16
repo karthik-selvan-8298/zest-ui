@@ -29,7 +29,7 @@ function ControlledDemo() {
         clearable
         fullWidth
       />
-      <Typography variant="body-sm" color="secondary">
+      <Typography variant="body2" color="secondary">
         Value: {date ? date.toDateString() : 'null'}
       </Typography>
     </Stack>
