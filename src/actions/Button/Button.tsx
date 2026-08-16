@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Spinner } from '../../feedback/Spinner';
 import { cx, spawnRipple } from '../../utils';
 import type { ZestColor } from '../../types';
 import type { ButtonProps, ButtonVariant } from './Button.types';
@@ -63,17 +64,11 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
     const content = (
       <>
         {loading ? (
-          <span className="zest-button__spinner" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" opacity="0.3" />
-              <path
-                d="M21 12a9 9 0 0 0-9-9"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
+          <Spinner
+            className="zest-button__spinner"
+            style={{ width: '1.1em', height: '1.1em' }}
+            aria-hidden
+          />
         ) : null}
         {startIcon ? (
           <span className="zest-button__icon" aria-hidden>

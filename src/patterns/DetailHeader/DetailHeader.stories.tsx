@@ -4,24 +4,23 @@ import { DetailHeader } from './DetailHeader';
 
 const meta = {
   title: 'Patterns/DetailHeader',
-} satisfies Meta;
+  component: DetailHeader,
+} satisfies Meta<typeof DetailHeader>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <DetailHeader
-      title="Payments service"
-      subtitle="Last deployed 2 hours ago · production"
-      actions={
-        <>
-          <Button variant="outlined" color="neutral">
-            View logs
-          </Button>
-          <Button>Deploy</Button>
-        </>
-      }
-    />
-  ),
+  args: {
+    title: 'Payments service',
+    subtitle: 'Last deployed 2 hours ago · production',
+    actions: (
+      <>
+        <Button variant="outlined" color="neutral">
+          View logs
+        </Button>
+        <Button>Deploy</Button>
+      </>
+    ),
+  },
 };

@@ -108,11 +108,14 @@
   --zest-radius-xl: 18px;
   --zest-radius-full: 999px;
 
-  /* Intent aliases — components use ONLY these three; retune the whole
+  /* Intent aliases — components use ONLY these; retune the whole
      system by moving an alias to a different step. */
   --zest-radius-control: var(--zest-radius-md); /* buttons, fields, cells, tiles */
   --zest-radius-panel: var(--zest-radius-lg); /* popups, menus, nav rows, flyouts */
   --zest-radius-surface: var(--zest-radius-xl); /* cards, dialogs, drawers, code panels */
+  /* Rows inside a padded panel: panel radius minus the panel inset, so the
+     row's corner sits concentric with the popup it lives in. */
+  --zest-radius-row: calc(var(--zest-radius-panel) - var(--zest-inset-panel));
 
   /* Inset (padding) intents — same idea for interior spacing. */
   --zest-inset-surface: var(--zest-space-6); /* card/dialog/drawer bodies */
@@ -144,6 +147,10 @@
   --zest-field-height-sm: 40px;
   --zest-field-height-md: 44px;
   --zest-focus-ring-width: 2px;
+
+  /* Code panels stay dark in both themes — retune here to rebrand them. */
+  --zest-color-code-surface: #0b1120;
+  --zest-color-code-header: color-mix(in srgb, var(--zest-white) 6%, transparent);
 }
 
 /* ════════════════════════════════════════════════════════════════════════

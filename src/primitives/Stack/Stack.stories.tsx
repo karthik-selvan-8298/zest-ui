@@ -1,13 +1,12 @@
+import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Divider } from '../Divider/Divider';
-import { Flex } from '../Flex/Flex';
 import { Paper } from '../Paper/Paper';
-import { Spacer } from '../misc/Spacer';
 import { Typography } from '../Typography/Typography';
 import { Stack } from './Stack';
 
 const meta = {
-  title: 'Layout/Stack & Flex',
+  title: 'Layout/Stack',
   component: Stack,
 } satisfies Meta<typeof Stack>;
 
@@ -29,9 +28,9 @@ function Demo({ children }: { children?: React.ReactNode }) {
   );
 }
 
-export const WithDivider: Story = {
+export const Basic: Story = {
   render: () => (
-    <Stack spacing={2} divider={<Divider variant="dashed" />}>
+    <Stack spacing={2} style={{ maxWidth: 360 }}>
       <Demo>One</Demo>
       <Demo>Two</Demo>
       <Demo>Three</Demo>
@@ -39,12 +38,12 @@ export const WithDivider: Story = {
   ),
 };
 
-export const FlexRow: Story = {
+export const WithDivider: Story = {
   render: () => (
-    <Flex gap={2} align="center">
-      <Demo>Left</Demo>
-      <Spacer />
-      <Demo>Right</Demo>
-    </Flex>
+    <Stack spacing={2} divider={<Divider variant="dashed" />} style={{ maxWidth: 360 }}>
+      <Demo>One</Demo>
+      <Demo>Two</Demo>
+      <Demo>Three</Demo>
+    </Stack>
   ),
 };

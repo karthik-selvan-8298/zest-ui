@@ -92,9 +92,10 @@
   align-items: center;
   gap: var(--zest-space-3);
   width: 100%;
+  min-height: 36px;
   padding: var(--zest-space-2) var(--zest-space-2);
   border: 0;
-  border-radius: var(--zest-radius-panel);
+  border-radius: var(--zest-radius-control);
   background: transparent;
   color: var(--zest-color-text-secondary);
   font-family: inherit;
@@ -112,7 +113,7 @@
   color: var(--zest-color-text-primary);
 }
 
-/* Active: tinted accent row, accent icon tile (QA nav style). */
+/* Active: one tinted accent row — the icon inherits the accent color only. */
 .zest-sidebar__row[data-active] {
   background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
   color: var(--zest-color-primary-subtle-text);
@@ -128,21 +129,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--zest-radius-control);
-  background: transparent;
+  width: 20px;
+  height: 20px;
   color: var(--zest-color-text-secondary);
   font-size: var(--zest-font-size-lg);
   flex-shrink: 0;
-  transition:
-    background-color var(--zest-duration-fast) var(--zest-ease-standard),
-    color var(--zest-duration-fast) var(--zest-ease-standard);
+  transition: color var(--zest-duration-fast) var(--zest-ease-standard);
 }
 
-/* Only the active item's icon gets the tinted tile. */
 .zest-sidebar__row[data-active] .zest-sidebar__icon {
-  background: color-mix(in srgb, var(--zest-color-primary) 10%, transparent);
   color: var(--zest-color-primary);
 }
 
@@ -257,7 +252,10 @@
 .zest-sidebar[data-collapsed] .zest-sidebar__row {
   position: relative;
   justify-content: center;
-  padding: var(--zest-space-1);
+  width: 40px;
+  min-height: 40px;
+  margin-inline: auto;
+  padding: var(--zest-space-2);
   border-radius: var(--zest-radius-control);
 }
 
@@ -268,13 +266,6 @@
 .zest-sidebar[data-collapsed] .zest-sidebar__chevron {
   display: none;
 }
-
-/* Single highlight only: the row tile carries the active tint, so drop the
-   icon's own tinted tile (it would read as a second nested highlight). */
-.zest-sidebar[data-collapsed] .zest-sidebar__row[data-active] .zest-sidebar__icon {
-  background: transparent;
-}
-
 
 
 /* Mini rail: flyouts must escape the nav scroll area. */
@@ -323,10 +314,8 @@
 }
 
 .zest-sidebar__flyout-header .zest-sidebar__icon {
-  width: 24px;
-  height: 24px;
-  font-size: var(--zest-font-size-md);
-  background: color-mix(in srgb, var(--zest-color-primary) 10%, transparent);
+  width: 20px;
+  height: 20px;
   color: var(--zest-color-primary);
 }
 
@@ -367,6 +356,18 @@
 .zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__caption,
 .zest-sidebar[data-collapsed] .zest-sidebar__flyout .zest-sidebar__badge {
   display: initial;
+}
+
+/* Flyout rows float free of the dot rail, so restore full row feedback here
+   (the inline sublist intentionally uses text-only hover). */
+.zest-sidebar__flyout .zest-sidebar__row:hover:not([data-disabled]) {
+  background: var(--zest-color-surface-hover);
+  color: var(--zest-color-text-primary);
+}
+
+.zest-sidebar__flyout .zest-sidebar__row[data-active] {
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+  color: var(--zest-color-primary-subtle-text);
 }
 
 /* ── Edge expand/collapse toggle — appears on sidebar hover ───────────── */

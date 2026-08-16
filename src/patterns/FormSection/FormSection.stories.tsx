@@ -6,12 +6,14 @@ import { FormSection } from './FormSection';
 
 const meta = {
   title: 'Patterns/FormSection',
-} satisfies Meta;
+  component: FormSection,
+} satisfies Meta<typeof FormSection>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SettingsPage: Story = {
+  args: { title: 'Profile' },
   render: () => (
     <Stack spacing={8} divider={<Divider />}>
       <FormSection title="Profile" description="How you appear across the workspace.">

@@ -93,3 +93,14 @@
   background: var(--zest-accent);
   color: var(--zest-accent-contrast);
 }
+
+/* Gradient fallback — brand/hero emphasis (logo tiles, feature icons). */
+.zest-avatar[data-variant='gradient'] .zest-avatar__fallback {
+  background: linear-gradient(
+    to bottom right,
+    var(--zest-accent),
+    color-mix(in srgb, var(--zest-accent) 70%, transparent)
+  );
+  color: var(--zest-accent-contrast);
+  box-shadow: var(--zest-shadow-button);
+}

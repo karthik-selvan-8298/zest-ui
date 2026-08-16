@@ -28,8 +28,8 @@ export interface AvatarProps extends WithClassName<React.ComponentProps<typeof B
   shape?: AvatarShape;
   /** Tonal color of the fallback. */
   color?: ZestColor;
-  /** Fallback style: soft tint (default) or solid accent with contrast initials. */
-  variant?: 'soft' | 'solid';
+  /** Fallback style: soft tint (default), solid accent, or brand gradient. */
+  variant?: 'soft' | 'solid' | 'gradient';
   /** Custom fallback content; overrides initials. */
   children?: React.ReactNode;
 }

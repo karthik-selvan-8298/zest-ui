@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Stack, Grid } from '../../primitives';
+import { Grid } from '../../primitives';
 import { SearchIcon } from '../../icons';
-import { SearchInput } from '../SearchInput/SearchInput';
-import { PasswordInput } from '../PasswordInput/PasswordInput';
-import { Textarea } from '../Textarea/Textarea';
 import { TextField } from './TextField';
 
 const meta = {
@@ -68,15 +65,5 @@ export const FloatingLabels: Story = {
         required
       />
     </Grid>
-  ),
-};
-
-export const Variants: Story = {
-  render: () => (
-    <Stack spacing={4} style={{ maxWidth: 360 }}>
-      <SearchInput placeholder="Search components…" fullWidth />
-      <PasswordInput placeholder="Password" fullWidth />
-      <Textarea placeholder="Multi-line notes…" fullWidth />
-    </Stack>
   ),
 };

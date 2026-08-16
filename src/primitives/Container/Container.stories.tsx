@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Center } from '../misc/Center';
+import { Flex } from '../Flex/Flex';
 import { Divider } from '../Divider/Divider';
 import { Paper } from '../Paper/Paper';
 import { Stack } from '../Stack/Stack';
@@ -24,7 +24,7 @@ export const WithPaper: Story = {
             The Sigma card language: surface radius with the soft card shadow.
           </Typography>
           <Divider />
-          <Center style={{ height: 64 }}>Centered content</Center>
+          <Flex center style={{ height: 64 }}>Centered content</Flex>
         </Stack>
       </Paper>
     </Container>

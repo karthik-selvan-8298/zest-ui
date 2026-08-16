@@ -1,5 +1,5 @@
 .zest-toggle {
-  --_size: 36px;
+  --_size: var(--zest-button-height-md);
 
   box-sizing: border-box;
   display: inline-flex;
@@ -10,7 +10,6 @@
   height: var(--_size);
   padding-inline: var(--zest-space-2);
   gap: var(--zest-space-2);
-  padding: 0;
   border: 0;
   border-radius: var(--zest-radius-control);
   background: transparent;
@@ -26,12 +25,12 @@
 
 /* ── Sizes ────────────────────────────────────────────────────────────── */
 .zest-toggle[data-size='sm'] {
-  --_size: 28px;
+  --_size: var(--zest-button-height-sm);
   font-size: var(--zest-font-size-md);
 }
 
 .zest-toggle[data-size='lg'] {
-  --_size: 44px;
+  --_size: var(--zest-button-height-lg);
   font-size: var(--zest-font-size-2xl);
 }
 

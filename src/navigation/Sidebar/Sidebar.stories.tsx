@@ -11,13 +11,14 @@ import {
 } from '../../icons';
 import { Flex, Typography } from '../../primitives';
 import { IconButton } from '../../actions/IconButton/IconButton';
-import { IconTile } from '../../data-display/IconTile/IconTile';
+import { Avatar } from '../../data-display/Avatar/Avatar';
 import { Sidebar, type SidebarNavSection } from './Sidebar';
 
 const meta = {
   title: 'Navigation/Sidebar',
+  component: Sidebar.Root,
   parameters: { layout: 'fullscreen' },
-} satisfies Meta;
+} satisfies Meta<typeof Sidebar.Root>;
 
 export default meta;
 type Story = StoryObj;
@@ -81,9 +82,9 @@ const navData: SidebarNavSection[] = [
 function SidebarHeader() {
   return (
     <Flex gap={2} align="center">
-      <IconTile color="gradient" size="sm">
+      <Avatar variant="gradient" color="primary" shape="rounded" size="sm">
         <SettingsIcon />
-      </IconTile>
+      </Avatar>
       <div>
         <Typography variant="label">QA Toolkit</Typography>
         <Typography variant="caption" as="div">
@@ -100,9 +101,9 @@ export const DataDriven: Story = {
       <Sidebar.Root
         header={<SidebarHeader />}
         logo={
-          <IconTile color="gradient" size="sm">
+          <Avatar variant="gradient" color="primary" shape="rounded" size="sm">
             <SettingsIcon />
-          </IconTile>
+          </Avatar>
         }
         nav={navData}
         collapsible
@@ -124,9 +125,9 @@ export const Composition: Story = {
       <Sidebar.Root
         header={<SidebarHeader />}
         logo={
-          <IconTile color="gradient" size="sm">
+          <Avatar variant="gradient" color="primary" shape="rounded" size="sm">
             <SettingsIcon />
-          </IconTile>
+          </Avatar>
         }
         collapsible
       >

@@ -94,7 +94,7 @@
   align-items: center;
   gap: var(--zest-space-2);
   padding: var(--zest-space-2) var(--zest-space-3) var(--zest-space-2) var(--zest-space-2);
-  border-radius: var(--zest-radius-control);
+  border-radius: var(--zest-radius-row);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
   color: var(--zest-color-text-primary);
@@ -112,6 +112,10 @@
 
 .zest-select__item[data-selected][data-highlighted] {
   background: var(--zest-color-surface-hover);
+}
+
+.zest-select__item[data-highlighted]:active {
+  background: color-mix(in srgb, var(--zest-color-primary) 14%, transparent);
 }
 
 /* Selected: plain row — the left check carries the state. */
@@ -140,43 +144,4 @@
 /* Focused fields lift to the surface color (QA field style). */
 .zest-select__trigger[data-popup-open] {
   background: var(--zest-color-surface);
-}
-
-/* ── Searchable popup ─────────────────────────────────────────────────── */
-.zest-select__search {
-  display: flex;
-  align-items: center;
-  gap: var(--zest-space-2);
-  margin: calc(-1 * var(--zest-space-1)) calc(-1 * var(--zest-space-1)) var(--zest-space-1);
-  padding: var(--zest-space-2) var(--zest-space-3);
-  border-bottom: 1px solid var(--zest-color-border-subtle);
-  color: var(--zest-color-text-secondary);
-}
-
-.zest-select__search-input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  background: transparent;
-  color: var(--zest-color-text-primary);
-  font-family: var(--zest-font-family-sans);
-  font-size: var(--zest-font-size-sm);
-  outline: none;
-}
-
-.zest-select__search-input::placeholder {
-  color: var(--zest-color-text-disabled);
-}
-
-.zest-select__empty {
-  padding: var(--zest-space-3);
-  color: var(--zest-color-text-secondary);
-  font-family: var(--zest-font-family-sans);
-  font-size: var(--zest-font-size-sm);
-  text-align: center;
-}
-
-.zest-select__empty:empty {
-  display: none;
-  padding: 0;
 }

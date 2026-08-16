@@ -44,19 +44,25 @@
   border-bottom: 0;
 }
 
-.zest-table[data-striped] .zest-table__body .zest-table__row:nth-child(even) {
+/* Stripes yield to selection; hover on stripes steps up to the active wash
+   so both states stay visible on even rows. */
+.zest-table[data-striped] .zest-table__body .zest-table__row:nth-child(even):not([data-selected]) {
   background: var(--zest-color-surface-hover);
+}
+
+.zest-table[data-striped] .zest-table__body .zest-table__row[data-hover]:hover:not([data-selected]) {
+  background: var(--zest-color-surface-active);
 }
 
 .zest-table__row {
   transition: background-color var(--zest-duration-fast) var(--zest-ease-standard);
 }
 
-.zest-table__row[data-hover]:hover {
+.zest-table__row[data-hover]:hover:not([data-selected]) {
   background: var(--zest-color-surface-hover);
 }
 
-.zest-table__row[data-selected] {
+.zest-table .zest-table__body .zest-table__row[data-selected] {
   background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
 }
 

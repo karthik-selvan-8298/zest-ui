@@ -4,7 +4,7 @@
 
 One package · ~65 components · zero raw HTML.
 
-Zest UI is a **violet-forward, slate-neutral** design system built on [Base UI](https://base-ui.com) primitives and [Lucide](https://lucide.dev) icons.
+Zest UI is a **violet-forward, slate-neutral** design system built on top of **Base UI** primitives, providing a consistent and production-ready component layer.
 
 Components are designed to be:
 
@@ -20,7 +20,7 @@ Components are designed to be:
 ## Install
 
 ```bash
-npm install git+ssh://<your-git-url>/zest-ui.git#main
+npm install github:karthik-selvan-8298/zest-ui#main
 ```
 
 For local development:
@@ -129,14 +129,14 @@ Zest provides ~65 reusable components for common UI patterns.
 | | Components |
 |---|---|
 | ⚡ **Actions** | Button · IconButton · ButtonGroup · Toggle · ToggleGroup · Link |
-| 📝 **Forms** | Form · TextField · Input · Textarea · Select · NativeSelect · Combobox · Autocomplete · Checkbox · Radio · Switch · Slider · FileUpload |
+| 📝 **Forms** | Form · FormField · TextField · Input · Textarea · PasswordInput · SearchInput · NumberInput · Select · NativeSelect · Combobox · Autocomplete · Checkbox · Radio · Switch · Slider · FileUpload |
 | 🧭 **Navigation** | Sidebar · AppBar · Tabs · Breadcrumbs · Pagination · Menu · Stepper · Command |
 | 🪟 **Overlays** | Dialog · AlertDialog · ConfirmDialog · Drawer · Popover · Tooltip |
 | 📣 **Feedback** | Alert · Toast · Progress · CircularProgress · Spinner · Skeleton |
 | 📊 **Data** | Card · Table · DataGrid · Avatar · Badge · Chip · Accordion · Collapsible · List · CodeBlock · EmptyState |
 | 📅 **Date & Time** | Calendar · DatePicker · DateRangePicker · TimePicker |
 | 🖼 **Media** | Image · Kbd · ScrollArea |
-| 📐 **Layout** | Box · Stack · Flex · Grid · Container · Paper · Divider · Center · Spacer · AspectRatio · Typography |
+| 📐 **Layout** | Box · Stack · Flex · Grid · Container · Paper · Divider · AspectRatio · Typography |
 | 🧩 **Patterns** | SearchToolbar · FormSection · DetailHeader |
 | ✒️ **Icons** | Pre-wrapped Lucide icons via `zest-ui/icons` |
 

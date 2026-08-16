@@ -188,7 +188,7 @@ const SidebarSection = React.forwardRef<HTMLDivElement, SidebarSectionProps>(
 export interface SidebarItemProps
   extends Omit<React.HTMLAttributes<HTMLLIElement>, 'onClick'> {
   label: React.ReactNode;
-  /** Leading icon — plain by default; gets a tinted tile when `active`. */
+  /** Leading icon — inherits the accent color when `active`. */
   icon?: React.ReactNode;
   /** Small secondary line under the label. */
   caption?: React.ReactNode;

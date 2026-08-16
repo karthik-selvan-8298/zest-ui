@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Select as BaseSelect } from '@base-ui/react/select';
-import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
-import { CheckIcon, ChevronDownIcon, SearchIcon } from '../../icons';
+import { CheckIcon, ChevronDownIcon } from '../../icons';
 import { cx } from '../../utils';
 import '../../base.css';
 import './Select.css';
@@ -27,13 +26,6 @@ export interface SelectProps<T extends string = string> {
   id?: string;
   className?: string;
   'aria-label'?: string;
-  /**
-   * Adds a search box at the top of the popup that filters the options —
-   * use when the list is long.
-   */
-  searchable?: boolean;
-  /** Placeholder of the popup search box. */
-  searchPlaceholder?: string;
 }
 
 /**
@@ -46,13 +38,11 @@ export interface SelectProps<T extends string = string> {
  *   options={[{ value: 'admin', label: 'Admin' }, { value: 'viewer', label: 'Viewer' }]}
  * />
  * ```
+ *
+ * For a long, filterable list use `Combobox` instead — it is this trigger
+ * with a built-in search input.
  */
-export function Select<T extends string = string>(props: SelectProps<T>) {
-  if (props.searchable) return <SearchableSelect {...props} />;
-  return <PlainSelect {...props} />;
-}
-
-function PlainSelect<T extends string = string>({
+export function Select<T extends string = string>({
   options,
   value,
   defaultValue,
@@ -129,115 +119,6 @@ function PlainSelect<T extends string = string>({
         </BaseSelect.Positioner>
       </BaseSelect.Portal>
     </BaseSelect.Root>
-  );
-}
-
-interface SearchableItem {
-  value: string;
-  label: React.ReactNode;
-  disabled?: boolean;
-  /** Plain text used for filtering. */
-  text: string;
-}
-
-/** Select with a filter box in the popup — built on Base UI Combobox. */
-function SearchableSelect<T extends string = string>({
-  options,
-  value,
-  defaultValue,
-  onValueChange,
-  placeholder = 'Select…',
-  size = 'md',
-  error,
-  fullWidth,
-  disabled,
-  required,
-  name,
-  id,
-  className,
-  'aria-label': ariaLabel,
-  searchPlaceholder = 'Search…',
-}: SelectProps<T>) {
-  const items: SearchableItem[] = React.useMemo(
-    () =>
-      options.map((option) => ({
-        ...option,
-        text: typeof option.label === 'string' ? option.label : option.value,
-      })),
-    [options]
-  );
-  const toItem = (next: T | null | undefined) =>
-    next == null ? null : (items.find((item) => item.value === next) ?? null);
-
-  return (
-    <BaseCombobox.Root
-      items={items}
-      value={value === undefined ? undefined : toItem(value)}
-      defaultValue={defaultValue === undefined ? undefined : toItem(defaultValue)}
-      onValueChange={(item: SearchableItem | null) => {
-        onValueChange?.((item ? item.value : null) as T | null);
-      }}
-      itemToStringLabel={(item: SearchableItem) => item.text}
-      itemToStringValue={(item: SearchableItem) => item.value}
-      isItemEqualToValue={(a: SearchableItem, b: SearchableItem) => a.value === b.value}
-      disabled={disabled}
-      required={required}
-      name={name}
-    >
-      <BaseCombobox.Trigger
-        id={id}
-        aria-label={ariaLabel}
-        className={cx('zest-select__trigger', 'zest-focusable', className)}
-        data-size={size}
-        data-error={error ? '' : undefined}
-        data-full-width={fullWidth ? '' : undefined}
-      >
-        <span className="zest-select__value">
-          <BaseCombobox.Value>
-            {(item: SearchableItem | null) =>
-              item ? item.label : <span className="zest-select__placeholder">{placeholder}</span>
-            }
-          </BaseCombobox.Value>
-        </span>
-        <BaseCombobox.Icon className="zest-select__icon">
-          <ChevronDownIcon />
-        </BaseCombobox.Icon>
-      </BaseCombobox.Trigger>
-      <BaseCombobox.Portal>
-        <BaseCombobox.Positioner
-          className="zest-select__positioner"
-          side="bottom"
-          align="start"
-          sideOffset={4}
-        >
-          <BaseCombobox.Popup className="zest-select__popup" data-searchable="">
-            <div className="zest-select__search">
-              <SearchIcon size={16} />
-              <BaseCombobox.Input
-                placeholder={searchPlaceholder}
-                className="zest-select__search-input"
-              />
-            </div>
-            <BaseCombobox.Empty className="zest-select__empty">No results</BaseCombobox.Empty>
-            <BaseCombobox.List className="zest-select__list">
-              {(item: SearchableItem) => (
-                <BaseCombobox.Item
-                  key={item.value}
-                  value={item}
-                  disabled={item.disabled}
-                  className="zest-select__item"
-                >
-                  <BaseCombobox.ItemIndicator className="zest-select__item-indicator" keepMounted>
-                    <CheckIcon />
-                  </BaseCombobox.ItemIndicator>
-                  <span className="zest-select__item-text">{item.label}</span>
-                </BaseCombobox.Item>
-              )}
-            </BaseCombobox.List>
-          </BaseCombobox.Popup>
-        </BaseCombobox.Positioner>
-      </BaseCombobox.Portal>
-    </BaseCombobox.Root>
   );
 }
 

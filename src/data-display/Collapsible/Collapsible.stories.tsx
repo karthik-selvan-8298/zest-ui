@@ -4,7 +4,8 @@ import { Collapsible } from './Collapsible';
 
 const meta = {
   title: 'Data Display/Collapsible',
-} satisfies Meta;
+  component: Collapsible.Root,
+} satisfies Meta<typeof Collapsible.Root>;
 
 export default meta;
 type Story = StoryObj;

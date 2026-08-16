@@ -40,7 +40,7 @@
 
 .zest-datagrid__sort-button:hover {
   color: var(--zest-color-text-primary);
-  background: color-mix(in srgb, var(--zest-color-neutral) 8%, transparent);
+  background: var(--zest-color-surface-hover);
 }
 
 .zest-datagrid__sort-button[data-sorted] {

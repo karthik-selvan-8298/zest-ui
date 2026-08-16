@@ -85,7 +85,6 @@ export * from './data-display/EmptyState';
 export * from './data-display/List';
 export * from './data-display/DataGrid';
 export * from './data-display/CodeBlock';
-export * from './data-display/IconTile';
 export * from './data-display/Collapsible';
 
 // Media

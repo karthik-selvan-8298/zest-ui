@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Overview/Introduction" />
+
+<div style={{ padding: '24px 0 8px', marginBottom: 24 }}>
+  <h1
+    style={{
+      margin: 0,
+      fontSize: 40,
+      fontWeight: 800,
+      letterSpacing: '-0.02em',
+      border: 0,
+      paddingBottom: 0,
+    }}
+  >
+    Zest UI
+  </h1>
+  <p style={{ margin: '16px 0 0', fontSize: 16, lineHeight: 1.6, maxWidth: 640, color: '#64748b' }}>
+    A modern, accessible component framework for building consistent product
+    interfaces — one package, ~65 components, zero raw HTML. Violet-forward,
+    slate-neutral, built on Base UI primitives and Lucide icons.
+  </p>
+</div>
+
+## Install
+
+```bash
+npm install zest-ui
+```
+
+```tsx
+import 'zest-ui/tokens.css';
+import { ZestProvider, Button } from 'zest-ui';
+
+export function App() {
+  return (
+    <ZestProvider>
+      <Button>Get started</Button>
+    </ZestProvider>
+  );
+}
+```
+
+## Principles
+
+- **Tokens first** — every color, radius, height, and shadow comes from `--zest-*`
+  design tokens. Retheme the whole system by overriding a handful of aliases.
+- **One highlight per row** — active and hovered rows carry a single tinted
+  background; icons only change color. No nested highlight boxes.
+- **Base UI underneath** — popups, fields, and selection widgets ride on
+  Base UI primitives for keyboard navigation and accessible semantics.
+- **Light & dark** — flip the toolbar's <em>Mode</em> control; every component
+  reads the same semantic tokens in both themes.
+
+## Finding your way
+
+| Section | What lives there |
+|---|---|
+| **Overview** | A composed “Members Page” showing components working together |
+| **Foundation** | Design tokens, typography scale, and the icon set |
+| **Layout** | Box, Stack, Flex, Grid, Container, Paper, AspectRatio, ScrollArea |
+| **Actions** | Button, IconButton, ButtonGroup, Toggle, Link |
+| **Forms** | Fields, selection controls, pickers — all Field-aware |
+| **Navigation** | Sidebar, AppBar, Tabs, Menu, Command palette, Stepper |
+| **Overlays** | Dialog, AlertDialog, Drawer, Popover, Tooltip |
+| **Feedback** | Alert, Toast, progress and skeleton loaders |
+| **Data Display** | Table, DataGrid, Card, Avatar, Badge, Chip, lists |
+| **Patterns** | Ready-made page patterns: SearchToolbar, FormSection, DetailHeader |
+
+Every component page includes a **Docs** tab with a live props table generated
+from its TypeScript types.

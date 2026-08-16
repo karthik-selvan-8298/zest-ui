@@ -6,7 +6,8 @@ import { Stepper } from './Stepper';
 
 const meta = {
   title: 'Navigation/Stepper',
-} satisfies Meta;
+  component: Stepper.Root,
+} satisfies Meta<typeof Stepper.Root>;
 
 export default meta;
 type Story = StoryObj;

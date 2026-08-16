@@ -94,7 +94,7 @@
   align-items: center;
   gap: var(--zest-space-3);
   padding: var(--zest-space-2) var(--zest-space-2);
-  border-radius: var(--zest-radius-sm);
+  border-radius: var(--zest-radius-row);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
   color: var(--zest-color-text-primary);
@@ -103,8 +103,14 @@
   user-select: none;
 }
 
+/* Highlighted: the same soft accent row every popup in the library uses. */
 .zest-command__item[data-highlighted] {
-  background: var(--zest-color-surface-hover);
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+  color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-command__item[data-highlighted]:active {
+  background: color-mix(in srgb, var(--zest-color-primary) 14%, transparent);
 }
 
 .zest-command__item-icon {

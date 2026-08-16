@@ -24,6 +24,8 @@ const withZest: Decorator = (Story, context) => {
 };
 
 const preview: Preview = {
+  /* Generate a Docs page (props table + stories) for every component. */
+  tags: ['autodocs'],
   decorators: [withZest],
   globalTypes: {
     mode: {
@@ -42,6 +44,27 @@ const preview: Preview = {
   parameters: {
     layout: 'fullscreen',
     controls: { expanded: true },
+    options: {
+      /* Showcase first, foundations next, then component groups. */
+      storySort: {
+        order: [
+          'Overview',
+          ['Introduction', 'Members Page'],
+          'Foundation',
+          'Layout',
+          'Actions',
+          'Forms',
+          'Date & Time',
+          'Navigation',
+          'Overlays',
+          'Feedback',
+          'Data Display',
+          'Media',
+          'Utilities',
+          'Patterns',
+        ],
+      },
+    },
   },
 };
 

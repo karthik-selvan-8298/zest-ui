@@ -1,5 +1,5 @@
 .zest-icon-button {
-  --_size: 36px;
+  --_size: var(--zest-button-height-md);
 
   box-sizing: border-box;
   display: inline-flex;
@@ -30,12 +30,12 @@
 }
 
 .zest-icon-button[data-size='sm'] {
-  --_size: 28px;
+  --_size: var(--zest-button-height-sm);
   font-size: var(--zest-font-size-md);
 }
 
 .zest-icon-button[data-size='lg'] {
-  --_size: 44px;
+  --_size: var(--zest-button-height-lg);
   font-size: var(--zest-font-size-2xl);
 }
 

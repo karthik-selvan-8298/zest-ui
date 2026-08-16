@@ -61,7 +61,8 @@ const columns: DataGridColumn<Employee>[] = [
 
 const meta = {
   title: 'Data Display/DataGrid',
-} satisfies Meta;
+  component: DataGrid,
+} satisfies Meta<typeof DataGrid>;
 
 export default meta;
 type Story = StoryObj;

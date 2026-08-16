@@ -7,6 +7,11 @@
 
 .zest-link[data-color='primary'] {
   color: var(--zest-color-primary);
+  transition: color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-link[data-color='primary']:hover {
+  color: var(--zest-color-primary-hover);
 }
 
 .zest-link[data-color='inherit'] {

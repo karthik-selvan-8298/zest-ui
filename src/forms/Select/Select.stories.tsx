@@ -43,27 +43,6 @@ export const Controlled: Story = {
   render: () => <ControlledDemo />,
 };
 
-export const Searchable: Story = {
-  args: {
-    options: [
-      { value: 'in', label: 'India' },
-      { value: 'us', label: 'United States' },
-      { value: 'uk', label: 'United Kingdom' },
-      { value: 'de', label: 'Germany' },
-      { value: 'fr', label: 'France' },
-      { value: 'jp', label: 'Japan' },
-      { value: 'au', label: 'Australia' },
-      { value: 'br', label: 'Brazil' },
-      { value: 'ca', label: 'Canada' },
-      { value: 'sg', label: 'Singapore' },
-    ],
-    searchable: true,
-    placeholder: 'Choose country',
-    searchPlaceholder: 'Search countries…',
-    'aria-label': 'Country',
-  },
-};
-
 export const States: Story = {
   args: { options: roles },
   render: () => (

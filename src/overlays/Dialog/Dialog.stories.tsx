@@ -6,7 +6,8 @@ import { Dialog } from './Dialog';
 
 const meta = {
   title: 'Overlays/Dialog',
-} satisfies Meta;
+  component: Dialog.Root,
+} satisfies Meta<typeof Dialog.Root>;
 
 export default meta;
 type Story = StoryObj;

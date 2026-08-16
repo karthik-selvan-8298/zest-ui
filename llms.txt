@@ -84,7 +84,7 @@ Select (custom popup):
   value/defaultValue: string|null, onValueChange(value: string|null)
   placeholder, size, error, fullWidth, disabled, required, name, aria-label
   <Select options={roles} placeholder="Role" onValueChange={setRole} />
-  searchable?: adds a filter box in the popup (use for long lists); searchPlaceholder?.
+  For a long filterable list use Combobox instead.
 NativeSelect: same options API, native <select>.
 Combobox: Select + text filtering. Same options API + emptyMessage.
 Autocomplete: free text with suggestions: (string | {value,label})[]; value IS the input text.
@@ -191,13 +191,12 @@ DataGrid (prefer for data): generic <DataGrid<Row>
   selectable?, selected?/defaultSelected?/onSelectedChange? (string[])
   pageSize? (enables client pagination), dense?, striped?, loading?, emptyState?, onRowClick?,
   stackOnMobile? (rows become labeled blocks under 600px; labels auto-filled from headers)
-IconTile: rounded-square icon container before titles/rows. color: ZestColor|'gradient' (hero),
-  size 'sm'|'md'|'lg'|'xl'. <IconTile color="primary"><SettingsIcon/></IconTile>
 CodeBlock: code (string), language? ('bash'…, shown uppercase in header), title? (e.g. filename),
   hideCopy?, maxHeight? (default 400 — content scrolls inside), wrap?, onCopy?(code).
   Dark panel in both modes, built-in copy-to-clipboard with "Copied" feedback.
 Avatar: src, alt, name (initials fallback), size 'xs'|'sm'|'md'|'lg'|'xl', shape, color,
-  variant: 'soft'(default tint)|'solid' (accent bg + white initials).
+  variant: 'soft'(default tint)|'solid' (accent bg + white initials)|'gradient' (hero/logo tile).
+  Custom children replace initials — use shape="rounded" + an icon for icon-tile emblems.
 AvatarGroup: max? → "+N" overflow.
 Badge: count, max=99, dot?, color ('error' default), showZero?, position; wraps children or standalone pill.
 Chip: label/children, variant 'soft'(default)|'solid'|'outlined', color ('neutral' default),

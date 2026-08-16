@@ -4,7 +4,8 @@ import { Tabs } from './Tabs';
 
 const meta = {
   title: 'Navigation/Tabs',
-} satisfies Meta;
+  component: Tabs.Root,
+} satisfies Meta<typeof Tabs.Root>;
 
 export default meta;
 type Story = StoryObj;

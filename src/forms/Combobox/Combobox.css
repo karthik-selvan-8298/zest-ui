@@ -139,7 +139,7 @@
   justify-content: space-between;
   gap: var(--zest-space-3);
   padding: var(--zest-space-2) var(--zest-space-2);
-  border-radius: var(--zest-radius-sm);
+  border-radius: var(--zest-radius-row);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
   color: var(--zest-color-text-primary);
@@ -155,6 +155,10 @@
 
 .zest-combobox__item[data-selected][data-highlighted] {
   background: var(--zest-color-surface-hover);
+}
+
+.zest-combobox__item[data-highlighted]:active {
+  background: color-mix(in srgb, var(--zest-color-primary) 14%, transparent);
 }
 
 .zest-combobox__item[data-selected] {

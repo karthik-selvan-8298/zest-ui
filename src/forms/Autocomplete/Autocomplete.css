@@ -112,7 +112,7 @@
   align-items: center;
   gap: var(--zest-space-3);
   padding: var(--zest-space-2) var(--zest-space-2);
-  border-radius: var(--zest-radius-sm);
+  border-radius: var(--zest-radius-row);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
   color: var(--zest-color-text-primary);
@@ -121,9 +121,18 @@
   user-select: none;
 }
 
-.zest-autocomplete__item[data-highlighted] {
+/* The already-selected item never tints — its state is carried elsewhere. */
+.zest-autocomplete__item[data-highlighted]:not([data-selected]) {
   background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
   color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-autocomplete__item[data-selected][data-highlighted] {
+  background: var(--zest-color-surface-hover);
+}
+
+.zest-autocomplete__item[data-highlighted]:active {
+  background: color-mix(in srgb, var(--zest-color-primary) 14%, transparent);
 }
 
 /* Focused fields lift to the surface color (QA field style). */

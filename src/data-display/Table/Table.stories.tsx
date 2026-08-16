@@ -4,7 +4,8 @@ import { Table } from './Table';
 
 const meta = {
   title: 'Data Display/Table',
-} satisfies Meta;
+  component: Table.Root,
+} satisfies Meta<typeof Table.Root>;
 
 export default meta;
 type Story = StoryObj;

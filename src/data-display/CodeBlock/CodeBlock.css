@@ -1,7 +1,7 @@
 .zest-code-block {
   /* Deliberately dark in both modes — code panels keep a single committed look. */
-  --_bg: #0b1120;
-  --_header: rgb(255 255 255 / 0.06);
+  --_bg: var(--zest-color-code-surface);
+  --_header: var(--zest-color-code-header);
   --_text: var(--zest-gray-100);
 
   display: flex;
@@ -49,7 +49,7 @@
 }
 
 .zest-code-block__copy:hover {
-  background: rgb(255 255 255 / 0.1);
+  background: color-mix(in srgb, var(--zest-white) 10%, transparent);
   color: var(--zest-white);
 }
 
@@ -59,7 +59,7 @@
   padding: var(--zest-space-4) var(--zest-space-5);
   overflow: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgb(255 255 255 / 0.24) transparent;
+  scrollbar-color: color-mix(in srgb, var(--zest-white) 24%, transparent) transparent;
 }
 
 .zest-code-block__pre::-webkit-scrollbar {
@@ -68,7 +68,7 @@
 }
 
 .zest-code-block__pre::-webkit-scrollbar-thumb {
-  background: rgb(255 255 255 / 0.24);
+  background: color-mix(in srgb, var(--zest-white) 24%, transparent);
   border-radius: var(--zest-radius-full);
 }
 

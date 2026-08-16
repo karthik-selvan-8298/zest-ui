@@ -4,7 +4,8 @@ import { Radio, RadioGroup } from './Radio';
 
 const meta = {
   title: 'Forms/Radio',
-} satisfies Meta;
+  component: RadioGroup,
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
