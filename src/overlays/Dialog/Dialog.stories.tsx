@@ -68,6 +68,12 @@ export const FormLayout: Story = {
       >
         <Stack spacing={4}>
           <TextField label="Name" required placeholder="e.g. Stripe test webhook" fullWidth />
+          <TextField
+            label="With value"
+            labelPlacement="floating"
+            defaultValue="Prefilled text"
+            fullWidth
+          />
           <Grid columns={2} gap={4}>
             <TextField label="Status code" required defaultValue="200" fullWidth />
             <TextField label="Retain requests (days)" defaultValue="30" fullWidth />

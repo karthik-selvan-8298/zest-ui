@@ -6,7 +6,11 @@ import { Calendar } from '../Calendar/Calendar';
 import '../../base.css';
 import './DatePicker.css';
 
-export interface DatePickerProps {
+export interface DatePickerProps
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'value' | 'defaultValue' | 'onChange' | 'size'
+  > {
   /** Selected date (controlled). */
   value?: Date | null;
   /** Initially selected date (uncontrolled). */
@@ -25,9 +29,6 @@ export interface DatePickerProps {
   disabledDates?: (date: Date) => boolean;
   /** BCP 47 locale for the display format and calendar. Defaults to the browser locale. */
   locale?: string;
-  id?: string;
-  className?: string;
-  'aria-label'?: string;
 }
 
 /**
@@ -54,9 +55,8 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
       maxDate,
       disabledDates,
       locale,
-      id,
       className,
-      'aria-label': ariaLabel,
+      ...triggerProps
     },
     ref
   ) {
@@ -84,10 +84,9 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
         >
           <Popover.Trigger
             ref={ref}
-            id={id}
-            aria-label={ariaLabel}
             disabled={disabled}
             className="zest-date-picker__trigger"
+            {...triggerProps}
           >
             <span className="zest-date-picker__icon">
               <CalendarIcon />

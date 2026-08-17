@@ -7,8 +7,8 @@
   max-width: 280px;
   padding: var(--zest-space-1) var(--zest-space-2);
   border-radius: var(--zest-radius-sm);
-  background: var(--zest-gray-700);
-  color: var(--zest-white);
+  background: var(--zest-color-tooltip-bg);
+  color: var(--zest-color-tooltip-text);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-xs);
   font-weight: var(--zest-font-weight-medium);
@@ -27,7 +27,7 @@
 
 .zest-tooltip__arrow {
   display: flex;
-  color: var(--zest-gray-700);
+  color: var(--zest-color-tooltip-bg);
 }
 
 .zest-tooltip__arrow[data-side='bottom'] {

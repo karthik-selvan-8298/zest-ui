@@ -62,9 +62,11 @@ const AlertDialogContent = React.forwardRef<HTMLDivElement, AlertDialogContentPr
   }
 );
 
-function AlertDialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <footer className={cx('zest-alert-dialog__footer', className)} {...props} />;
-}
+const AlertDialogFooter = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
+  function AlertDialogFooter({ className, ...props }, ref) {
+    return <footer ref={ref} className={cx('zest-alert-dialog__footer', className)} {...props} />;
+  }
+);
 
 export const AlertDialog = {
   Root: BaseAlertDialog.Root,

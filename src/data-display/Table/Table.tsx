@@ -94,16 +94,19 @@ export interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElem
 }
 
 const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(function TableCell(
-  { align, label, hideOnMobile, className, ...props },
+  { align, label, hideOnMobile, className, style, ...props },
   ref
 ) {
+  // Merge, don't overwrite: without this the caller's `style` was dropped
+  // whenever `align` was set.
+  const mergedStyle = align ? { textAlign: align, ...style } : style;
   return (
     <td
       ref={ref}
       className={cx('zest-table__cell', className)}
       data-label={label}
       data-hide-mobile={hideOnMobile ? '' : undefined}
-      style={align ? { textAlign: align } : undefined}
+      style={mergedStyle}
       {...props}
     />
   );
@@ -116,14 +119,15 @@ export interface TableHeaderCellProps extends React.ThHTMLAttributes<HTMLTableCe
 }
 
 const TableHeaderCell = React.forwardRef<HTMLTableCellElement, TableHeaderCellProps>(
-  function TableHeaderCell({ align, hideOnMobile, className, scope, ...props }, ref) {
+  function TableHeaderCell({ align, hideOnMobile, className, scope, style, ...props }, ref) {
+    const mergedStyle = align ? { textAlign: align, ...style } : style;
     return (
       <th
         ref={ref}
         scope={scope ?? 'col'}
         className={cx('zest-table__header-cell', className)}
         data-hide-mobile={hideOnMobile ? '' : undefined}
-        style={align ? { textAlign: align } : undefined}
+        style={mergedStyle}
         {...props}
       />
     );

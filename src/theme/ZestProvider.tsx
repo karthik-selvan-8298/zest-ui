@@ -4,7 +4,14 @@ import '../tokens/css/tokens.css';
 import type { ZestTheme } from './types';
 
 export type ZestMode = 'light' | 'dark' | 'system';
-export type ZestDensity = 'comfortable' | 'compact';
+/**
+ * Layout + type density.
+ * - `comfortable` — default; roomy spacing and 16px body text.
+ * - `compact`     — shorter controls; body text unchanged.
+ * - `dashboard`   — dense-product scale (14px body, 13px secondary, headings
+ *   step down one rung each) with compact control heights.
+ */
+export type ZestDensity = 'comfortable' | 'compact' | 'dashboard';
 
 export interface ZestContextValue {
   /** Requested mode ('system' allowed). */

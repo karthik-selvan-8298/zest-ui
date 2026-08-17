@@ -42,7 +42,7 @@ export type AccordionTriggerProps = WithClassName<
 >;
 
 /** Header (h3) + trigger button with a rotating chevron. */
-const AccordionTrigger = React.forwardRef<HTMLElement, AccordionTriggerProps>(
+const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>(
   function AccordionTrigger({ className, children, ...props }, ref) {
     return (
       <BaseAccordion.Header className="zest-accordion__header">

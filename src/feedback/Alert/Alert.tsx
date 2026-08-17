@@ -48,10 +48,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert
   },
   ref
 ) {
+  // Announce warnings/errors assertively (`alert`), info/success politely
+  // (`status`) — matches ARIA guidance so non-urgent alerts don't interrupt
+  // screen-reader flow. Callers can override via `role` in `...props`.
+  const defaultRole = severity === 'warning' || severity === 'error' ? 'alert' : 'status';
   return (
     <div
       ref={ref}
-      role="alert"
+      role={defaultRole}
       className={cx('zest-alert', className)}
       data-accent={severity}
       data-variant={variant}

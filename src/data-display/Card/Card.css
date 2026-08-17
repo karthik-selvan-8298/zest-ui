@@ -68,7 +68,6 @@
   object-fit: cover;
 }
 
-/* Tighter rhythm when content follows a header. */
-.zest-card__header + .zest-card__content {
-  padding-top: var(--zest-space-4);
-}
+/* Symmetric inset: header keeps the full 24px on top/sides and content
+   picks up 24px on top too, so the header→content rhythm matches the
+   card's own outer inset. */

@@ -5,6 +5,7 @@ import { Image } from './Image';
 const meta = {
   title: 'Media/Image',
   component: Image,
+  args: { alt: '' },
 } satisfies Meta<typeof Image>;
 
 export default meta;

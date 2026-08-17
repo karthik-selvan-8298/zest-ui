@@ -3,7 +3,7 @@ import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { cx } from '../../utils';
 import './Tooltip.css';
 
-export interface TooltipProps {
+export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Tooltip text. */
   title: React.ReactNode;
   /** The element the tooltip describes. */
@@ -13,7 +13,6 @@ export interface TooltipProps {
   delay?: number;
   /** Show an arrow pointing at the anchor. */
   arrow?: boolean;
-  className?: string;
 }
 
 /**
@@ -31,13 +30,14 @@ export function Tooltip({
   delay = 300,
   arrow = true,
   className,
+  ...popupProps
 }: TooltipProps) {
   return (
     <BaseTooltip.Root>
       <BaseTooltip.Trigger delay={delay} render={children} />
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner side={side} sideOffset={6} className="zest-tooltip__positioner">
-          <BaseTooltip.Popup className={cx('zest-tooltip', className)}>
+          <BaseTooltip.Popup className={cx('zest-tooltip', className)} {...popupProps}>
             {arrow ? (
               <BaseTooltip.Arrow className="zest-tooltip__arrow">
                 <svg width="12" height="6" viewBox="0 0 12 6" fill="currentColor">

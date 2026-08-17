@@ -1,5 +1,6 @@
 .zest-icon-button {
   --_size: var(--zest-button-height-md);
+  --_icon: 1.25rem; /* md → 20px; overridden per size below */
 
   box-sizing: border-box;
   display: inline-flex;
@@ -12,12 +13,23 @@
   border-radius: var(--zest-radius-control);
   background: transparent;
   color: var(--zest-color-text-secondary);
-  font-size: var(--zest-font-size-xl);
+  /* font-size controls text fallback only — icon glyphs draw at --_icon. */
+  font-size: var(--_icon);
   cursor: pointer;
   transition:
     background-color var(--zest-duration-fast) var(--zest-ease-standard),
     color var(--zest-duration-fast) var(--zest-ease-standard),
     transform var(--zest-duration-fast) var(--zest-ease-emphasized);
+}
+
+/* Force icons to their own token size regardless of the SVG's default `1.25em`
+   so the icon-to-edge inset stays visually consistent across variants and
+   the outlined 1px border doesn't visibly tighten the icon. Result:
+   md 36→20px icon (8px inset), sm 30→16px (7), lg 48→24px (12). */
+.zest-icon-button > svg {
+  width: var(--_icon);
+  height: var(--_icon);
+  flex-shrink: 0;
 }
 
 /* Same tactile press language as Button (active-only, no hover growth). */
@@ -31,12 +43,12 @@
 
 .zest-icon-button[data-size='sm'] {
   --_size: var(--zest-button-height-sm);
-  font-size: var(--zest-font-size-md);
+  --_icon: 1rem; /* 16px */
 }
 
 .zest-icon-button[data-size='lg'] {
   --_size: var(--zest-button-height-lg);
-  font-size: var(--zest-font-size-2xl);
+  --_icon: 1.5rem; /* 24px */
 }
 
 .zest-icon-button[data-variant='ghost'] {

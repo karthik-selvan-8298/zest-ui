@@ -5,7 +5,11 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './TimePicker.css';
 
-export interface TimePickerProps {
+export interface TimePickerProps
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
+  > {
   /** Selected time as "HH:mm" (controlled). */
   value?: string | null;
   /** Initially selected time (uncontrolled). */
@@ -28,9 +32,6 @@ export interface TimePickerProps {
   /** BCP 47 locale for time formatting. Defaults to the browser locale. */
   locale?: string;
   name?: string;
-  id?: string;
-  className?: string;
-  'aria-label'?: string;
 }
 
 function parseTime(time: string): number {
@@ -53,25 +54,27 @@ function toTimeValue(totalMinutes: number): string {
  * <TimePicker step={15} minTime="09:00" maxTime="17:00" />
  * ```
  */
-export function TimePicker({
-  value,
-  defaultValue,
-  onValueChange,
-  step = 30,
-  minTime = '00:00',
-  maxTime = '23:59',
-  placeholder = 'Select time',
-  size = 'md',
-  error,
-  fullWidth,
-  disabled,
-  hour12,
-  locale,
-  name,
-  id,
-  className,
-  'aria-label': ariaLabel,
-}: TimePickerProps) {
+export const TimePicker = React.forwardRef<HTMLButtonElement, TimePickerProps>(function TimePicker(
+  {
+    value,
+    defaultValue,
+    onValueChange,
+    step = 30,
+    minTime = '00:00',
+    maxTime = '23:59',
+    placeholder = 'Select time',
+    size = 'md',
+    error,
+    fullWidth,
+    disabled,
+    hour12,
+    locale,
+    name,
+    className,
+    ...triggerProps
+  },
+  ref
+) {
   const timeFormatter = React.useMemo(() => {
     const localeHour12 = new Intl.DateTimeFormat(locale, { hour: 'numeric' }).resolvedOptions()
       .hour12;
@@ -110,12 +113,12 @@ export function TimePicker({
       name={name}
     >
       <SelectPrimitive.Trigger
-        id={id}
-        aria-label={ariaLabel}
+        ref={ref}
         className={cx('zest-select__trigger', 'zest-time-picker', 'zest-focusable', className)}
         data-size={size}
         data-error={error ? '' : undefined}
         data-full-width={fullWidth ? '' : undefined}
+        {...triggerProps}
       >
         <span className="zest-time-picker__clock">
           <ClockIcon />
@@ -163,4 +166,4 @@ export function TimePicker({
       </SelectPrimitive.Portal>
     </SelectPrimitive.Root>
   );
-}
+});

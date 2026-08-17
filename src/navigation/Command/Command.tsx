@@ -18,14 +18,12 @@ export interface CommandItem {
   onSelect?: () => void;
 }
 
-export interface CommandProps {
+export interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   items: ReadonlyArray<CommandItem>;
   placeholder?: string;
   emptyMessage?: React.ReactNode;
-  className?: string;
-  'aria-label'?: string;
 }
 
 interface CommandGroup {
@@ -69,6 +67,7 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>(function C
     emptyMessage = 'No results',
     className,
     'aria-label': ariaLabel = 'Command palette',
+    ...popupProps
   },
   ref
 ) {
@@ -132,6 +131,7 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>(function C
           ref={ref}
           aria-label={ariaLabel}
           className={cx('zest-command__popup', className)}
+          {...popupProps}
         >
           <div className="zest-command__search">
             <SearchIcon className="zest-command__search-icon" />

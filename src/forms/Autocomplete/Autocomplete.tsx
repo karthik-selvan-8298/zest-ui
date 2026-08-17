@@ -10,7 +10,11 @@ export interface AutocompleteSuggestion {
   label: string;
 }
 
-export interface AutocompleteProps {
+export interface AutocompleteProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'value' | 'defaultValue' | 'onChange' | 'size'
+  > {
   /** Suggestions shown under the input, filtered by what the user typed. */
   suggestions: ReadonlyArray<string | AutocompleteSuggestion>;
   /** The input text. Use when controlled. */
@@ -24,9 +28,6 @@ export interface AutocompleteProps {
   disabled?: boolean;
   /** Message shown when no suggestion matches. Defaults to “No results”. */
   emptyMessage?: React.ReactNode;
-  id?: string;
-  className?: string;
-  'aria-label'?: string;
 }
 
 /**
@@ -50,9 +51,8 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
       fullWidth,
       disabled,
       emptyMessage = 'No results',
-      id,
       className,
-      'aria-label': ariaLabel,
+      ...inputProps
     },
     ref
   ) {
@@ -86,10 +86,9 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
         >
           <BaseAutocomplete.Input
             ref={ref}
-            id={id}
-            aria-label={ariaLabel}
             placeholder={placeholder}
             className="zest-autocomplete__input"
+            {...inputProps}
           />
         </BaseAutocomplete.InputGroup>
         <BaseAutocomplete.Portal>

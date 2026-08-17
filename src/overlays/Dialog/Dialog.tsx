@@ -85,9 +85,11 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
   }
 );
 
-function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <footer className={cx('zest-dialog__footer', className)} {...props} />;
-}
+const DialogFooter = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
+  function DialogFooter({ className, ...props }, ref) {
+    return <footer ref={ref} className={cx('zest-dialog__footer', className)} {...props} />;
+  }
+);
 
 /* Explicit composition parts — alternatives to Content's `title`/`description`
    props when a dialog needs a fully custom header or body. */
@@ -98,9 +100,12 @@ export interface DialogHeaderProps extends Omit<React.HTMLAttributes<HTMLElement
   children?: React.ReactNode;
 }
 
-function DialogHeader({ title, description, className, children, ...props }: DialogHeaderProps) {
+const DialogHeader = React.forwardRef<HTMLElement, DialogHeaderProps>(function DialogHeader(
+  { title, description, className, children, ...props },
+  ref
+) {
   return (
-    <header className={cx('zest-dialog__header', className)} {...props}>
+    <header ref={ref} className={cx('zest-dialog__header', className)} {...props}>
       <div className="zest-dialog__heading">
         {title ? (
           <BaseDialog.Title className="zest-dialog__title">{title}</BaseDialog.Title>
@@ -114,11 +119,13 @@ function DialogHeader({ title, description, className, children, ...props }: Dia
       </div>
     </header>
   );
-}
+});
 
-function DialogBody({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cx('zest-dialog__body', className)} {...props} />;
-}
+const DialogBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  function DialogBody({ className, ...props }, ref) {
+    return <div ref={ref} className={cx('zest-dialog__body', className)} {...props} />;
+  }
+);
 
 export const Dialog = {
   Root: BaseDialog.Root,

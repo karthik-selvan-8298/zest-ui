@@ -18,7 +18,8 @@ import {
 import '../../base.css';
 import './Calendar.css';
 
-export interface CalendarProps {
+export interface CalendarProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Selected day (controlled). */
   value?: Date | null;
   /** Initially selected day (uncontrolled). */
@@ -51,9 +52,6 @@ export interface CalendarProps {
   rangeHover?: Date | null;
   /** Fired when the pointer enters an enabled day (null when leaving the grid). */
   onDayHover?: (date: Date | null) => void;
-  className?: string;
-  id?: string;
-  'aria-label'?: string;
 }
 
 const WEEK_LENGTH = 7;
@@ -91,8 +89,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function
     rangeHover,
     onDayHover,
     className,
-    id,
-    'aria-label': ariaLabel,
+    ...rest
   },
   ref
 ) {
@@ -225,7 +222,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function
   );
 
   return (
-    <div ref={ref} className={cx('zest-calendar', className)} id={id}>
+    <div ref={ref} className={cx('zest-calendar', className)} {...rest}>
       <div className="zest-calendar__header">
         <IconButton
           size="sm"
@@ -250,7 +247,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function
       <div
         ref={gridRef}
         role="grid"
-        aria-label={ariaLabel ?? formatMonthYear(visibleMonth, locale)}
+        aria-label={rest['aria-label'] ?? formatMonthYear(visibleMonth, locale)}
         className="zest-calendar__grid"
         onKeyDown={handleKeyDown}
         onMouseLeave={onDayHover ? () => onDayHover(null) : undefined}

@@ -11,7 +11,11 @@ export interface SelectOption<T extends string = string> {
   disabled?: boolean;
 }
 
-export interface SelectProps<T extends string = string> {
+export interface SelectProps<T extends string = string>
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
+  > {
   options: ReadonlyArray<SelectOption<T>>;
   value?: T | null;
   defaultValue?: T | null;
@@ -23,9 +27,6 @@ export interface SelectProps<T extends string = string> {
   disabled?: boolean;
   required?: boolean;
   name?: string;
-  id?: string;
-  className?: string;
-  'aria-label'?: string;
 }
 
 /**
@@ -42,22 +43,24 @@ export interface SelectProps<T extends string = string> {
  * For a long, filterable list use `Combobox` instead — it is this trigger
  * with a built-in search input.
  */
-export function Select<T extends string = string>({
-  options,
-  value,
-  defaultValue,
-  onValueChange,
-  placeholder = 'Select…',
-  size = 'md',
-  error,
-  fullWidth,
-  disabled,
-  required,
-  name,
-  id,
-  className,
-  'aria-label': ariaLabel,
-}: SelectProps<T>) {
+function SelectInner<T extends string = string>(
+  {
+    options,
+    value,
+    defaultValue,
+    onValueChange,
+    placeholder = 'Select…',
+    size = 'md',
+    error,
+    fullWidth,
+    disabled,
+    required,
+    name,
+    className,
+    ...triggerProps
+  }: SelectProps<T>,
+  ref: React.Ref<HTMLButtonElement>
+) {
   return (
     <BaseSelect.Root
       value={value}
@@ -68,12 +71,12 @@ export function Select<T extends string = string>({
       name={name}
     >
       <BaseSelect.Trigger
-        id={id}
-        aria-label={ariaLabel}
+        ref={ref}
         className={cx('zest-select__trigger', 'zest-focusable', className)}
         data-size={size}
         data-error={error ? '' : undefined}
         data-full-width={fullWidth ? '' : undefined}
+        {...triggerProps}
       >
         <BaseSelect.Value className="zest-select__value">
           {(value: T | null) => {
@@ -121,6 +124,11 @@ export function Select<T extends string = string>({
     </BaseSelect.Root>
   );
 }
+
+/** Wrapper preserves the `<T>` generic while still exposing a forwardable ref. */
+export const Select = React.forwardRef(SelectInner) as <T extends string = string>(
+  props: SelectProps<T> & { ref?: React.Ref<HTMLButtonElement> }
+) => React.ReactElement;
 
 /** Advanced escape hatch: raw Base UI Select parts for full composition. */
 export const SelectPrimitive = BaseSelect;

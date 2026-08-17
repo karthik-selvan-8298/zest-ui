@@ -40,7 +40,7 @@
 .zest-button-group[data-orientation='horizontal'] > .zest-icon-button:not(:last-of-type) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  border-right: 1px solid color-mix(in srgb, var(--zest-accent-contrast, #fff) 32%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--zest-accent-contrast) 32%, transparent);
 }
 
 .zest-button-group[data-orientation='vertical'] > .zest-button:not(:first-of-type),
@@ -53,7 +53,7 @@
 .zest-button-group[data-orientation='vertical'] > .zest-icon-button:not(:last-of-type) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--zest-accent-contrast, #fff) 32%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--zest-accent-contrast) 32%, transparent);
 }
 
 /* Outlined/ghost segments separate with the border color instead. */

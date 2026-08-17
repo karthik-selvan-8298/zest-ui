@@ -104,16 +104,29 @@
   left: calc(var(--zest-space-3) + 20px + var(--zest-space-2));
 }
 
-/* Floated: focused or has a value. */
+/* Floated: focused or has a value. Label sits FULLY INSIDE the field's top
+   inset rather than straddling the border — its background is transparent
+   and automatically reads whatever the field's interior color is (the
+   focused surface, the disabled neutral bg, or any override). No notch
+   variable needed, no mismatch against a raised/dark/tinted container.
+   Field padding-top expands so the input text doesn't collide with it. */
 .zest-input[data-floating]:focus-within .zest-input__label,
 .zest-input[data-floating] .zest-input__control:not(:placeholder-shown) ~ .zest-input__label {
-  top: 0;
-  left: var(--zest-space-2);
-  padding-inline: var(--zest-space-1);
-  background: var(--zest-color-surface);
+  top: 4px;
+  left: var(--zest-inset-control-x);
+  transform: none;
+  padding-inline: 0;
+  background: transparent;
   font-size: var(--zest-font-size-xs);
   font-weight: var(--zest-font-weight-medium);
   color: var(--zest-color-text-secondary);
+}
+
+/* When floated, shift the input text down so it doesn't overlap the label. */
+.zest-input[data-floating]:focus-within .zest-input__control,
+.zest-input[data-floating] .zest-input__control:not(:placeholder-shown) {
+  padding-top: 10px;
+  padding-bottom: 0;
 }
 
 .zest-input[data-floating]:focus-within .zest-input__label {

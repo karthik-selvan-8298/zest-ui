@@ -10,7 +10,10 @@
   gap: 2px;
   color: var(--zest-color-text-primary);
   font-family: var(--zest-font-family-sans);
-  font-size: 13px;
+  /* Snapped to the token scale (was 13px/500 — an off-scale value that read
+     dense next to sm=14 body text). xs=12 / medium keeps the visual weight
+     compact while landing on the same rhythm as Menu/Command group labels. */
+  font-size: var(--zest-font-size-xs);
   font-weight: var(--zest-font-weight-medium);
   line-height: var(--zest-line-height-normal);
 }

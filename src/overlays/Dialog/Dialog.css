@@ -85,6 +85,12 @@
   min-height: 0; /* allow the body to shrink below its content height so overflow-y takes effect */
   padding: var(--zest-inset-surface);
   overflow-y: auto;
+  /* Subtle depth: body sits on the "raised" tier so header and footer
+     read as framing chrome around the working area. */
+  background: var(--zest-color-surface-raised);
+  /* Floating-label notches inside the body use the body's bg so they blend
+     into the surface instead of showing a white patch on gray. */
+  --zest-input-notch-bg: var(--zest-color-surface-raised);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
   line-height: var(--zest-line-height-normal);

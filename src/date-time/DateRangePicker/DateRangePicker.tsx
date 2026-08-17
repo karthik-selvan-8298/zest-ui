@@ -13,7 +13,11 @@ export interface DateRange {
   end: Date | null;
 }
 
-export interface DateRangePickerProps {
+export interface DateRangePickerProps
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'value' | 'defaultValue' | 'onChange' | 'size'
+  > {
   /** Selected range (controlled). */
   value?: DateRange;
   /** Initially selected range (uncontrolled). */
@@ -32,9 +36,6 @@ export interface DateRangePickerProps {
   disabledDates?: (date: Date) => boolean;
   /** BCP 47 locale for the display format and calendar. Defaults to the browser locale. */
   locale?: string;
-  id?: string;
-  className?: string;
-  'aria-label'?: string;
 }
 
 const EMPTY_RANGE: DateRange = { start: null, end: null };
@@ -64,9 +65,8 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
       maxDate,
       disabledDates,
       locale,
-      id,
       className,
-      'aria-label': ariaLabel,
+      ...triggerProps
     },
     ref
   ) {
@@ -121,10 +121,9 @@ export const DateRangePicker = React.forwardRef<HTMLButtonElement, DateRangePick
         >
           <Popover.Trigger
             ref={ref}
-            id={id}
-            aria-label={ariaLabel}
             disabled={disabled}
             className="zest-date-picker__trigger"
+            {...triggerProps}
           >
             <span className="zest-date-picker__icon">
               <CalendarIcon />

@@ -2,7 +2,13 @@ import * as React from 'react';
 import { cx } from '../../utils';
 import './Image.css';
 
-export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface ImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'alt'> {
+  /**
+   * Alternative text — describe the image's content and function, or pass an
+   * empty string (`alt=""`) to mark it decorative. Never omit it: the type
+   * makes this required so screen readers can't be left without a name.
+   */
+  alt: string;
   /** object-fit behavior. Defaults to `cover`. */
   fit?: 'cover' | 'contain' | 'fill' | 'none';
   radius?: 'none' | 'control' | 'surface' | 'full';

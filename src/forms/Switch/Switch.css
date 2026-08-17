@@ -37,7 +37,7 @@
   width: var(--_thumb);
   height: var(--_thumb);
   border-radius: var(--zest-radius-full);
-  background: var(--zest-white);
+  background: var(--zest-color-thumb);
   box-shadow: var(--zest-shadow-sm);
   transition: transform var(--zest-duration-fast) var(--zest-ease-emphasized);
 }

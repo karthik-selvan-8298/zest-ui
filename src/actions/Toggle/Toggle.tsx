@@ -11,6 +11,8 @@ export interface ToggleProps
   color?: ZestColor;
   /** Control size. Defaults to `md`. */
   size?: ZestSize;
+  /** Required for icon-only toggles — announces the action to screen readers. */
+  'aria-label': string;
 }
 
 /**

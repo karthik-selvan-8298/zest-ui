@@ -53,19 +53,39 @@
   object-fit: cover;
 }
 
-/* Soft tonal tint + subtle text, driven by data-accent (see base.css). */
+/* Soft tonal tint + subtle text, driven by data-accent (see base.css).
+   Tint ramps down as the avatar grows: 20% at xs (helps a 24px tile still
+   read against text) → 8% at xl (a 64px tile at 16% reads as a heavy
+   chip). Fallback is the md value. */
 .zest-avatar__fallback {
+  --_tint: 14%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+  background: color-mix(in srgb, var(--zest-accent) var(--_tint), transparent);
   color: var(--zest-accent-subtle-text);
   font-size: calc(var(--_size) * 0.38);
   font-weight: var(--zest-font-weight-bold);
   line-height: 1;
   letter-spacing: 0.02em;
+}
+
+.zest-avatar[data-size='xs'] .zest-avatar__fallback {
+  --_tint: 20%;
+}
+.zest-avatar[data-size='sm'] .zest-avatar__fallback {
+  --_tint: 16%;
+}
+.zest-avatar[data-size='md'] .zest-avatar__fallback {
+  --_tint: 14%;
+}
+.zest-avatar[data-size='lg'] .zest-avatar__fallback {
+  --_tint: 10%;
+}
+.zest-avatar[data-size='xl'] .zest-avatar__fallback {
+  --_tint: 8%;
 }
 
 .zest-avatar__icon {

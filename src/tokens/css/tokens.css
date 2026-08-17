@@ -207,6 +207,10 @@
   --zest-color-background: var(--zest-gray-50);
   --zest-color-background-neutral: var(--zest-gray-200);
   --zest-color-surface: var(--zest-white);
+  /* One step below surface — used as the interior/body of layered surfaces
+     (Dialog body, Card content over a header) so header/footer read as
+     framing chrome around the working area. */
+  --zest-color-surface-raised: var(--zest-gray-50);
   --zest-color-field: var(--zest-color-surface);
   --zest-color-surface-hover: rgb(var(--zest-gray-channel) / 0.08);
   --zest-color-surface-active: rgb(var(--zest-gray-channel) / 0.16);
@@ -222,6 +226,13 @@
 
   --zest-color-backdrop: rgb(28 37 46 / 0.48);
   --zest-color-focus-ring: var(--zest-primary-500);
+
+  /* Always-dark tooltip surface + light-thumb controls. Semantic tokens
+     (instead of raw grays) so downstream themes can opt into a different
+     tooltip contrast or thumb color without patching each component. */
+  --zest-color-tooltip-bg: var(--zest-gray-700);
+  --zest-color-tooltip-text: var(--zest-white);
+  --zest-color-thumb: var(--zest-white);
 
   /* Shared focus glow recipe (fields append it after their 1px accent border). */
   --zest-focus-glow: 0 0 0 4px color-mix(in srgb, var(--zest-color-focus-ring) 13%, transparent),
@@ -276,6 +287,9 @@
   --zest-color-background: var(--zest-gray-900);
   --zest-color-background-neutral: rgb(var(--zest-gray-channel) / 0.12);
   --zest-color-surface: var(--zest-gray-800);
+  /* In dark mode the "raised" layer is DARKER than the surface, not
+     lighter — matches how the eye reads a well beneath a lifted panel. */
+  --zest-color-surface-raised: var(--zest-gray-900);
   --zest-color-field: rgb(var(--zest-gray-channel) / 0.08);
 
   --zest-color-text-primary: var(--zest-white);
@@ -283,6 +297,13 @@
   --zest-color-text-disabled: var(--zest-gray-600);
 
   --zest-color-focus-ring: var(--zest-primary-300);
+
+  /* Tooltip stays "always-dark" in both modes for consistency with product
+     tooltip conventions; thumbs shift to a lighter neutral so they still
+     read as elevated on a dark track. */
+  --zest-color-tooltip-bg: var(--zest-gray-700);
+  --zest-color-tooltip-text: var(--zest-white);
+  --zest-color-thumb: var(--zest-gray-100);
 
   --zest-shadow-channel: 0 0 0;
 }
@@ -307,6 +328,7 @@
     --zest-color-background: var(--zest-gray-900);
     --zest-color-background-neutral: rgb(var(--zest-gray-channel) / 0.12);
     --zest-color-surface: var(--zest-gray-800);
+    --zest-color-surface-raised: var(--zest-gray-900);
     --zest-color-field: rgb(var(--zest-gray-channel) / 0.08);
 
     --zest-color-text-primary: var(--zest-white);
@@ -314,6 +336,10 @@
     --zest-color-text-disabled: var(--zest-gray-600);
 
     --zest-color-focus-ring: var(--zest-primary-300);
+
+    --zest-color-tooltip-bg: var(--zest-gray-700);
+    --zest-color-tooltip-text: var(--zest-white);
+    --zest-color-thumb: var(--zest-gray-100);
 
     --zest-shadow-channel: 0 0 0;
   }
@@ -326,6 +352,26 @@
   --zest-button-height-lg: 40px;
   --zest-field-height-sm: 34px;
   --zest-field-height-md: 40px;
+}
+
+/* Dense product / dashboard scale: body drops from 16→14, secondary from
+   14→13 (a deliberate off-scale value at this density only), headings
+   step down one rung each. Field/button heights follow `compact` too. */
+[data-zest-density='dashboard'] {
+  --zest-font-size-xs: 0.6875rem;   /* 11px */
+  --zest-font-size-sm: 0.8125rem;   /* 13px */
+  --zest-font-size-md: 0.875rem;    /* 14px */
+  --zest-font-size-lg: 1rem;        /* 16px — was 18 */
+  --zest-font-size-xl: 1.125rem;    /* 18px — was 20 */
+  --zest-font-size-2xl: 1.25rem;    /* 20px — was 24 */
+  --zest-font-size-3xl: 1.5rem;     /* 24px — was 32 */
+  --zest-font-size-4xl: 2rem;       /* 32px — was 40 */
+
+  --zest-button-height-sm: 26px;
+  --zest-button-height-md: 32px;
+  --zest-button-height-lg: 40px;
+  --zest-field-height-sm: 30px;
+  --zest-field-height-md: 36px;
 }
 
 /* ── Base document defaults ───────────────────────────────────────────── */

@@ -12,7 +12,11 @@ export interface ComboboxOption {
   disabled?: boolean;
 }
 
-export interface ComboboxProps {
+export interface ComboboxProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
+  > {
   options: ReadonlyArray<ComboboxOption>;
   /** Selected value. Use when controlled. */
   value?: string | null;
@@ -28,9 +32,6 @@ export interface ComboboxProps {
   name?: string;
   /** Message shown when the filter matches no options. Defaults to “No results”. */
   emptyMessage?: React.ReactNode;
-  id?: string;
-  className?: string;
-  'aria-label'?: string;
 }
 
 /**
@@ -58,9 +59,8 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
     required,
     name,
     emptyMessage = 'No results',
-    id,
     className,
-    'aria-label': ariaLabel,
+    ...inputProps
   },
   ref
 ) {
@@ -93,10 +93,9 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
       >
         <BaseCombobox.Input
           ref={ref}
-          id={id}
-          aria-label={ariaLabel}
           placeholder={placeholder}
           className="zest-combobox__input"
+          {...inputProps}
         />
         <BaseCombobox.Trigger
           className="zest-combobox__trigger zest-focusable"
