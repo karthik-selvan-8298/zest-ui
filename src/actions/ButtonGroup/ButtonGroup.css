@@ -1,5 +1,20 @@
 .zest-button-group {
   display: inline-flex;
+  /* Outer track keeps mixed-variant segments (solid selected + ghost/text
+     unselected) reading as one control. `overflow: clip` prevents the first/
+     last button's own rounded fill from bleeding past the track's 1px border
+     at the corners (which was causing a visible sliver of border overlap). */
+  border-radius: var(--zest-radius-control);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+  overflow: clip;
+}
+
+/* Segments sit flush inside the track — their own corner radii are redundant
+   (the group clips them) and would otherwise draw a 1px seam against the
+   outer border at each corner. */
+.zest-button-group > .zest-button,
+.zest-button-group > .zest-icon-button {
+  border-radius: 0;
 }
 
 .zest-button-group[data-orientation='vertical'] {

@@ -81,12 +81,18 @@
 }
 
 .zest-dialog__body {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0; /* allow the body to shrink below its content height so overflow-y takes effect */
   padding: var(--zest-inset-surface);
   overflow-y: auto;
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
   line-height: var(--zest-line-height-normal);
+}
+
+.zest-dialog__header,
+.zest-dialog__footer {
+  flex: 0 0 auto; /* header/footer keep their natural height and stay pinned */
 }
 
 .zest-dialog__footer {

@@ -40,6 +40,30 @@ export const SplitButton: Story = {
   ),
 };
 
+export const Segmented: Story = {
+  render: () => (
+    <ButtonGroup>
+      <Button>Public</Button>
+      <Button variant="ghost" color="neutral">
+        Auth required
+      </Button>
+    </ButtonGroup>
+  ),
+};
+
+export const SegmentedFullWidth: Story = {
+  render: () => (
+    <div style={{ width: 480 }}>
+      <ButtonGroup fullWidth>
+        <Button>Public</Button>
+        <Button variant="ghost" color="neutral">
+          Auth required
+        </Button>
+      </ButtonGroup>
+    </div>
+  ),
+};
+
 export const Vertical: Story = {
   render: () => (
     <Stack spacing={4} style={{ maxWidth: 200 }}>
