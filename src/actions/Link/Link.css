@@ -3,19 +3,30 @@
   font-family: var(--zest-font-family-sans);
   text-decoration: none;
   cursor: pointer;
+  transition: color var(--zest-duration-fast) var(--zest-ease-standard);
 }
 
 .zest-link[data-color='primary'] {
   color: var(--zest-color-primary);
-  transition: color var(--zest-duration-fast) var(--zest-ease-standard);
 }
 
+/* Default hover — one rung darker on the primary ramp (500 → 700) plus a
+   subtle synthetic weight bump via text-shadow. Using shadow (not
+   font-weight) keeps the glyph width stable so surrounding text doesn't
+   reflow when the hover engages. Sigma "clickable text" language. */
 .zest-link[data-color='primary']:hover {
   color: var(--zest-color-primary-hover);
+  text-shadow: 0 0 0.35px currentColor;
 }
 
 .zest-link[data-color='inherit'] {
   color: inherit;
+}
+
+.zest-link[data-color='inherit']:hover {
+  /* When color is inherited we can't know what it started at, so darken
+     via a color-mix with the primary hover tone for a similar feel. */
+  color: color-mix(in srgb, currentColor 70%, var(--zest-color-primary-hover));
 }
 
 .zest-link[data-underline='always'] {
@@ -23,7 +34,7 @@
   text-underline-offset: 2px;
 }
 
-.zest-link[data-underline='hover']:hover {
+.zest-link[data-underline='underline-hover']:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
 }

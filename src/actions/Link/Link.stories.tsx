@@ -18,7 +18,10 @@ export const Underline: Story = {
   render: () => (
     <Flex gap={6} align="center">
       <Link href="#" underline="hover">
-        Hover underline
+        Darken on hover
+      </Link>
+      <Link href="#" underline="underline-hover">
+        Underline on hover
       </Link>
       <Link href="#" underline="always">
         Always underlined
