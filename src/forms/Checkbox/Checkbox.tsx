@@ -6,8 +6,9 @@ import type { WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Checkbox.css';
 
-export interface CheckboxProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseCheckbox.Root>, 'color'>> {
+export interface CheckboxProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseCheckbox.Root>, 'color'>
+> {
   /** Visible label rendered next to the box. */
   label?: React.ReactNode;
   color?: ZestColor;
@@ -32,7 +33,12 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(funct
     >
       <BaseCheckbox.Indicator className="zest-checkbox__indicator" keepMounted>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5">
-          <path className="zest-checkbox__check" d="M5 12.5 10 17.5 19 7" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            className="zest-checkbox__check"
+            d="M5 12.5 10 17.5 19 7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
           <path className="zest-checkbox__dash" d="M6 12h12" strokeLinecap="round" />
         </svg>
       </BaseCheckbox.Indicator>

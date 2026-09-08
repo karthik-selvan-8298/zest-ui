@@ -5,7 +5,8 @@ import { Slider } from './Slider';
 const meta = {
   title: 'Forms/Slider',
   component: Slider,
-  args: { defaultValue: 30 },
+  // `aria-label` satisfies the required accessible name for every story.
+  args: { defaultValue: 30, 'aria-label': 'Slider' },
   argTypes: {
     color: {
       control: 'select',

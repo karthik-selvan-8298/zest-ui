@@ -40,8 +40,9 @@ export type ZestToastProviderProps = React.ComponentProps<typeof BaseToast.Provi
 
 export type ToasterPosition = 'bottom-right' | 'top-right' | 'bottom-center';
 
-export interface ToasterProps
-  extends WithClassName<React.ComponentProps<typeof BaseToast.Viewport>> {
+export interface ToasterProps extends WithClassName<
+  React.ComponentProps<typeof BaseToast.Viewport>
+> {
   /** Screen corner the stack anchors to. @default 'bottom-right' */
   position?: ToasterPosition;
 }
@@ -95,8 +96,9 @@ export const Toaster = React.forwardRef<HTMLDivElement, ToasterProps>(function T
       <BaseToast.Viewport
         ref={ref}
         className={cx('zest-toaster', className)}
-        data-position={position}
         {...props}
+        // After the spread so a stray `data-position` in props can't move the stack.
+        data-position={position}
       >
         <ToastList />
       </BaseToast.Viewport>

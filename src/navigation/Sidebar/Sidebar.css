@@ -66,7 +66,8 @@
 
 .zest-sidebar__section-label {
   padding: var(--zest-space-2) var(--zest-space-2);
-  color: color-mix(in srgb, var(--zest-color-text-secondary) 70%, transparent);
+  /* Full secondary tone (4.6:1) — the 70% mix fell below AA contrast. */
+  color: var(--zest-color-text-secondary);
   /* Snapped from 11px (off-scale) to xs=12; letter-spacing + uppercase keep
      the compact "eyebrow" character even at the larger size. */
   font-size: var(--zest-font-size-xs);
@@ -165,7 +166,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-secondary); /* AA — disabled tone is for disabled rows only */
   font-size: var(--zest-font-size-xs);
   font-weight: var(--zest-font-weight-regular);
 }
@@ -272,7 +273,6 @@
 .zest-sidebar[data-collapsed] .zest-sidebar__chevron {
   display: none;
 }
-
 
 /* Mini rail: flyouts must escape the nav scroll area. */
 .zest-sidebar[data-collapsed] .zest-sidebar__nav {

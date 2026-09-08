@@ -24,7 +24,9 @@ export const WithPaper: Story = {
             The Sigma card language: surface radius with the soft card shadow.
           </Typography>
           <Divider />
-          <Flex center style={{ height: 64 }}>Centered content</Flex>
+          <Flex center style={{ height: 64 }}>
+            Centered content
+          </Flex>
         </Stack>
       </Paper>
     </Container>

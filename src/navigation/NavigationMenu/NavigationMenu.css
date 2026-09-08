@@ -1,0 +1,309 @@
+.zest-navigation-menu {
+  box-sizing: border-box;
+  min-width: max-content;
+  font-family: var(--zest-font-family-sans);
+  color: var(--zest-color-text-primary);
+}
+
+.zest-navigation-menu__list {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zest-navigation-menu__item {
+  display: contents;
+}
+
+/* ── Trigger — ghost text button, soft accent while hovered / open ─────── */
+.zest-navigation-menu__trigger {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--zest-space-1);
+  height: var(--zest-button-height-md);
+  padding: 0 var(--zest-space-3);
+  margin: 0;
+  border: 0;
+  border-radius: var(--zest-radius-control);
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-navigation-menu__trigger:hover,
+.zest-navigation-menu__trigger[data-popup-open] {
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+  color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-navigation-menu__trigger:active {
+  background: color-mix(in srgb, var(--zest-color-primary) 14%, transparent);
+}
+
+.zest-navigation-menu__chevron,
+.zest-navigation-menu__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-navigation-menu__chevron > svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.zest-navigation-menu__chevron[data-popup-open] {
+  transform: rotate(180deg);
+}
+
+/* ── Positioner — tracks the active trigger, glides between items ──────── */
+.zest-navigation-menu__positioner {
+  box-sizing: border-box;
+  z-index: var(--zest-z-popover);
+  width: var(--positioner-width);
+  height: var(--positioner-height);
+  max-width: var(--available-width);
+  transition:
+    top var(--zest-duration-normal) var(--zest-ease-emphasized),
+    left var(--zest-duration-normal) var(--zest-ease-emphasized),
+    right var(--zest-duration-normal) var(--zest-ease-emphasized),
+    bottom var(--zest-duration-normal) var(--zest-ease-emphasized);
+}
+
+.zest-navigation-menu__positioner[data-instant] {
+  transition: none;
+}
+
+/* Invisible bridge across the sideOffset gap so the pointer can travel from
+   the trigger into the flyout without the hover-close timer firing. */
+.zest-navigation-menu__positioner::before {
+  content: '';
+  position: absolute;
+}
+
+.zest-navigation-menu__positioner[data-side='top']::before {
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  height: 10px;
+}
+
+.zest-navigation-menu__positioner[data-side='bottom']::before {
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+}
+
+.zest-navigation-menu__positioner[data-side='left']::before {
+  top: 0;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+}
+
+.zest-navigation-menu__positioner[data-side='right']::before {
+  top: 0;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+}
+
+/* ── Popup — same panel language as Menu / Popover ─────────────────────── */
+.zest-navigation-menu__popup {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--popup-width);
+  height: var(--popup-height);
+  max-height: var(--available-height);
+  border-radius: var(--zest-radius-panel);
+  background: var(--zest-color-surface);
+  color: var(--zest-color-text-primary);
+  box-shadow: var(--zest-shadow-dropdown);
+  outline: none;
+  transform-origin: var(--transform-origin);
+  transition:
+    transform var(--zest-duration-fast) var(--zest-ease-standard),
+    opacity var(--zest-duration-fast) var(--zest-ease-standard),
+    width var(--zest-duration-normal) var(--zest-ease-emphasized),
+    height var(--zest-duration-normal) var(--zest-ease-emphasized);
+}
+
+.zest-navigation-menu__popup[data-starting-style],
+.zest-navigation-menu__popup[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.zest-navigation-menu__viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+/* ── Arrow (opt-in via `arrow` on Root) ────────────────────────────────── */
+.zest-navigation-menu__arrow {
+  --_w: 12px;
+  --_h: 6px;
+
+  display: block;
+  position: relative;
+  width: var(--_w);
+  height: var(--_h);
+  overflow: clip;
+  transition:
+    left var(--zest-duration-normal) var(--zest-ease-emphasized),
+    right var(--zest-duration-normal) var(--zest-ease-emphasized);
+}
+
+.zest-navigation-menu__arrow::before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  box-sizing: border-box;
+  width: calc(var(--_h) * 1.414);
+  height: calc(var(--_h) * 1.414);
+  background: var(--zest-color-surface);
+  box-shadow: 0 0 2px 0 rgb(var(--zest-shadow-channel) / 0.24);
+  transform: translate(-50%, 50%) rotate(45deg);
+}
+
+.zest-navigation-menu__arrow[data-side='top'] {
+  bottom: calc(-1 * var(--_h));
+  rotate: 180deg;
+}
+
+.zest-navigation-menu__arrow[data-side='bottom'] {
+  top: calc(-1 * var(--_h));
+}
+
+.zest-navigation-menu__arrow[data-side='left'] {
+  right: calc(-1 * var(--_h) - 3px);
+  rotate: 90deg;
+}
+
+.zest-navigation-menu__arrow[data-side='right'] {
+  left: calc(-1 * var(--_h) - 3px);
+  rotate: -90deg;
+}
+
+/* ── Content — the flyout body, slides in from the direction of travel ─── */
+.zest-navigation-menu__content {
+  --_min-w: 240px;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  min-width: var(--_min-w);
+  max-width: min(400px, calc(100vw - 40px));
+  height: 100%;
+  padding: var(--zest-space-2);
+  transition:
+    opacity calc(var(--zest-duration-normal) / 2) var(--zest-ease-standard),
+    transform var(--zest-duration-normal) var(--zest-ease-emphasized);
+}
+
+.zest-navigation-menu__content[data-starting-style],
+.zest-navigation-menu__content[data-ending-style] {
+  opacity: 0;
+}
+
+.zest-navigation-menu__content[data-starting-style][data-activation-direction='left'] {
+  transform: translateX(-50%);
+}
+
+.zest-navigation-menu__content[data-starting-style][data-activation-direction='right'] {
+  transform: translateX(50%);
+}
+
+.zest-navigation-menu__content[data-ending-style][data-activation-direction='left'] {
+  transform: translateX(50%);
+}
+
+.zest-navigation-menu__content[data-ending-style][data-activation-direction='right'] {
+  transform: translateX(-50%);
+}
+
+/* ── Link — a row inside the flyout (or a plain top-level nav link) ─────── */
+.zest-navigation-menu__link {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--zest-space-2) var(--zest-space-3);
+  border-radius: var(--zest-radius-row);
+  color: var(--zest-color-text-primary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-tight);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* Top-level links sit beside triggers and take the trigger's pill shape. */
+.zest-navigation-menu__list > .zest-navigation-menu__item > .zest-navigation-menu__link {
+  flex-direction: row;
+  align-items: center;
+  height: var(--zest-button-height-md);
+  padding: 0 var(--zest-space-3);
+  border-radius: var(--zest-radius-control);
+  white-space: nowrap;
+}
+
+/* Hover / focus / current page: the shared soft accent row. */
+.zest-navigation-menu__link:hover,
+.zest-navigation-menu__link:focus-visible,
+.zest-navigation-menu__link[data-active] {
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+  color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-navigation-menu__link:active {
+  background: color-mix(in srgb, var(--zest-color-primary) 14%, transparent);
+}
+
+.zest-navigation-menu__link-label {
+  display: block;
+}
+
+.zest-navigation-menu__link-description {
+  display: block;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-regular);
+  line-height: var(--zest-line-height-normal);
+}
+
+/* Description keeps its own tone; only the label picks up the accent. */
+.zest-navigation-menu__link:hover .zest-navigation-menu__link-description,
+.zest-navigation-menu__link[data-active] .zest-navigation-menu__link-description {
+  color: var(--zest-color-text-secondary);
+}

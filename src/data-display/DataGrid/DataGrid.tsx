@@ -22,7 +22,6 @@ import './DataGrid.css';
  * />
  */
 
-
 const SKELETON_ROW_COUNT = 3;
 
 export interface DataGridColumn<Row> {
@@ -43,8 +42,7 @@ export interface DataGridSort {
   direction: 'asc' | 'desc';
 }
 
-export interface DataGridProps<Row>
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect'> {
+export interface DataGridProps<Row> extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSelect'> {
   /**
    * Column definitions. Omit to derive them dynamically from the first row's
    * keys (header = capitalized key, all sortable) — handy for API-driven data.

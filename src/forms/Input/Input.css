@@ -28,7 +28,8 @@
 }
 
 .zest-input:focus-within:not([data-disabled]) {
-  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-primary),
     var(--zest-focus-glow);
 }
 
@@ -61,7 +62,7 @@
 }
 
 .zest-input__control::placeholder {
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-placeholder);
 }
 
 .zest-input__control:disabled {
@@ -87,7 +88,7 @@
   top: 50%;
   left: var(--zest-space-3);
   transform: translateY(-50%);
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-placeholder);
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-sm);
   line-height: 1;
@@ -143,7 +144,7 @@
 }
 
 .zest-input[data-floating]:focus-within .zest-input__control::placeholder {
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-placeholder);
 }
 
 /* Focused fields lift to the surface color (QA field style). */

@@ -49,7 +49,9 @@
   font-size: var(--zest-font-size-sm);
   line-height: var(--zest-line-height-normal);
   transform: translateX(var(--toast-swipe-movement-x, 0px))
-    translateY(calc(var(--toast-swipe-movement-y, 0px) + var(--toast-index, 0) * 12px * var(--_dir)))
+    translateY(
+      calc(var(--toast-swipe-movement-y, 0px) + var(--toast-index, 0) * 12px * var(--_dir))
+    )
     scale(calc(1 - var(--toast-index, 0) * 0.05));
   transition:
     transform var(--zest-duration-normal) var(--zest-ease-emphasized),

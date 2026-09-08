@@ -105,13 +105,55 @@ const SidebarRoot = React.forwardRef<HTMLElement, SidebarRootProps>(function Sid
     onChange: onCollapsedChange,
   });
 
+  // Off-canvas mode is a modal dialog: move focus inside on open, keep Tab
+  // cycling within the panel, close on Escape, and hand focus back on close.
+  const asideRef = React.useRef<HTMLElement | null>(null);
+  const setAsideRef = React.useCallback(
+    (node: HTMLElement | null) => {
+      asideRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref]
+  );
+
   React.useEffect(() => {
-    if (!mobileOpen || !onMobileClose) return;
+    if (!mobileOpen) return;
+    const aside = asideRef.current;
+    if (!aside) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const focusables = () =>
+      Array.from(
+        aside.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+    (aside.querySelector<HTMLElement>('.zest-sidebar__mobile-close') ?? focusables()[0])?.focus();
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onMobileClose();
+      if (event.key === 'Escape') {
+        onMobileClose?.();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const list = focusables();
+      if (list.length === 0) return;
+      const first = list[0]!;
+      const last = list[list.length - 1]!;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      previouslyFocused?.focus?.();
+    };
   }, [mobileOpen, onMobileClose]);
 
   return (
@@ -120,7 +162,10 @@ const SidebarRoot = React.forwardRef<HTMLElement, SidebarRootProps>(function Sid
         <div className="zest-sidebar__backdrop" aria-hidden onClick={onMobileClose} />
       ) : null}
       <aside
-        ref={ref}
+        ref={setAsideRef}
+        role={mobileOpen ? 'dialog' : undefined}
+        aria-modal={mobileOpen ? true : undefined}
+        aria-label={mobileOpen ? 'Navigation' : undefined}
         className={cx('zest-sidebar', className)}
         data-collapsed={collapsed ? '' : undefined}
         data-mobile-open={mobileOpen ? '' : undefined}
@@ -187,8 +232,7 @@ const SidebarSection = React.forwardRef<HTMLDivElement, SidebarSectionProps>(
   }
 );
 
-export interface SidebarItemProps
-  extends Omit<React.HTMLAttributes<HTMLLIElement>, 'onClick'> {
+export interface SidebarItemProps extends Omit<React.HTMLAttributes<HTMLLIElement>, 'onClick'> {
   label: React.ReactNode;
   /** Leading icon — inherits the accent color when `active`. */
   icon?: React.ReactNode;
@@ -266,10 +310,13 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
     [ref]
   );
 
-  // Collapsing the rail dismisses any open flyout.
-  React.useEffect(() => {
+  // Expanding the rail dismisses any open flyout (flyouts only exist in the
+  // collapsed rail). Derived reset during render — no effect round-trip.
+  const [wasCollapsed, setWasCollapsed] = React.useState(collapsed);
+  if (collapsed !== wasCollapsed) {
+    setWasCollapsed(collapsed);
     if (!collapsed) setFlyoutOpen(false);
-  }, [collapsed]);
+  }
 
   // Close the flyout on outside pointer-down or Escape.
   React.useEffect(() => {
@@ -390,9 +437,7 @@ const SidebarItem = React.forwardRef<HTMLLIElement, SidebarItemProps>(function S
         </div>
       ) : hasChildren ? (
         <Collapsible.Root defaultOpen={defaultExpanded} disabled={disabled}>
-          <Collapsible.Trigger
-            render={<button type="button" {...rowProps} disabled={disabled} />}
-          >
+          <Collapsible.Trigger render={<button type="button" {...rowProps} disabled={disabled} />}>
             {rowContent}
           </Collapsible.Trigger>
           <Collapsible.Panel className="zest-sidebar__panel">{nested}</Collapsible.Panel>

@@ -61,8 +61,8 @@ export const TruncationAndClamping: Story = {
       </Typography>
       <Typography truncate={2}>
         Two-line clamp — this very long paragraph demonstrates multi-line clamping. It will show at
-        most two lines of text and then cut off with an ellipsis, no matter how much content
-        follows after that point.
+        most two lines of text and then cut off with an ellipsis, no matter how much content follows
+        after that point.
       </Typography>
     </Stack>
   ),

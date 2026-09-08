@@ -18,8 +18,10 @@ import {
 import '../../base.css';
 import './Calendar.css';
 
-export interface CalendarProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface CalendarProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Selected day (controlled). */
   value?: Date | null;
   /** Initially selected day (uncontrolled). */
@@ -106,11 +108,13 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function
   const [visibleMonth, setVisibleMonth] = useControllableState<Date>({
     value: month ? startOfMonth(month) : undefined,
     defaultValue: startOfMonth(
-      defaultMonth ?? value ?? defaultValue ?? rangeStart ?? new Date()
+      // eslint-disable-next-line @eslint-react/purity -- read once as the uncontrolled default; "now" is the right seed
+      defaultMonth ?? value ?? defaultValue ?? rangeStart ?? rangeEnd ?? new Date()
     ),
     onChange: onMonthChange,
   });
 
+  // eslint-disable-next-line @eslint-react/purity -- "today" must follow the real clock on every render (long-lived inline calendars cross midnight)
   const today = startOfDay(new Date());
 
   // Roving focus. `focusedDate` follows keyboard navigation; when the visible
@@ -265,9 +269,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function
               const iso = toISODay(day);
               const outside = !isSameMonth(day, visibleMonth);
               if (outside && !showOutsideDays) {
-                return (
-                  <span key={iso} className="zest-calendar__day" data-hidden="" aria-hidden />
-                );
+                return <span key={iso} className="zest-calendar__day" data-hidden="" aria-hidden />;
               }
               const disabled = isDayDisabled(day);
               const isSelected = isRangeMode
@@ -297,9 +299,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function
                   aria-label={dayFormatter.format(day)}
                   tabIndex={isSameDay(day, focusTarget) ? 0 : -1}
                   onClick={() => handleDayClick(day, disabled)}
-                  onMouseEnter={
-                    onDayHover && !disabled ? () => onDayHover(day) : undefined
-                  }
+                  onMouseEnter={onDayHover && !disabled ? () => onDayHover(day) : undefined}
                 >
                   {day.getDate()}
                 </button>

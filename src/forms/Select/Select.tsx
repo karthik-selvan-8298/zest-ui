@@ -11,11 +11,10 @@ export interface SelectOption<T extends string = string> {
   disabled?: boolean;
 }
 
-export interface SelectProps<T extends string = string>
-  extends Omit<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
-  > {
+export interface SelectProps<T extends string = string> extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
+> {
   options: ReadonlyArray<SelectOption<T>>;
   value?: T | null;
   defaultValue?: T | null;

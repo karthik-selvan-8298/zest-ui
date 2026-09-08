@@ -16,8 +16,7 @@ export const Default: Story = {
         <Accordion.Item value="shipping">
           <Accordion.Trigger>Shipping</Accordion.Trigger>
           <Accordion.Panel>
-            Orders ship within 2 business days. Tracking is emailed as soon as the label is
-            created.
+            Orders ship within 2 business days. Tracking is emailed as soon as the label is created.
           </Accordion.Panel>
         </Accordion.Item>
         <Accordion.Item value="returns">

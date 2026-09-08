@@ -69,8 +69,8 @@
 }
 
 .zest-calendar__day[data-outside] {
+  /* Secondary tone alone (4.6:1) — the former 60% opacity fell below AA. */
   color: var(--zest-color-text-secondary);
-  opacity: 0.6;
 }
 
 .zest-calendar__day[data-today] {

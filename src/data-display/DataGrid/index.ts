@@ -1,6 +1,1 @@
-export {
-  DataGrid,
-  type DataGridProps,
-  type DataGridColumn,
-  type DataGridSort,
-} from './DataGrid';
+export { DataGrid, type DataGridProps, type DataGridColumn, type DataGridSort } from './DataGrid';

@@ -27,10 +27,10 @@ export const WithDefaultRange: Story = {
 };
 
 function ControlledDemo() {
-  const [range, setRange] = React.useState<DateRange>({
+  const [range, setRange] = React.useState<DateRange>(() => ({
     start: new Date(2026, 7, 3),
     end: new Date(2026, 7, 21),
-  });
+  }));
   return (
     <Stack spacing={2} style={{ maxWidth: 320 }}>
       <DateRangePicker

@@ -4,8 +4,11 @@ import { useControllableState } from '../../utils';
 import { Input, type InputProps } from '../Input/Input';
 import { IconButton } from '../../actions/IconButton/IconButton';
 
-export interface SearchInputProps
-  extends Omit<InputProps, 'type' | 'startAdornment' | 'endAdornment' | 'value' | 'onChange'> {
+/** Adornment slots are owned by the built-in search icon and clear button. */
+export interface SearchInputProps extends Omit<
+  InputProps,
+  'type' | 'startAdornment' | 'endAdornment' | 'startIcon' | 'endIcon' | 'value' | 'onChange'
+> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;

@@ -5,8 +5,9 @@ import type { WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Slider.css';
 
-export interface SliderProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseSlider.Root>, 'color'>> {
+interface SliderBaseProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseSlider.Root>, 'color' | 'aria-labelledby'>
+> {
   /** Tone of the filled indicator and thumb ring. Defaults to `primary`. */
   color?: ZestColor;
   /** Control size. Defaults to `md`. */
@@ -16,16 +17,35 @@ export interface SliderProps
 }
 
 /**
+ * A slider has no text of its own, so `aria-label` or `aria-labelledby` is
+ * required. When composed inside `FormField` with a `Label`, pass the label's
+ * id via `aria-labelledby`.
+ */
+export type SliderProps = SliderBaseProps &
+  (
+    | { 'aria-label': string; 'aria-labelledby'?: string }
+    | { 'aria-label'?: string; 'aria-labelledby': string }
+  );
+
+/**
  * Slider on Base UI — single value or range (pass an array `value` /
  * `defaultValue` to get one thumb per entry).
  *
  * ```tsx
- * <Slider defaultValue={30} showValue />
- * <Slider defaultValue={[20, 80]} color="secondary" />
+ * <Slider aria-label="Volume" defaultValue={30} showValue />
+ * <Slider aria-label="Price range" defaultValue={[20, 80]} color="secondary" />
  * ```
  */
 export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(function Slider(
-  { color = 'primary', size = 'md', showValue = false, className, ...props },
+  {
+    color = 'primary',
+    size = 'md',
+    showValue = false,
+    className,
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledby,
+    ...props
+  },
   ref
 ) {
   const currentValue = props.value ?? props.defaultValue;
@@ -37,6 +57,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(function Sli
       className={cx('zest-slider', className)}
       data-accent={color}
       data-size={size}
+      aria-labelledby={ariaLabelledby}
       {...props}
     >
       <BaseSlider.Control className="zest-slider__control">
@@ -47,6 +68,15 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(function Sli
               key={index}
               index={thumbCount > 1 ? index : undefined}
               className="zest-slider__thumb zest-focusable"
+              // The thumb hosts the real <input type="range">, so the name
+              // belongs here. Range sliders suffix the position so each
+              // handle is distinguishable to assistive tech.
+              aria-label={
+                ariaLabel && thumbCount > 1
+                  ? `${ariaLabel} ${index === 0 ? 'start' : index === thumbCount - 1 ? 'end' : index + 1}`
+                  : ariaLabel
+              }
+              aria-labelledby={ariaLabel ? undefined : ariaLabelledby}
             />
           ))}
         </BaseSlider.Track>

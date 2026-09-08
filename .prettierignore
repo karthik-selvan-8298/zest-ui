@@ -1,0 +1,12 @@
+# Build output and caches
+dist/
+storybook-static/
+coverage/
+node_modules/
+
+# Lockfile and generated snapshots
+package-lock.json
+.storybook/__image_snapshots__/
+
+# Husky runtime shims
+.husky/_/

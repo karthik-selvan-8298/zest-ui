@@ -1,0 +1,76 @@
+.zest-meter {
+  --_track-h: var(--zest-space-2);
+  --_gap: 2px;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--zest-space-2);
+  width: 100%;
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-meter[data-size='sm'] {
+  --_track-h: var(--zest-space-1);
+}
+
+.zest-meter__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--zest-space-2);
+}
+
+.zest-meter__label {
+  color: var(--zest-color-text-primary);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-meter__value {
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-meter__track {
+  position: relative;
+  height: var(--_track-h);
+  overflow: hidden;
+  border-radius: var(--zest-radius-full);
+  background: var(--zest-color-background-neutral);
+}
+
+/* Segmented: mask the whole track into N equal cells with 2px gaps. The
+   indicator lives inside the track so the same mask clips it to the filled
+   cells — no extra DOM, and aria-valuenow stays the true value. */
+.zest-meter[data-segmented] .zest-meter__track {
+  --_seg: calc((100% - (var(--_segments) - 1) * var(--_gap)) / var(--_segments));
+
+  -webkit-mask-image: repeating-linear-gradient(
+    to right,
+    #000 0,
+    #000 var(--_seg),
+    transparent var(--_seg),
+    transparent calc(var(--_seg) + var(--_gap))
+  );
+  mask-image: repeating-linear-gradient(
+    to right,
+    #000 0,
+    #000 var(--_seg),
+    transparent var(--_seg),
+    transparent calc(var(--_seg) + var(--_gap))
+  );
+}
+
+/* Base UI sets the inline width (%); we style the fill. */
+.zest-meter__indicator {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--zest-accent);
+  transition:
+    width var(--zest-duration-normal) var(--zest-ease-standard),
+    background-color var(--zest-duration-normal) var(--zest-ease-standard);
+}

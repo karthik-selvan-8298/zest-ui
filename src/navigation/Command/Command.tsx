@@ -91,13 +91,17 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>(function C
   const optionId = (item: CommandItem) => `${listboxId}-${item.id}`;
   const highlighted = flat[highlightedIndex];
 
-  // Reset transient state whenever the palette closes.
-  React.useEffect(() => {
+  // Reset transient state whenever the palette closes. Adjusting state during
+  // render (React's sanctioned "derived reset" pattern) avoids committing a
+  // stale frame and re-rendering from an effect.
+  const [wasOpen, setWasOpen] = React.useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (!open) {
       setQuery('');
       setHighlightedIndex(0);
     }
-  }, [open]);
+  }
 
   React.useEffect(() => {
     if (!highlighted) return;
@@ -155,12 +159,7 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>(function C
               onKeyDown={handleKeyDown}
             />
           </div>
-          <div
-            id={listboxId}
-            role="listbox"
-            aria-label="Commands"
-            className="zest-command__list"
-          >
+          <div id={listboxId} role="listbox" aria-label="Commands" className="zest-command__list">
             {flat.length === 0 ? (
               <div className="zest-command__empty">{emptyMessage}</div>
             ) : (

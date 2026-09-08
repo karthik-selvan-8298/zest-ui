@@ -19,7 +19,7 @@ export const Default: Story = {
 };
 
 function ControlledDemo() {
-  const [date, setDate] = React.useState<Date | null>(new Date(2026, 7, 14));
+  const [date, setDate] = React.useState<Date | null>(() => new Date(2026, 7, 14));
   return (
     <Stack spacing={2} style={{ maxWidth: 280 }}>
       <DatePicker
@@ -55,12 +55,7 @@ export const States: Story = {
   render: () => (
     <Stack spacing={4} style={{ maxWidth: 280 }}>
       <DatePicker aria-label="Small" size="sm" placeholder="Small" fullWidth />
-      <DatePicker
-        aria-label="Clearable"
-        defaultValue={new Date(2026, 7, 14)}
-        clearable
-        fullWidth
-      />
+      <DatePicker aria-label="Clearable" defaultValue={new Date(2026, 7, 14)} clearable fullWidth />
       <DatePicker aria-label="Error" error placeholder="Error state" fullWidth />
       <DatePicker aria-label="Disabled" disabled placeholder="Disabled" fullWidth />
       <DatePicker

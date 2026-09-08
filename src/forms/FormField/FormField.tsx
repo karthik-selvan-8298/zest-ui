@@ -28,15 +28,11 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(function Lab
   { className, required, children, ...props },
   ref
 ) {
-  // Pair the visual asterisk with `aria-required` so assistive tech
-  // announces the requirement rather than reading only the star glyph.
+  // The asterisk is decorative (aria-hidden); the requirement itself is
+  // announced from the control (`required` on Input/Select sets
+  // aria-required there — `aria-required` is not a valid attribute on <label>).
   return (
-    <Field.Label
-      ref={ref}
-      className={cx('zest-label', className)}
-      aria-required={required || undefined}
-      {...props}
-    >
+    <Field.Label ref={ref} className={cx('zest-label', className)} {...props}>
       {children}
       {required ? (
         <span aria-hidden className="zest-label__asterisk">

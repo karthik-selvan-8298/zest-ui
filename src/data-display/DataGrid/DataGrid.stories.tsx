@@ -82,7 +82,13 @@ export const Default: Story = {
 
 export const DenseStriped: Story = {
   render: () => (
-    <DataGrid columns={columns} rows={employees.slice(0, 8)} getRowId={(row) => row.id} dense striped />
+    <DataGrid
+      columns={columns}
+      rows={employees.slice(0, 8)}
+      getRowId={(row) => row.id}
+      dense
+      striped
+    />
   ),
 };
 
@@ -97,7 +103,6 @@ export const Empty: Story = {
     <DataGrid columns={columns} rows={[]} getRowId={(row: Employee) => row.id} selectable />
   ),
 };
-
 
 /* Dynamic: columns derived from the data itself + simulated API loading. */
 function DynamicDemo() {
@@ -115,12 +120,7 @@ function DynamicDemo() {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <DataGrid
-      rows={rows}
-      loading={loading}
-      stackOnMobile
-      getRowId={(row) => String(row.email)}
-    />
+    <DataGrid rows={rows} loading={loading} stackOnMobile getRowId={(row) => String(row.email)} />
   );
 }
 

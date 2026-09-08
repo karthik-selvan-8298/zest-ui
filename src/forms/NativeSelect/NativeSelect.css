@@ -40,7 +40,8 @@
 }
 
 .zest-native-select__control:focus {
-  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-primary),
     var(--zest-focus-glow);
 }
 
@@ -63,7 +64,7 @@
 
 /* Placeholder (empty disabled option selected). */
 .zest-native-select__control:has(option[value='']:checked) {
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-placeholder);
 }
 
 .zest-native-select__icon {

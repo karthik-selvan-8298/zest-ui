@@ -5,8 +5,9 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './ToggleGroup.css';
 
-export interface ToggleGroupProps
-  extends WithClassName<React.ComponentProps<typeof BaseToggleGroup>> {
+export interface ToggleGroupProps extends WithClassName<
+  React.ComponentProps<typeof BaseToggleGroup>
+> {
   /**
    * Allow several toggles to be pressed at once.
    * Alias for Base UI's `multiple` prop.
@@ -25,15 +26,16 @@ export interface ToggleGroupProps
  * </ToggleGroup>
  * ```
  */
-export const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
-  function ToggleGroup({ toggleMultiple, multiple, className, ...props }, ref) {
-    return (
-      <BaseToggleGroup
-        ref={ref}
-        multiple={toggleMultiple ?? multiple}
-        className={cx('zest-toggle-group', className)}
-        {...props}
-      />
-    );
-  }
-);
+export const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(function ToggleGroup(
+  { toggleMultiple, multiple, className, ...props },
+  ref
+) {
+  return (
+    <BaseToggleGroup
+      ref={ref}
+      multiple={toggleMultiple ?? multiple}
+      className={cx('zest-toggle-group', className)}
+      {...props}
+    />
+  );
+});

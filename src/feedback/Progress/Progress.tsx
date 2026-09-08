@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Progress as BaseProgress } from '@base-ui/react/progress';
 import { cx } from '../../utils';
-import type { WithClassName, ZestColor } from '../../types';
+import type { AccessibleName, WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Progress.css';
 
-export interface ProgressProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseProgress.Root>, 'value'>> {
+interface ProgressBaseProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseProgress.Root>, 'value' | 'aria-label' | 'aria-labelledby'>
+> {
   /**
    * Current value between `min` and `max` (0–100 by default).
-   * `null` renders an indeterminate sliding bar.
+   * `null` (the default) renders an indeterminate sliding bar.
    * @default null
    */
   value?: number | null;
@@ -17,16 +18,20 @@ export interface ProgressProps
   size?: 'sm' | 'md';
   /** Show the formatted value (e.g. "40%") next to the label. */
   showValue?: boolean;
-  /** Accessible label rendered above the bar. */
-  label?: React.ReactNode;
 }
+
+/**
+ * A progress bar has no text of its own, so one of `label` (visible, rendered
+ * above the bar), `aria-label`, or `aria-labelledby` is required.
+ */
+export type ProgressProps = ProgressBaseProps & AccessibleName;
 
 /**
  * Linear progress bar on Base UI Progress.
  *
  * ```tsx
  * <Progress value={60} label="Uploading…" showValue />
- * <Progress value={null} color="info" />
+ * <Progress value={null} color="info" aria-label="Loading" />
  * ```
  */
 export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(function Progress(

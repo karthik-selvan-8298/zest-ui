@@ -1,0 +1,25 @@
+/* `.zest-visually-hidden` itself lives in base.css. This file only adds the
+   focus-reveal used by skip links: undo the clipping and float the element as
+   a small surface in the top-left corner while it holds keyboard focus. */
+.zest-visually-hidden--focusable:focus-visible {
+  position: fixed;
+  top: var(--zest-space-2);
+  left: var(--zest-space-2);
+  z-index: var(--zest-z-toast);
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: var(--zest-space-2) var(--zest-space-3);
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+  border-radius: var(--zest-radius-control);
+  background: var(--zest-color-surface);
+  color: var(--zest-color-text-primary);
+  box-shadow: var(--zest-shadow-dropdown);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-tight);
+  text-decoration: none;
+}

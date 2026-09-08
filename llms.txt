@@ -24,7 +24,8 @@ ZestProvider auto-loads the design tokens and self-hosted Roboto — no CSS impo
 pages or manual CSS-order control.)
 
 ZestProvider props: theme?: ZestTheme, defaultMode?: 'light'|'dark'|'system' (default 'system'),
-mode? (controlled), onModeChange?, defaultDensity?: 'comfortable'|'compact',
+mode? (controlled), onModeChange?, defaultDensity?: 'comfortable'|'compact'|'dashboard'
+('dashboard' = dense product scale: 14px body / 13px secondary, headings one rung down, compact controls),
 storageKey?: string|null (localStorage persistence of mode; null disables).
 
 Toasts additionally need: wrap app in `ZestToastProvider` and render `<Toaster />` once.
@@ -46,6 +47,9 @@ import { SearchToolbar, FormSection } from 'zest-ui/patterns';    // patterns su
 - Controlled/uncontrolled: every stateful component supports value/defaultValue + onValueChange
   (or checked/defaultChecked + onCheckedChange for Checkbox/Switch/Toggle-like).
 - className/style pass through everywhere. All components forwardRef.
+- Controls with no visible text REQUIRE an accessible name at the type level: IconButton/Toggle →
+  aria-label; Progress/CircularProgress/Meter → label | aria-label | aria-labelledby (exported
+  `AccessibleName` type); Slider → aria-label | aria-labelledby; Image → alt ('' for decorative).
 
 ## ACTIONS
 
@@ -59,11 +63,27 @@ IconButton: REQUIRES aria-label. variant ('ghost' default), color ('neutral' def
   shape: 'square'(default, rounded square)|'round'.
   <IconButton aria-label="Close"><CloseIcon/></IconButton>
 
-ButtonGroup: wraps Buttons → segmented control. orientation, fullWidth.
-Toggle: pressed/defaultPressed/onPressedChange, color, size. Icon-button look.
+ButtonGroup: joins adjacent Buttons/IconButtons (split buttons, icon clusters) inside one outer
+  track. orientation, fullWidth. NOT for single-choice toggles — use Segmented.
+Segmented: single-select segmented control (use instead of ButtonGroup + ghost Buttons).
+  value/defaultValue/onValueChange (string — never empty; re-clicking the selected segment is a no-op),
+  options: {value, label, icon?, disabled?}[] OR <Segmented.Item value icon?>Label</Segmented.Item>,
+  variant 'solid'(default, accent pill)|'soft' (tinted pill), color, size 'sm'|'md', fullWidth, disabled.
+  ALWAYS pass aria-label (the group has no visible label); icon-only Items need their own aria-label.
+  <Segmented aria-label="View" defaultValue="list" options={[{value:'list',label:'List'},{value:'grid',label:'Grid'}]} onValueChange={setView}/>
+  In a form grid wrap it: <FormField><Label>Access</Label><Segmented aria-label="Access" fullWidth …/></FormField>.
+Toolbar (role=toolbar, arrow-key roving focus):
+  <Toolbar.Root orientation='horizontal'|'vertical' variant='plain'(default)|'contained' disabled? aria-label>
+    <Toolbar.Group>…</Toolbar.Group> <Toolbar.Separator/>
+    <Toolbar.Button aria-label>icon</Toolbar.Button>  (no render → ghost icon button)
+    <Toolbar.Button render={<Button variant="ghost"/>|<IconButton/>|<Toggle/>}/>  (Zest control owns the look)
+    <Toolbar.Link href/> <Toolbar.Input render={<Input size="sm"/>} aria-label/>
+  </Toolbar.Root>
+Toggle: REQUIRES aria-label. pressed/defaultPressed/onPressedChange, color, size. Icon-button look.
 ToggleGroup: value/defaultValue/onValueChange (array), toggleMultiple.
-Link: underline 'always'|'hover'(default)|'none', color 'primary'|'inherit',
-  external (adds target=_blank + rel=noopener noreferrer),
+Link: hover darkens the text one rung (primary → primary-hover) with a subtle weight bump — no
+  underline by default. underline 'hover'(default)|'underline-hover'|'always'|'none',
+  color 'primary'|'inherit', external (adds target=_blank + rel=noopener noreferrer),
   as (router integration: <Link as={RouterLink} to="/x">, <Link as={NextLink} href="/x">).
   Button also takes `as` for router links: <Button as={RouterLink} to="/new">New</Button>.
 
@@ -74,8 +94,12 @@ TextField (preferred field component — label/helper/error wired for a11y):
   required, name, size, fullWidth, disabled, placeholder, startAdornment, endAdornment, startIcon, endIcon,
   + all native input props (value/onChange/type...).
   <TextField label="Email" errorText={errors.email} fullWidth />
+  label is a ReactNode: label={<>Name <Typography variant="caption" color="secondary">(snake_case)</Typography></>}
+  labelPlacement='floating': label rests inside the field and shrinks into the top inset when
+  focused/filled (it never straddles the border, so any container background works).
 
-Input / Textarea: bare controls (same look, no label). error, fullWidth, adornments (Input).
+Input / Textarea: bare controls (same look, no label). size 'sm'|'md', error, fullWidth,
+  adornments (Input only).
 PasswordInput: TextField-less bare password control with visibility toggle.
 SearchInput: value/defaultValue/onValueChange (string), clear button built in.
 NumberInput: value/defaultValue/onValueChange (number|null), min, max, step, size, error, fullWidth.
@@ -83,25 +107,36 @@ NumberInput: value/defaultValue/onValueChange (number|null), min, max, step, siz
 Select (custom popup):
   options: {value: string, label: ReactNode, disabled?}[]
   value/defaultValue: string|null, onValueChange(value: string|null)
-  placeholder, size, error, fullWidth, disabled, required, name, aria-label
+  placeholder, size, error, fullWidth, disabled, required, name + any trigger <button> attrs
+  (id, aria-label, data-*, onBlur…); ref → the trigger button.
   <Select options={roles} placeholder="Role" onValueChange={setRole} />
   For a long filterable list use Combobox instead.
 NativeSelect: same options API, native <select>.
-Combobox: Select + text filtering. Same options API + emptyMessage.
+Combobox: Select + text filtering. Same options API + emptyMessage. Extra props → the <input>.
 Autocomplete: free text with suggestions: (string | {value,label})[]; value IS the input text.
+  Extra props → the <input>. (DatePicker/DateRangePicker/TimePicker: extra props → trigger button.)
 
 Checkbox: label, checked/defaultChecked/onCheckedChange, indeterminate, color, size, disabled, name.
 CheckboxGroup: value/defaultValue/onValueChange (string[] of child `name`s), wraps Checkboxes.
 Radio: value, label, color, size. Must be inside RadioGroup.
 RadioGroup: value/defaultValue/onValueChange, orientation: 'vertical'(default)|'horizontal'.
 Switch: label, checked/defaultChecked/onCheckedChange, color, size.
-Slider: value/defaultValue/onValueChange (number or number[] for range), min, max, step,
-  color, size, showValue, disabled.
+Slider: REQUIRES aria-label (or aria-labelledby → a Label id). value/defaultValue/onValueChange
+  (number or number[] for range), min, max, step, color, size, showValue, disabled.
 
 FileUpload: drag-and-drop + click-to-browse. accept, multiple, maxSizeMB (oversized → onReject),
   value/defaultValue/onValueChange (File[]), disabled, error, label, description. Removable list.
+Fieldset: <Fieldset legend description gap='sm'|'md'|'lg' disabled>…fields…</Fieldset> — or composed
+  <Fieldset.Root><Fieldset.Legend/><Fieldset.Description/>…</Fieldset.Root>. Native <fieldset>, chrome reset,
+  legend auto-associated (aria-labelledby), description wired via aria-describedby. Disables all controls inside.
+OtpInput: <OtpInput length=6 type='numeric'|'alphanumeric' mask size='sm'|'md' error disabled autoFocus name
+  separator="–" fullWidth value/defaultValue onValueChange(value) onComplete(value)/> — one-time-code / PIN cells;
+  paste, backspace, autocomplete="one-time-code" handled. Works inside <FormField> (Label names the first cell).
 Custom fields: <FormField name invalid disabled><Label required/><Input/><HelperText/><FieldError/></FormField>
 — FormField auto-wires label/description/error aria attributes.
+FIELDS IN A GRID: every direct child of the Grid must be a FormField/TextField — wrap other
+controls: <FormField><Label>Access</Label><Segmented …/></FormField>. FormField uses CSS subgrid
+rows (label / control / helper) so a bare <div> or Stack next to a TextField misaligns its rows.
 
 ## NAVIGATION
 
@@ -122,13 +157,42 @@ Menu (composition):
       <Menu.Group><Menu.GroupLabel/>…</Menu.Group>
       <Menu.Item destructive>Delete</Menu.Item>
     </Menu.Content></Menu.Root>
+ContextMenu (right-click / long-press, pointer-anchored; same popup + rows as Menu):
+  <ContextMenu.Root><ContextMenu.Trigger>…wrapped area…</ContextMenu.Trigger>
+    <ContextMenu.Content><ContextMenu.Item onClick>…</ContextMenu.Item><ContextMenu.Separator/>
+      <ContextMenu.Group><ContextMenu.GroupLabel/>…</ContextMenu.Group>
+      <ContextMenu.SubmenuRoot><ContextMenu.SubmenuTrigger>Share</ContextMenu.SubmenuTrigger>
+        <ContextMenu.Content>…</ContextMenu.Content></ContextMenu.SubmenuRoot>   (chevron auto)
+      <ContextMenu.CheckboxItem checked/defaultChecked/onCheckedChange/>
+      <ContextMenu.RadioGroup value/defaultValue/onValueChange><ContextMenu.RadioItem value/></ContextMenu.RadioGroup>
+      <ContextMenu.Item destructive>Delete</ContextMenu.Item>
+    </ContextMenu.Content></ContextMenu.Root>
+  Enhancement only — always keep a visible control for the same actions.
+Menubar (desktop-app bar; each dropdown is a Menu; ←/→ moves between triggers):
+  <Menubar.Root variant 'contained'(default: surface pill + hairline)|'plain'>
+    <Menubar.Menu><Menubar.Trigger>File</Menubar.Trigger>
+      <Menubar.Content><Menubar.Item/><Menubar.Separator/><Menubar.Group><Menubar.GroupLabel/></Menubar.Group>
+        <Menubar.SubmenuRoot><Menubar.SubmenuTrigger/><Menubar.SubmenuContent>…</Menubar.SubmenuContent></Menubar.SubmenuRoot>
+        <Menubar.CheckboxItem/> <Menubar.RadioGroup><Menubar.RadioItem value/></Menubar.RadioGroup>
+        <Menubar.Item destructive/></Menubar.Content></Menubar.Menu>…</Menubar.Root>
+  Use Menubar.SubmenuContent (not Content) inside SubmenuRoot so it opens beside the trigger.
+NavigationMenu (site/product top-nav with hover+click flyouts; renders <nav>):
+  <NavigationMenu.Root side='bottom' align='start' sideOffset=8 arrow?>
+    <NavigationMenu.List><NavigationMenu.Item>
+      <NavigationMenu.Trigger hideChevron?>Products</NavigationMenu.Trigger>  (chevron rotates when open)
+      <NavigationMenu.Content><NavigationMenu.Link href description? active? closeOnClick?
+        render={<RouterLink to/>}>Label</NavigationMenu.Link>…</NavigationMenu.Content>
+    </NavigationMenu.Item>
+    <NavigationMenu.Item><NavigationMenu.Link href>Pricing</NavigationMenu.Link></NavigationMenu.Item>
+  </NavigationMenu.List></NavigationMenu.Root>  — Portal/Positioner/Popup/Viewport are internal.
 Sidebar (app navigation): <Sidebar.Root header logo (compact logo shown in the mini rail) footer
   nav={SidebarNavSection[]} (data-driven — feed from an API: [{label, items: [{key, label, icon?,
     caption?, badge?, badgeColor?, active?, disabled?, href?, onClick?, defaultExpanded?, items?}]}])
   collapsible (edge toggle on the border, appears on hover) collapsed?/defaultCollapsed?/onCollapsedChange
   (mini rail: icon-only rows with tooltips; items with children open their flyout submenu on hover,
   headed by the parent icon+label — no tooltip there)
-  mobileOpen?/onMobileClose? (off-canvas + backdrop under 900px)>
+  mobileOpen?/onMobileClose? (off-canvas under 900px as a modal dialog: role=dialog, focus moved
+  inside + trapped, Escape/backdrop close, focus restored on close)>
   Composition alternative: <Sidebar.Section label> + <Sidebar.Item …> (nested items render with a
   guide line + dot indicators). One highlight per row: the active row gets the tinted pill and its
   icon only picks up the accent color. Active NESTED rows show dark bold text + violet dot, no tint.
@@ -146,7 +210,9 @@ IMPORTANT trigger pattern: overlay Triggers take the child via `render` prop:
   <Dialog.Trigger render={<Button>Open</Button>} />   ← NOT children.
 
 Dialog (structure = Header + Body + Footer; Content's title/description render the Header and
-children render inside the Body automatically; Dialog.Header/Dialog.Body exist for full custom layouts):
+children render inside the Body automatically; Dialog.Header/Dialog.Body exist for full custom layouts;
+the Body sits on --zest-color-surface-raised so header/footer read as chrome; a Dialog.Footer child is
+lifted out of the scrollable Body and stays pinned):
   <Dialog.Root (open/onOpenChange for controlled)>
     <Dialog.Trigger render={<Button>Edit</Button>} />
     <Dialog.Content title description size='sm'|'md'|'lg' hideClose?>
@@ -164,24 +230,35 @@ AlertDialog: same parts as Dialog, no corner close, 400px.
 Drawer: Dialog-like; Drawer.Content side='right'(default)|'left'|'bottom', size 'sm'|'md'|'lg', title.
 Popover: <Popover.Root><Popover.Trigger render={…}/><Popover.Content side align>…</Popover.Content></Popover.Root>
 Tooltip: <Tooltip title="Delete" side='top'><IconButton …/></Tooltip> — child must accept a ref.
+PreviewCard: <PreviewCard.Root delay=600 closeDelay=300><PreviewCard.Trigger href>…</PreviewCard.Trigger>
+  <PreviewCard.Content side align sideOffset=8 arrow?>…</PreviewCard.Content></PreviewCard.Root>
+  — hover card for link/user previews; Trigger renders <a> (pass render= for another element). Sighted-user
+  enhancement only: keep essential info on the linked page.
 
 ## FEEDBACK
 
 Alert: severity: 'info'|'success'|'warning'|'error', variant: 'soft'(default)|'solid'|'outlined',
-  title, onClose?, action?, icon? (null hides).
+  title, onClose?, action?, icon? (null hides). role auto: 'status' for info/success, 'alert' for
+  warning/error (pass role to override).
 Toasts:
   // setup once: <ZestToastProvider><App/><Toaster position="bottom-right"/></ZestToastProvider>
   const toast = useToast();
   toast.add({ title: 'Saved', severity: 'success', description?, action?: {label,onClick}, timeout? });
   toast.promise(fetchPromise, { loading:{title}, success:{title}, error:{title} });
-Progress: value (0-100 or null = indeterminate), color, size, label, showValue.
-CircularProgress: value? (undefined = spinner), size (px), thickness, color.
+Progress: REQUIRES label | aria-label | aria-labelledby. value (0-100 or null = indeterminate),
+  color, size, showValue.
+CircularProgress: REQUIRES label | aria-label | aria-labelledby (label is announced, not drawn).
+  value? (undefined = spinner), size (px), thickness, color.
+Meter: value (required), min/max, label | aria-label (one required), showValue, color, size 'sm'|'md',
+  thresholds={{ warning: 80, error: 95 }} (accent escalates at >=), segments=N (password-strength cells).
+  Static measurement (quota, storage) — use Progress for a task in flight.
 Spinner: size 'sm'|'md'|'lg'|number, color ('inherit' default).
 Skeleton: variant 'text'|'circular'|'rectangular'|'rounded', width, height, animation 'pulse'|'wave'|false.
 
 ## DATA DISPLAY
 
-Card: <Card variant='elevated'|'outlined'><Card.Header title subtitle action/><Card.Content/><Card.Footer/><Card.Media/></Card>
+Card: <Card variant='elevated'|'outlined'><Card.Header title (renders an <h3>; titleAs='h2'|'h4'…)
+  subtitle action/><Card.Content/><Card.Footer/><Card.Media/></Card>. Header→content inset is 24px.
 Table (manual): <Table.Root dense? striped? scrollable? stackOnMobile? (give Cells label="Col";
   mark optional columns with hideOnMobile on both HeaderCell and Cell)><Table.Head><Table.Row><Table.HeaderCell align>
   …<Table.Body><Table.Row hover selected><Table.Cell align>…
@@ -197,17 +274,23 @@ DataGrid (prefer for data): generic <DataGrid<Row>
 CodeBlock: code (string), language? ('bash'…, shown uppercase in header), title? (e.g. filename),
   hideCopy?, maxHeight? (default 400 — content scrolls inside), wrap?, onCopy?(code).
   Dark panel in both modes, built-in copy-to-clipboard with "Copied" feedback.
+Code: inline monospace chip for identifiers in running text (paths, env vars, IDs, flags) —
+  replaces raw <code>. children (required), color ('neutral' default → grey chip), variant 'soft'(default)|'outlined',
+  size 'sm'|'md', truncate (ellipsis at container width), copyable (renders a button; click copies text,
+  title flips to "Copied" for 1.5s). Scales with surrounding text (0.875em).
+  Run <Code>npm run build</Code> · <Code copyable>sk_live_…</Code> · <Code color="info" variant="outlined">GET /v1/users</Code>
+  Multi-line snippets → CodeBlock, not Code.
 Avatar: src, alt, name (initials fallback), size 'xs'|'sm'|'md'|'lg'|'xl', shape, color,
   variant: 'soft'(default tint)|'solid' (accent bg + white initials)|'gradient' (hero/logo tile).
   Custom children replace initials — use shape="rounded" + an icon for icon-tile emblems.
 AvatarGroup: max? → "+N" overflow.
 Badge: count, max=99, dot?, color ('error' default), showZero?, position; wraps children or standalone pill.
-Chip: label/children, variant 'soft'(default)|'solid'|'outlined', color ('neutral' default),
+Chip: label OR children (one is required), variant 'soft'(default)|'solid'|'outlined', color ('neutral' default),
   size 'sm'|'md', startIcon, avatar, onDelete?, clickable/onClick, disabled.
 Accordion: <Accordion.Root multiple? value/defaultValue (string[])><Accordion.Item value disabled?>
   <Accordion.Trigger>…</Accordion.Trigger><Accordion.Panel>…</Accordion.Panel></Accordion.Item></Accordion.Root>
 List: <List.Root bordered? inset?><List.Item onClick?><List.ItemIcon/><List.ItemText primary secondary/><List.ItemAction/></List.Item></List.Root>
-EmptyState: icon?, title, description?, action?, size 'sm'|'md'.
+EmptyState: icon? (null hides the slot), title, description?, action?, size 'sm'|'md'.
 
 ## DATE & TIME (values are JS Date | null; no date library needed)
 
@@ -230,7 +313,8 @@ Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap 
   gutter like MUI spacing; default 4 = 16px). Numeric columns auto-adjust: max 2 <900px, 1 <600px.
 Container: maxWidth 'sm'|'md'|'lg'(default)|'xl'|false, disableGutters.
 Paper: shadow 'none'|'sm'|'md'|'lg'|'xl'|'card', bordered, radius.
-Divider: orientation, variant 'solid'|'dashed', optional children as centered label.
+Divider: renders a real <hr> (or a labelled <div> when children are given). orientation,
+  variant 'solid'|'dashed'.
 Typography: MUI-style variant 'h1'|'h2'|'h3'|'h4'|'h5'|'h6'|'subtitle1'|'subtitle2'|
   'body1'(default)|'body2'|'caption'|'overline'; color 'primary'|'secondary'|'disabled'|
   'brand'|'success'|'warning'|'error'|'info'; align; truncate (true = 1 line, number = clamp);
@@ -273,8 +357,12 @@ const theme = createTheme({
 
 Colors: --zest-color-primary(-hover/-active/-contrast/-subtle-text), same for secondary/success/
   warning/error/info/neutral; --zest-color-background(-neutral), --zest-color-surface(-hover/-active/
-  -disabled), --zest-color-text-primary/-secondary/-disabled, --zest-color-border(-subtle/-strong),
-  --zest-color-backdrop, --zest-color-focus-ring.
+  -disabled/-raised — raised = one tier below surface, used for Dialog bodies),
+  --zest-color-text-primary/-secondary/-disabled/-placeholder (placeholder = AA-compliant hint tone;
+  disabled is only for genuinely disabled controls), --zest-color-border(-subtle/-strong),
+  --zest-color-backdrop, --zest-color-focus-ring, --zest-color-tooltip-bg/-text, --zest-color-thumb.
+Density: [data-zest-density='compact'|'dashboard'] on <html> (set by ZestProvider) remaps control
+  heights (and, for dashboard, the whole font scale) — never hardcode heights, use the tokens.
 Space: --zest-space-1..6,8,10,12,16 (4px steps).
 Radius: use the INTENT aliases — --zest-radius-control (buttons/fields/cells/tiles, 12px),
   --zest-radius-panel (popups/menus/nav rows, 14px), --zest-radius-surface (cards/dialogs/code
@@ -296,14 +384,21 @@ Never emit raw HTML elements in app code; use the Zest equivalent:
   <button>→Button/IconButton · <a>→Link (as={RouterLink} for SPA routes) · <form>→Form ·
   <input>→TextField/Input (+Password/Search/Number variants) · <select>→Select/NativeSelect ·
   <textarea>→Textarea · <label>→Label · <img>→Image (fit/radius/ratio/fallback) · <kbd>→Kbd ·
+  <code>→Code (inline) / CodeBlock (multi-line) · sr-only span→VisuallyHidden · <fieldset>→Fieldset ·
+  right-click menu→ContextMenu · app menu bar→Menubar · site nav flyouts→NavigationMenu ·
+  <div role=toolbar>→Toolbar · <meter>→Meter · OTP/PIN boxes→OtpInput · hover card→PreviewCard ·
   <table>→Table/DataGrid · <ul>/<li>→List · <hr>→Divider · <details>→Collapsible ·
   <dialog>→Dialog/AlertDialog/Drawer · <progress>→Progress · top <header> bar→AppBar ·
   <nav sidebar>→Sidebar · <nav trail>→Breadcrumbs · scrollable div→ScrollArea ·
   headings/paragraphs→Typography · layout divs→Box/Stack/Flex/Grid/Container/Paper.
 Form: on Base UI — onSubmit + errors={{field: message}} auto-wires into FieldError; gap 'sm'|'md'|'lg'.
-Image: fit 'cover'(default)|'contain'|'fill'|'none', radius 'none'|'control'|'surface'|'full',
-  ratio (e.g. 16/9), fallback node on load error, lazy by default.
-Kbd: <Kbd>Ctrl+K</Kbd> splits on '+' into key chips.
+Image: alt REQUIRED (alt="" for decorative). fit 'cover'(default)|'contain'|'fill'|'none',
+  radius 'none'|'control'|'surface'|'full', ratio (e.g. 16/9; frameClassName/frameStyle target the
+  ratio frame, className/style the <img>), fallback node on load error, lazy by default.
+Kbd: <Kbd>Ctrl+K</Kbd> splits on '+' into nested key chips (root is always <kbd>).
+VisuallyHidden: screen-reader-only text. as (default 'span'), focusable (skip-link: revealed fixed top-left
+  while focused). <Button><TrashIcon/><VisuallyHidden>Delete draft</VisuallyHidden></Button> ·
+  <VisuallyHidden as="a" href="#main" focusable>Skip to content</VisuallyHidden>. Prefer aria-label on IconButton.
 Collapsible: Root(open/defaultOpen/onOpenChange) > Trigger (chevron auto) > Panel.
 ScrollArea: maxHeight/maxWidth, themed overlay scrollbars (replaces overflow:auto divs).
 AppBar: sticky(default) blurred top bar with start/center/end slots.
@@ -374,3 +469,9 @@ Dialog flow (create/edit):
 8. Mobile: dialogs become bottom sheets, drawers and Sidebar go off-canvas/full-width under
    600px/900px automatically — don't build separate mobile modals.
 9. Don't reach into internal classes (zest-*__*) from app CSS; customize via theme/tokens.
+10. Field grids: every Grid cell that sits next to a TextField must itself be a FormField/TextField
+    (subgrid alignment) — wrap Segmented/Slider/ButtonGroup/etc. in <FormField><Label/>…</FormField>.
+11. Single-choice toggles (Public | Auth required, Day | Week | Month) use Segmented, not
+    ButtonGroup + ghost Buttons. ButtonGroup is for joined actions (split buttons, icon clusters).
+12. Never render a control without an accessible name — the types enforce it (aria-label on
+    IconButton/Toggle/Slider, label|aria-label on Progress/Meter, alt on Image).

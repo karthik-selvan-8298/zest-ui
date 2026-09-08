@@ -10,11 +10,10 @@ export interface AutocompleteSuggestion {
   label: string;
 }
 
-export interface AutocompleteProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size'
-  > {
+export interface AutocompleteProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size'
+> {
   /** Suggestions shown under the input, filtered by what the user typed. */
   suggestions: ReadonlyArray<string | AutocompleteSuggestion>;
   /** The input text. Use when controlled. */
@@ -61,9 +60,7 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
     const items = React.useMemo<AutocompleteSuggestion[]>(
       () =>
         suggestions.map((suggestion) =>
-          typeof suggestion === 'string'
-            ? { value: suggestion, label: suggestion }
-            : suggestion
+          typeof suggestion === 'string' ? { value: suggestion, label: suggestion } : suggestion
         ),
       [suggestions]
     );

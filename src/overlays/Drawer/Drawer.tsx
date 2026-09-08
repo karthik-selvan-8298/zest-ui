@@ -19,8 +19,9 @@ import './Drawer.css';
  * </Drawer.Root>
  */
 
-export interface DrawerContentProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseDialog.Popup>, 'title'>> {
+export interface DrawerContentProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseDialog.Popup>, 'title'>
+> {
   /** Edge the drawer slides in from. */
   side?: 'right' | 'left' | 'bottom';
   /** Width of the sheet (left/right sides). */
@@ -71,7 +72,9 @@ const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(funct
             </div>
             {!hideClose ? (
               <BaseDialog.Close
-                render={<IconButton aria-label="Close drawer" size="sm" variant="ghost" color="neutral" />}
+                render={
+                  <IconButton aria-label="Close drawer" size="sm" variant="ghost" color="neutral" />
+                }
               >
                 <CloseIcon />
               </BaseDialog.Close>

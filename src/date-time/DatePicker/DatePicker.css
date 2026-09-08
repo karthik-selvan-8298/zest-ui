@@ -31,7 +31,8 @@
 
 .zest-date-picker:focus-within:not([data-disabled]),
 .zest-date-picker[data-open] {
-  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-primary),
     var(--zest-focus-glow);
 }
 
@@ -94,7 +95,7 @@
 }
 
 .zest-date-picker__placeholder {
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-placeholder);
 }
 
 .zest-date-picker__clear {

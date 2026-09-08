@@ -2,7 +2,7 @@
 
 **A modern, accessible UI component framework for building consistent interfaces.**
 
-One package · ~65 components · zero raw HTML.
+One package · ~75 components · zero raw HTML.
 
 Zest UI is a **violet-forward, grey-neutral** design system built on top of **Base UI** primitives, providing a consistent and production-ready component layer.
 
@@ -18,6 +18,8 @@ Components are designed to be:
 ---
 
 ## Install
+
+Requires **Node ≥ 22** and **React 18 or 19**.
 
 ```bash
 npm install github:karthik-selvan-8298/zest-ui#main
@@ -40,9 +42,7 @@ import { PlusIcon } from 'zest-ui/icons';
 export default function App() {
   return (
     <ZestProvider>
-      <Button startIcon={<PlusIcon />}>
-        Create
-      </Button>
+      <Button startIcon={<PlusIcon />}>Create</Button>
     </ZestProvider>
   );
 }
@@ -78,11 +78,7 @@ createRoot(document.getElementById('root')!).render(
 
 import { ZestProvider } from 'zest-ui';
 
-export function Providers({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return <ZestProvider>{children}</ZestProvider>;
 }
 ```
@@ -91,11 +87,7 @@ export function Providers({
 // app/layout.tsx
 import { Providers } from './providers';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
@@ -124,21 +116,21 @@ zest-ui/fonts
 
 ## Components
 
-Zest provides ~65 reusable components for common UI patterns.
+Zest provides ~75 reusable components for common UI patterns.
 
-| | Components |
-|---|---|
-| ⚡ **Actions** | Button · IconButton · ButtonGroup · Toggle · ToggleGroup · Link |
-| 📝 **Forms** | Form · FormField · TextField · Input · Textarea · PasswordInput · SearchInput · NumberInput · Select · NativeSelect · Combobox · Autocomplete · Checkbox · Radio · Switch · Slider · FileUpload |
-| 🧭 **Navigation** | Sidebar · AppBar · Tabs · Breadcrumbs · Pagination · Menu · Stepper · Command |
-| 🪟 **Overlays** | Dialog · AlertDialog · ConfirmDialog · Drawer · Popover · Tooltip |
-| 📣 **Feedback** | Alert · Toast · Progress · CircularProgress · Spinner · Skeleton |
-| 📊 **Data** | Card · Table · DataGrid · Avatar · Badge · Chip · Accordion · Collapsible · List · CodeBlock · EmptyState |
-| 📅 **Date & Time** | Calendar · DatePicker · DateRangePicker · TimePicker |
-| 🖼 **Media** | Image · Kbd · ScrollArea |
-| 📐 **Layout** | Box · Stack · Flex · Grid · Container · Paper · Divider · AspectRatio · Typography |
-| 🧩 **Patterns** | SearchToolbar · FormSection · DetailHeader |
-| ✒️ **Icons** | Consistent, pre-wrapped icon set via `zest-ui/icons` |
+|                         | Components                                                                                                                                                                                                            |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ⚡ **Actions**          | Button · IconButton · ButtonGroup · Segmented · Toggle · ToggleGroup · Toolbar · Link                                                                                                                                 |
+| 📝 **Forms**            | Form · Fieldset · FormField · TextField · Input · Textarea · PasswordInput · SearchInput · NumberInput · OtpInput · Select · NativeSelect · Combobox · Autocomplete · Checkbox · Radio · Switch · Slider · FileUpload |
+| 🧭 **Navigation**       | Sidebar · AppBar · NavigationMenu · Tabs · Breadcrumbs · Pagination · Menu · ContextMenu · Menubar · Stepper · Command                                                                                                |
+| 🪟 **Overlays**         | Dialog · AlertDialog · ConfirmDialog · Drawer · Popover · PreviewCard · Tooltip                                                                                                                                       |
+| 📣 **Feedback**         | Alert · Toast · Progress · CircularProgress · Meter · Spinner · Skeleton                                                                                                                                              |
+| 📊 **Data**             | Card · Table · DataGrid · Avatar · Badge · Chip · Code · Accordion · Collapsible · List · CodeBlock · EmptyState                                                                                                      |
+| 📅 **Date & Time**      | Calendar · DatePicker · DateRangePicker · TimePicker                                                                                                                                                                  |
+| 🖼 **Media & utilities** | Image · Kbd · VisuallyHidden · ScrollArea                                                                                                                                                                             |
+| 📐 **Layout**           | Box · Stack · Flex · Grid · Container · Paper · Divider · AspectRatio · Typography                                                                                                                                    |
+| 🧩 **Patterns**         | SearchToolbar · FormSection · DetailHeader                                                                                                                                                                            |
+| ✒️ **Icons**            | Consistent, pre-wrapped icon set via `zest-ui/icons`                                                                                                                                                                  |
 
 ---
 
@@ -206,7 +198,7 @@ const greenTheme = createTheme({
 
 <Theme theme={greenTheme}>
   <MarketingSection />
-</Theme>
+</Theme>;
 ```
 
 Themes can be nested, with inner themes taking precedence.
@@ -241,12 +233,9 @@ const theme = createTheme({
   },
 });
 
-<ZestProvider
-  theme={theme}
-  defaultMode="system"
->
+<ZestProvider theme={theme} defaultMode="system">
   <App />
-</ZestProvider>
+</ZestProvider>;
 ```
 
 `createTheme` supports:
@@ -257,6 +246,24 @@ const theme = createTheme({
 - `radius`
 - `cssVars`
 - `darkCssVars`
+
+### Density
+
+Three densities share one set of components:
+
+| `defaultDensity`        | Body text             | Controls | Use for                    |
+| ----------------------- | --------------------- | -------- | -------------------------- |
+| `comfortable` (default) | 16px                  | 36px     | Marketing, settings, forms |
+| `compact`               | 16px                  | 32px     | Toolbars, dense tables     |
+| `dashboard`             | 14px / 13px secondary | 32px     | Data-heavy product UIs     |
+
+```tsx
+<ZestProvider defaultDensity="dashboard">
+  <App />
+</ZestProvider>
+```
+
+`useZest().setDensity(…)` switches at runtime. Density only remaps tokens — components never change.
 
 ### Color Mode
 
@@ -315,6 +322,18 @@ and follow it for all Zest UI usage.
 ```
 
 This gives AI assistants the information they need to use Zest components, props, patterns, and tokens correctly.
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for setup, conventions, and the component checklist. Changes are tracked in [CHANGELOG.md](./CHANGELOG.md).
+
+```bash
+npm install          # deps + git hooks + build
+npm run storybook    # component workbench (a11y panel included)
+npm run check        # typecheck · lint · format · tests
+```
 
 ---
 

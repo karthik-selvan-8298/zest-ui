@@ -13,11 +13,10 @@ export interface DateRange {
   end: Date | null;
 }
 
-export interface DateRangePickerProps
-  extends Omit<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size'
-  > {
+export interface DateRangePickerProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size'
+> {
   /** Selected range (controlled). */
   value?: DateRange;
   /** Initially selected range (uncontrolled). */

@@ -17,9 +17,10 @@ export type ContainerProps<E extends React.ElementType = 'div'> = PolymorphicPro
   ContainerOwnProps
 >;
 
-export const Container = React.forwardRef(function Container<
-  E extends React.ElementType = 'div',
->(props: ContainerProps<E>, ref: React.ForwardedRef<Element>) {
+export const Container = React.forwardRef(function Container<E extends React.ElementType = 'div'>(
+  props: ContainerProps<E>,
+  ref: React.ForwardedRef<Element>
+) {
   const {
     as,
     maxWidth = 'lg',

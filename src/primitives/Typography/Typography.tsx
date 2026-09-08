@@ -62,9 +62,10 @@ export type TypographyProps<E extends React.ElementType = 'p'> = PolymorphicProp
   TypographyOwnProps
 >;
 
-export const Typography = React.forwardRef(function Typography<
-  E extends React.ElementType = 'p',
->(props: TypographyProps<E>, ref: React.ForwardedRef<Element>) {
+export const Typography = React.forwardRef(function Typography<E extends React.ElementType = 'p'>(
+  props: TypographyProps<E>,
+  ref: React.ForwardedRef<Element>
+) {
   const {
     as,
     variant = 'body1',

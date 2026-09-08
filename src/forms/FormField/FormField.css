@@ -19,7 +19,8 @@
 }
 
 .zest-label__asterisk {
-  color: var(--zest-color-error);
+  /* error-700: the 500 tone is 3.5:1 on white and fails AA for text. */
+  color: var(--zest-color-error-subtle-text);
 }
 
 .zest-helper-text {
@@ -31,7 +32,7 @@
 }
 
 .zest-field-error {
-  color: var(--zest-color-error);
+  color: var(--zest-color-error-subtle-text); /* error-700 — AA on surface */
   font-family: var(--zest-font-family-sans);
   font-size: var(--zest-font-size-xs);
   line-height: var(--zest-line-height-normal);

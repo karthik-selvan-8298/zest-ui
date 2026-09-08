@@ -59,9 +59,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
         }
         {...inputProps}
       />
-      {errorText ? (
-        <FieldError match>{errorText}</FieldError>
-      ) : null}
+      {errorText ? <FieldError match>{errorText}</FieldError> : null}
       {helperText && !errorText ? <HelperText>{helperText}</HelperText> : null}
     </FormField>
   );

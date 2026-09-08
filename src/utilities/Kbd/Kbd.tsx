@@ -3,11 +3,22 @@ import { cx } from '../../utils';
 import './Kbd.css';
 
 export interface KbdProps extends React.HTMLAttributes<HTMLElement> {
-  /** Shortcut text; "Ctrl+K" style strings split into separate keys. */
+  /** Shortcut text; "Ctrl+K" style strings split into separate key chips. */
   children?: React.ReactNode;
 }
 
-/** Keyboard-shortcut chip — replacement for raw `<kbd>`. */
+/**
+ * Keyboard-shortcut chip — replacement for raw `<kbd>`.
+ *
+ * Always renders a `<kbd>` root so the ref type is stable. Combos like
+ * `"Ctrl+K"` become nested `<kbd>` chips inside the root (valid HTML: a
+ * `<kbd>` may contain `<kbd>` to denote a key sequence).
+ *
+ * ```tsx
+ * <Kbd>Ctrl+K</Kbd>   // two chips
+ * <Kbd>Esc</Kbd>      // one chip
+ * ```
+ */
 export const Kbd = React.forwardRef<HTMLElement, KbdProps>(function Kbd(
   { className, children, ...props },
   ref
@@ -18,13 +29,13 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(function Kbd(
       : null;
   if (parts) {
     return (
-      <span ref={ref as React.Ref<HTMLSpanElement>} className={cx('zest-kbd-group', className)} {...props}>
+      <kbd ref={ref} className={cx('zest-kbd-group', className)} {...props}>
         {parts.map((part, index) => (
           <kbd key={index} className="zest-kbd">
             {part}
           </kbd>
         ))}
-      </span>
+      </kbd>
     );
   }
   return (

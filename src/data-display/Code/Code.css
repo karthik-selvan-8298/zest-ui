@@ -1,0 +1,86 @@
+.zest-code {
+  --_pad-x: 6px;
+  --_pad-y: 2px;
+
+  box-sizing: border-box;
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--_pad-y) var(--_pad-x);
+  border: 0;
+  border-radius: var(--zest-radius-sm);
+  font-family: var(--zest-font-family-mono, ui-monospace, 'SF Mono', Menlo, Consolas, monospace);
+  /* Relative to the surrounding text so the chip tracks body/caption sizes. */
+  font-size: 0.875em;
+  font-weight: var(--zest-font-weight-regular);
+  line-height: var(--zest-line-height-tight);
+  white-space: nowrap;
+  vertical-align: baseline;
+  text-align: left;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* ── Sizes ────────────────────────────────────────────────────────────── */
+.zest-code[data-size='sm'] {
+  --_pad-x: var(--zest-space-1);
+  --_pad-y: 1px;
+}
+
+/* ── Variants (accent-driven, see base.css) ───────────────────────────── */
+.zest-code[data-variant='soft'] {
+  background: color-mix(in srgb, var(--zest-accent) 12%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+.zest-code[data-variant='outlined'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zest-accent) 32%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+/* Neutral reads as body text on a grey chip (matches Chip). */
+.zest-code[data-accent='neutral'] {
+  color: var(--zest-color-text-primary);
+}
+
+/* ── Truncate ─────────────────────────────────────────────────────────── */
+.zest-code[data-truncate] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+.zest-code[data-truncate] .zest-code__text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Copyable (renders a <button>) ────────────────────────────────────── */
+.zest-code[data-copyable] {
+  appearance: none;
+  cursor: copy;
+  user-select: text;
+}
+
+.zest-code[data-copyable][data-variant='soft']:hover {
+  background: color-mix(in srgb, var(--zest-accent) 20%, transparent);
+}
+
+.zest-code[data-copyable][data-variant='outlined']:hover {
+  background: color-mix(in srgb, var(--zest-accent) 8%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--zest-accent) 48%, transparent);
+}
+
+/* Brief confirmation ring after a successful copy. */
+.zest-code[data-copied] {
+  box-shadow: inset 0 0 0 1px var(--zest-color-success);
+}
+
+.zest-code__text {
+  font: inherit;
+  color: inherit;
+  white-space: inherit;
+}

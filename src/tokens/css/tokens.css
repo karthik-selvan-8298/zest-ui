@@ -69,10 +69,8 @@
   /* ── Primitives: typography ────────────────────────────────────────── */
   /* Roboto ships with the package via @fontsource/roboto (400/500/700) —
      the only bundled font. The rest are system fallbacks. */
-  --zest-font-family-sans: 'Roboto', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial,
-    sans-serif;
-  --zest-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
-    monospace;
+  --zest-font-family-sans: 'Roboto', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --zest-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --zest-font-size-xs: 0.75rem;
   --zest-font-size-sm: 0.875rem;
@@ -184,7 +182,8 @@
   --zest-color-warning-hover: var(--zest-warning-700);
   --zest-color-warning-active: var(--zest-warning-900);
   --zest-color-warning-contrast: var(--zest-gray-800);
-  --zest-color-warning-subtle-text: var(--zest-warning-700);
+  /* warning-900: the 700 tone is ~3.9:1 on the soft tint and fails AA. */
+  --zest-color-warning-subtle-text: var(--zest-warning-900);
 
   --zest-color-error: var(--zest-error-500);
   --zest-color-error-hover: var(--zest-error-700);
@@ -219,6 +218,9 @@
   --zest-color-text-primary: var(--zest-gray-800);
   --zest-color-text-secondary: var(--zest-gray-600);
   --zest-color-text-disabled: var(--zest-gray-500);
+  /* Placeholder/hint text must still meet AA (4.5:1) — `text-disabled` is
+     exempt from contrast rules only on genuinely disabled controls. */
+  --zest-color-text-placeholder: var(--zest-gray-600);
 
   --zest-color-border: rgb(var(--zest-gray-channel) / 0.2);
   --zest-color-border-subtle: rgb(var(--zest-gray-channel) / 0.12);
@@ -235,9 +237,11 @@
   --zest-color-thumb: var(--zest-white);
 
   /* Shared focus glow recipe (fields append it after their 1px accent border). */
-  --zest-focus-glow: 0 0 0 4px color-mix(in srgb, var(--zest-color-focus-ring) 13%, transparent),
+  --zest-focus-glow:
+    0 0 0 4px color-mix(in srgb, var(--zest-color-focus-ring) 13%, transparent),
     0 0 10px 2px color-mix(in srgb, var(--zest-color-focus-ring) 12%, transparent);
-  --zest-focus-glow-error: 0 0 0 4px color-mix(in srgb, var(--zest-color-error) 13%, transparent),
+  --zest-focus-glow-error:
+    0 0 0 4px color-mix(in srgb, var(--zest-color-error) 13%, transparent),
     0 0 10px 2px color-mix(in srgb, var(--zest-color-error) 12%, transparent);
 
   /* Elevation — Sigma shadow language (Minimals customShadows; grey-500
@@ -260,7 +264,8 @@
 
   /* Colored glows — Minimals "z8" accents for emphasized surfaces. */
   --zest-shadow-primary: 0 8px 16px 0 color-mix(in srgb, var(--zest-color-primary) 24%, transparent);
-  --zest-shadow-secondary: 0 8px 16px 0 color-mix(in srgb, var(--zest-secondary-500) 24%, transparent);
+  --zest-shadow-secondary: 0 8px 16px 0
+    color-mix(in srgb, var(--zest-secondary-500) 24%, transparent);
   --zest-shadow-info: 0 8px 16px 0 color-mix(in srgb, var(--zest-info-500) 24%, transparent);
   --zest-shadow-success: 0 8px 16px 0 color-mix(in srgb, var(--zest-success-500) 24%, transparent);
   --zest-shadow-warning: 0 8px 16px 0 color-mix(in srgb, var(--zest-warning-500) 24%, transparent);
@@ -295,6 +300,7 @@
   --zest-color-text-primary: var(--zest-white);
   --zest-color-text-secondary: var(--zest-gray-500);
   --zest-color-text-disabled: var(--zest-gray-600);
+  --zest-color-text-placeholder: var(--zest-gray-500);
 
   --zest-color-focus-ring: var(--zest-primary-300);
 
@@ -334,6 +340,7 @@
     --zest-color-text-primary: var(--zest-white);
     --zest-color-text-secondary: var(--zest-gray-500);
     --zest-color-text-disabled: var(--zest-gray-600);
+    --zest-color-text-placeholder: var(--zest-gray-500);
 
     --zest-color-focus-ring: var(--zest-primary-300);
 
@@ -358,14 +365,14 @@
    14→13 (a deliberate off-scale value at this density only), headings
    step down one rung each. Field/button heights follow `compact` too. */
 [data-zest-density='dashboard'] {
-  --zest-font-size-xs: 0.6875rem;   /* 11px */
-  --zest-font-size-sm: 0.8125rem;   /* 13px */
-  --zest-font-size-md: 0.875rem;    /* 14px */
-  --zest-font-size-lg: 1rem;        /* 16px — was 18 */
-  --zest-font-size-xl: 1.125rem;    /* 18px — was 20 */
-  --zest-font-size-2xl: 1.25rem;    /* 20px — was 24 */
-  --zest-font-size-3xl: 1.5rem;     /* 24px — was 32 */
-  --zest-font-size-4xl: 2rem;       /* 32px — was 40 */
+  --zest-font-size-xs: 0.6875rem; /* 11px */
+  --zest-font-size-sm: 0.8125rem; /* 13px */
+  --zest-font-size-md: 0.875rem; /* 14px */
+  --zest-font-size-lg: 1rem; /* 16px — was 18 */
+  --zest-font-size-xl: 1.125rem; /* 18px — was 20 */
+  --zest-font-size-2xl: 1.25rem; /* 20px — was 24 */
+  --zest-font-size-3xl: 1.5rem; /* 24px — was 32 */
+  --zest-font-size-4xl: 2rem; /* 32px — was 40 */
 
   --zest-button-height-sm: 26px;
   --zest-button-height-md: 32px;

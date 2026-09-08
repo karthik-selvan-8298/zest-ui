@@ -13,7 +13,9 @@ import './Popover.css';
  * </Popover.Root>
  */
 
-export interface PopoverContentProps extends WithClassName<React.ComponentProps<typeof BasePopover.Popup>> {
+export interface PopoverContentProps extends WithClassName<
+  React.ComponentProps<typeof BasePopover.Popup>
+> {
   side?: 'top' | 'bottom' | 'left' | 'right';
   align?: 'start' | 'center' | 'end';
   sideOffset?: number;

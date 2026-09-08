@@ -3,10 +3,7 @@
  * element needs the `zest-ripple-host` class (position/overflow containment).
  * The ripple span animates via .zest-ripple in base.css and removes itself.
  */
-export function spawnRipple(
-  host: HTMLElement,
-  event: { clientX: number; clientY: number }
-): void {
+export function spawnRipple(host: HTMLElement, event: { clientX: number; clientY: number }): void {
   const rect = host.getBoundingClientRect();
   const size = Math.max(rect.width, rect.height) * 2;
   const span = document.createElement('span');

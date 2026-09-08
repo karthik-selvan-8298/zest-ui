@@ -4,8 +4,10 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './CodeBlock.css';
 
-export interface CodeBlockProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'title' | 'onCopy'> {
+export interface CodeBlockProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'children' | 'title' | 'onCopy'
+> {
   /** The code to display, as a plain string. */
   code: string;
   /** Label shown in the header bar (e.g. "bash", "tsx", "json"). */
@@ -34,7 +36,17 @@ export interface CodeBlockProps
  * ```
  */
 export const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(function CodeBlock(
-  { code, language, title, hideCopy = false, maxHeight = 400, wrap = false, onCopy, className, ...props },
+  {
+    code,
+    language,
+    title,
+    hideCopy = false,
+    maxHeight = 400,
+    wrap = false,
+    onCopy,
+    className,
+    ...props
+  },
   ref
 ) {
   const [copied, setCopied] = React.useState(false);
@@ -77,6 +89,9 @@ export const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(functi
         className="zest-code-block__pre"
         data-wrap={wrap ? '' : undefined}
         style={maxHeight === 'none' ? undefined : { maxHeight }}
+        // A height-capped <pre> scrolls, so it must be keyboard-reachable
+        // (axe: scrollable-region-focusable).
+        tabIndex={maxHeight === 'none' ? undefined : 0}
       >
         <code className="zest-code-block__code">{code}</code>
       </pre>

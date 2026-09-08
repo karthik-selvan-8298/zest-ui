@@ -20,8 +20,9 @@ import './Dialog.css';
  * </Dialog.Root>
  */
 
-export interface DialogContentProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseDialog.Popup>, 'title'>> {
+export interface DialogContentProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseDialog.Popup>, 'title'>
+> {
   /** Dialog title (renders an accessible Dialog.Title). */
   title?: React.ReactNode;
   /** Supporting description under the title. */
@@ -33,57 +34,57 @@ export interface DialogContentProps
   children?: React.ReactNode;
 }
 
-const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
-  function DialogContent(
-    { title, description, size = 'md', hideClose = false, className, children, ...props },
-    ref
-  ) {
-    // A Dialog.Footer child is lifted out of the scrollable body so it stays
-    // pinned below it, mirroring the fixed header above.
-    const childArray = React.Children.toArray(children);
-    const footerChildren = childArray.filter(
-      (child) => React.isValidElement(child) && child.type === DialogFooter
-    );
-    const bodyChildren = childArray.filter(
-      (child) => !(React.isValidElement(child) && child.type === DialogFooter)
-    );
-    return (
-      <BaseDialog.Portal>
-        <BaseDialog.Backdrop className="zest-dialog__backdrop" />
-        <BaseDialog.Popup
-          ref={ref}
-          className={cx('zest-dialog__popup', className)}
-          data-size={size}
-          {...props}
-        >
-          {title || !hideClose ? (
-            <header className="zest-dialog__header">
-              <div className="zest-dialog__heading">
-                {title ? (
-                  <BaseDialog.Title className="zest-dialog__title">{title}</BaseDialog.Title>
-                ) : null}
-                {description ? (
-                  <BaseDialog.Description className="zest-dialog__description">
-                    {description}
-                  </BaseDialog.Description>
-                ) : null}
-              </div>
-              {!hideClose ? (
-                <BaseDialog.Close
-                  render={<IconButton aria-label="Close dialog" size="sm" variant="ghost" color="neutral" />}
-                >
-                  <CloseIcon />
-                </BaseDialog.Close>
+const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
+  { title, description, size = 'md', hideClose = false, className, children, ...props },
+  ref
+) {
+  // A Dialog.Footer child is lifted out of the scrollable body so it stays
+  // pinned below it, mirroring the fixed header above.
+  const childArray = React.Children.toArray(children);
+  const footerChildren = childArray.filter(
+    (child) => React.isValidElement(child) && child.type === DialogFooter
+  );
+  const bodyChildren = childArray.filter(
+    (child) => !(React.isValidElement(child) && child.type === DialogFooter)
+  );
+  return (
+    <BaseDialog.Portal>
+      <BaseDialog.Backdrop className="zest-dialog__backdrop" />
+      <BaseDialog.Popup
+        ref={ref}
+        className={cx('zest-dialog__popup', className)}
+        data-size={size}
+        {...props}
+      >
+        {title || !hideClose ? (
+          <header className="zest-dialog__header">
+            <div className="zest-dialog__heading">
+              {title ? (
+                <BaseDialog.Title className="zest-dialog__title">{title}</BaseDialog.Title>
               ) : null}
-            </header>
-          ) : null}
-          <div className="zest-dialog__body">{bodyChildren}</div>
-          {footerChildren}
-        </BaseDialog.Popup>
-      </BaseDialog.Portal>
-    );
-  }
-);
+              {description ? (
+                <BaseDialog.Description className="zest-dialog__description">
+                  {description}
+                </BaseDialog.Description>
+              ) : null}
+            </div>
+            {!hideClose ? (
+              <BaseDialog.Close
+                render={
+                  <IconButton aria-label="Close dialog" size="sm" variant="ghost" color="neutral" />
+                }
+              >
+                <CloseIcon />
+              </BaseDialog.Close>
+            ) : null}
+          </header>
+        ) : null}
+        <div className="zest-dialog__body">{bodyChildren}</div>
+        {footerChildren}
+      </BaseDialog.Popup>
+    </BaseDialog.Portal>
+  );
+});
 
 const DialogFooter = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   function DialogFooter({ className, ...props }, ref) {
@@ -107,9 +108,7 @@ const DialogHeader = React.forwardRef<HTMLElement, DialogHeaderProps>(function D
   return (
     <header ref={ref} className={cx('zest-dialog__header', className)} {...props}>
       <div className="zest-dialog__heading">
-        {title ? (
-          <BaseDialog.Title className="zest-dialog__title">{title}</BaseDialog.Title>
-        ) : null}
+        {title ? <BaseDialog.Title className="zest-dialog__title">{title}</BaseDialog.Title> : null}
         {description ? (
           <BaseDialog.Description className="zest-dialog__description">
             {description}

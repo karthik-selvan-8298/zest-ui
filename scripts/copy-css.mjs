@@ -3,7 +3,7 @@
  * JS `import './X.css'` statements resolve. Usage: node copy-css.mjs <src> <dist>
  */
 import { cpSync, globSync } from 'node:fs';
-import { dirname, join, relative } from 'node:path';
+import { join, relative } from 'node:path';
 
 const [src = 'src', dist = 'dist'] = process.argv.slice(2);
 const files = globSync(join(src, '**/*.css'));

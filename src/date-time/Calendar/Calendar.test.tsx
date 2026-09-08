@@ -45,9 +45,10 @@ describe('Calendar', () => {
     await userEvent.click(screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 20)) }));
     expect(onValueChange).toHaveBeenCalledTimes(1);
     expect(isSameDay(onValueChange.mock.calls[0]?.[0], new Date(2026, 7, 20))).toBe(true);
-    expect(
-      screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 20)) })
-    ).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 20)) })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
   });
 
   it('respects minDate: earlier days are disabled and not selectable', async () => {
@@ -152,9 +153,10 @@ describe('Calendar', () => {
     );
     await userEvent.click(screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 1)) }));
     // Controlled: the selection does not move until the owner re-renders.
-    expect(
-      screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 1)) })
-    ).toHaveAttribute('aria-selected', 'false');
+    expect(screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 1)) })).toHaveAttribute(
+      'aria-selected',
+      'false'
+    );
     rerender(
       <Calendar
         value={new Date(2026, 7, 1)}
@@ -163,8 +165,9 @@ describe('Calendar', () => {
         onValueChange={onValueChange}
       />
     );
-    expect(
-      screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 1)) })
-    ).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('gridcell', { name: dayName(new Date(2026, 7, 1)) })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
   });
 });

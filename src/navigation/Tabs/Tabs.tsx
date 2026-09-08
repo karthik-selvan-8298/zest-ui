@@ -64,7 +64,11 @@ const Tab = React.forwardRef<HTMLButtonElement, TabProps>(function Tab(
   ref
 ) {
   return (
-    <BaseTabs.Tab ref={ref} className={cx('zest-tabs__tab', 'zest-focusable', className)} {...props} />
+    <BaseTabs.Tab
+      ref={ref}
+      className={cx('zest-tabs__tab', 'zest-focusable', className)}
+      {...props}
+    />
   );
 });
 

@@ -57,10 +57,7 @@ const StepperRoot = React.forwardRef<HTMLOListElement, StepperRootProps>(functio
   { activeStep, orientation = 'horizontal', onStepClick, steps, className, children, ...props },
   ref
 ) {
-  const context = React.useMemo(
-    () => ({ activeStep, onStepClick }),
-    [activeStep, onStepClick]
-  );
+  const context = React.useMemo(() => ({ activeStep, onStepClick }), [activeStep, onStepClick]);
   const items = React.Children.toArray(
     steps ? steps.map((step, index) => <StepperStep key={index} {...step} />) : children
   );
@@ -86,8 +83,7 @@ const StepperRoot = React.forwardRef<HTMLOListElement, StepperRootProps>(functio
 });
 
 export interface StepperStepProps
-  extends Omit<React.LiHTMLAttributes<HTMLLIElement>, 'children'>,
-    StepperStepConfig {}
+  extends Omit<React.LiHTMLAttributes<HTMLLIElement>, 'children'>, StepperStepConfig {}
 
 const StepperStep = React.forwardRef<HTMLLIElement, StepperStepProps>(function StepperStep(
   { label, description, icon, className, ...props },

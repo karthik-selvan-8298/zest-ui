@@ -50,7 +50,9 @@
   background: var(--zest-color-surface-hover);
 }
 
-.zest-table[data-striped] .zest-table__body .zest-table__row[data-hover]:hover:not([data-selected]) {
+.zest-table[data-striped]
+  .zest-table__body
+  .zest-table__row[data-hover]:hover:not([data-selected]) {
   background: var(--zest-color-surface-active);
 }
 
@@ -65,7 +67,6 @@
 .zest-table .zest-table__body .zest-table__row[data-selected] {
   background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
 }
-
 
 /* ── Mobile: optional columns and stacked rows ────────────────────────── */
 @media (max-width: 600px) {

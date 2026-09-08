@@ -1,6 +1,10 @@
 .zest-divider {
   --_color: var(--zest-color-border);
+  /* Reset <hr> UA chrome (inset border, auto margins, grey color). */
+  margin: 0;
   border: 0;
+  color: inherit;
+  overflow: visible;
 }
 
 .zest-divider[data-orientation='horizontal'] {

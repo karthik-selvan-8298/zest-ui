@@ -30,7 +30,8 @@
 
 .zest-combobox:focus-within:not([data-disabled]),
 .zest-combobox[data-popup-open]:not([data-disabled]) {
-  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-primary),
     var(--zest-focus-glow);
 }
 

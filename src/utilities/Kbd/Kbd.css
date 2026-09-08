@@ -1,7 +1,9 @@
+/* Root of a key combo — a bare <kbd> wrapper; the chips are its children. */
 .zest-kbd-group {
   display: inline-flex;
   align-items: center;
   gap: var(--zest-space-1);
+  font: inherit;
 }
 
 .zest-kbd {

@@ -5,8 +5,9 @@ import type { WithClassName, ZestColor, ZestSize } from '../../types';
 import '../../base.css';
 import './Toggle.css';
 
-export interface ToggleProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseToggle>, 'color'>> {
+export interface ToggleProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseToggle>, 'color'>
+> {
   /** Tone used for the pressed (soft) state. Defaults to `primary`. */
   color?: ZestColor;
   /** Control size. Defaults to `md`. */

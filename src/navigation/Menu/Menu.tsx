@@ -19,8 +19,9 @@ import './Menu.css';
  * </Menu.Root>
  */
 
-export interface MenuContentProps
-  extends WithClassName<React.ComponentProps<typeof BaseMenu.Popup>> {
+export interface MenuContentProps extends WithClassName<
+  React.ComponentProps<typeof BaseMenu.Popup>
+> {
   side?: 'top' | 'bottom' | 'left' | 'right';
   align?: 'start' | 'center' | 'end';
   sideOffset?: number;
@@ -68,13 +69,14 @@ const MenuItem = React.forwardRef<HTMLElement, MenuItemProps>(function MenuItem(
 
 export type MenuSeparatorProps = WithClassName<React.ComponentProps<typeof BaseMenu.Separator>>;
 
-const MenuSeparator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>(
-  function MenuSeparator({ className, ...props }, ref) {
-    return (
-      <BaseMenu.Separator ref={ref} className={cx('zest-menu__separator', className)} {...props} />
-    );
-  }
-);
+const MenuSeparator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>(function MenuSeparator(
+  { className, ...props },
+  ref
+) {
+  return (
+    <BaseMenu.Separator ref={ref} className={cx('zest-menu__separator', className)} {...props} />
+  );
+});
 
 export type MenuGroupProps = WithClassName<React.ComponentProps<typeof BaseMenu.Group>>;
 

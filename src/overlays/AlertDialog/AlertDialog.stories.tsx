@@ -33,7 +33,11 @@ export const Composed: Story = {
 export const Confirm: Story = {
   render: () => (
     <ConfirmDialog
-      trigger={<Button variant="outlined" color="neutral">Archive report</Button>}
+      trigger={
+        <Button variant="outlined" color="neutral">
+          Archive report
+        </Button>
+      }
       title="Archive this report?"
       description="You can restore it from the archive at any time."
       confirmLabel="Archive"

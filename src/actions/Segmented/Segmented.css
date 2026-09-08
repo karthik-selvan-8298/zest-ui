@@ -1,0 +1,114 @@
+.zest-segmented {
+  --_height: var(--zest-button-height-md);
+  --_font-size: var(--zest-font-size-sm);
+  --_gap: 2px;
+  /* Segment corner sits concentric with the track: control radius minus the
+     track's inset padding. */
+  --_item-radius: calc(var(--zest-radius-control) - var(--zest-inset-panel));
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: stretch;
+  gap: var(--_gap);
+  height: var(--_height);
+  padding: var(--zest-inset-panel);
+  /* Same outer track as ButtonGroup so the two read as one family. */
+  border-radius: var(--zest-radius-control);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+  overflow: clip;
+  vertical-align: middle;
+  font-family: var(--zest-font-family-sans);
+}
+
+/* ── Sizes ────────────────────────────────────────────────────────────── */
+.zest-segmented[data-size='sm'] {
+  --_height: var(--zest-button-height-sm);
+  --_font-size: var(--zest-font-size-xs);
+}
+
+/* ── Full width ───────────────────────────────────────────────────────── */
+.zest-segmented[data-full-width] {
+  display: flex;
+}
+
+.zest-segmented[data-full-width] .zest-segmented__item {
+  flex: 1 1 0;
+}
+
+/* ── Segments ─────────────────────────────────────────────────────────── */
+.zest-segmented__item {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--zest-space-2);
+  flex: 0 0 auto;
+  min-width: 0;
+  padding: 0 var(--zest-inset-control-x);
+  border: 0;
+  border-radius: var(--_item-radius);
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  font-family: inherit;
+  font-size: var(--_font-size);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* Unselected hover — neutral wash only (single-highlight rule). */
+.zest-segmented__item:hover:not([data-pressed]):not([data-disabled]) {
+  background: var(--zest-color-surface-hover);
+  color: var(--zest-color-text-primary);
+}
+
+.zest-segmented__item:active:not([data-pressed]):not([data-disabled]) {
+  background: var(--zest-color-surface-active);
+}
+
+/* Selected — solid: accent fill + contrast text. */
+.zest-segmented[data-variant='solid'] .zest-segmented__item[data-pressed] {
+  background: var(--zest-accent);
+  color: var(--zest-accent-contrast);
+}
+
+/* Selected — soft: accent tint + accent text. */
+.zest-segmented[data-variant='soft'] .zest-segmented__item[data-pressed] {
+  background: color-mix(in srgb, var(--zest-accent) 12%, transparent);
+  color: var(--zest-accent-subtle-text);
+}
+
+/* ── Disabled ─────────────────────────────────────────────────────────── */
+.zest-segmented__item[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.zest-segmented .zest-segmented__item[data-pressed][data-disabled] {
+  background: var(--zest-color-surface-disabled);
+  color: var(--zest-color-text-disabled);
+}
+
+/* ── Parts ────────────────────────────────────────────────────────────── */
+.zest-segmented__icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: var(--zest-font-size-md);
+}
+
+.zest-segmented__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Keep the focus ring above neighbouring segments. */
+.zest-segmented__item:focus-visible {
+  position: relative;
+  z-index: 1;
+}

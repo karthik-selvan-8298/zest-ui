@@ -1,0 +1,52 @@
+.zest-fieldset {
+  --_gap: var(--zest-space-4);
+
+  /* Reset native fieldset chrome. */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--_gap);
+  font-family: var(--zest-font-family-sans);
+}
+
+.zest-fieldset[data-gap='sm'] {
+  --_gap: var(--zest-space-3);
+}
+
+.zest-fieldset[data-gap='lg'] {
+  --_gap: var(--zest-space-6);
+}
+
+.zest-fieldset__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zest-space-1);
+}
+
+/* Legend = Typography subtitle2. */
+.zest-fieldset__legend {
+  color: var(--zest-color-text-primary);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-fieldset__legend[data-disabled] {
+  color: var(--zest-color-text-disabled);
+}
+
+.zest-fieldset__description {
+  margin: 0;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-xs);
+  line-height: var(--zest-line-height-normal);
+}
+
+.zest-fieldset[data-disabled] .zest-fieldset__description {
+  color: var(--zest-color-text-disabled);
+}

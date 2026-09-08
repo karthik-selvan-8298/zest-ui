@@ -65,7 +65,6 @@ export const DenseAndStriped: Story = {
   ),
 };
 
-
 export const StackedOnMobile: StoryObj = {
   render: () => (
     <Table.Root stackOnMobile>

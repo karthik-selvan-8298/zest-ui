@@ -5,8 +5,10 @@ import { IconButton } from '../../actions/IconButton/IconButton';
 import '../../base.css';
 import './FileUpload.css';
 
-export interface FileUploadProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface FileUploadProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   /** Accepted types, native `accept` syntax (e.g. "image/*,.pdf"). */
   accept?: string;
   multiple?: boolean;

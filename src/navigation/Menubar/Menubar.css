@@ -1,0 +1,58 @@
+/* Dropdown popups and rows come from ../Menu/Menu.css; this file styles the
+   bar and its triggers only. */
+
+.zest-menubar {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  box-sizing: border-box;
+  padding: var(--zest-inset-panel);
+  border-radius: var(--zest-radius-panel);
+  background: var(--zest-color-surface);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border-subtle);
+}
+
+.zest-menubar[data-variant='plain'] {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.zest-menubar__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zest-space-1);
+  height: var(--zest-button-height-sm);
+  padding: 0 var(--zest-space-3);
+  border: 0;
+  border-radius: var(--zest-radius-row);
+  background: transparent;
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  color: var(--zest-color-text-primary);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+/* Same soft accent as a highlighted menu row — one recipe across the library. */
+.zest-menubar__trigger:hover,
+.zest-menubar__trigger[data-popup-open] {
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+  color: var(--zest-color-primary-subtle-text);
+}
+
+.zest-menubar__trigger:active {
+  background: color-mix(in srgb, var(--zest-color-primary) 14%, transparent);
+}
+
+.zest-menubar__trigger[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  cursor: not-allowed;
+  background: transparent;
+}

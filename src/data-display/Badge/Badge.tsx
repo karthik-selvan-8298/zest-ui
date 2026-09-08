@@ -62,12 +62,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
 
   if (children === undefined) {
     return (
-      <span
-        ref={ref}
-        className={cx('zest-badge', className)}
-        data-standalone=""
-        {...props}
-      >
+      <span ref={ref} className={cx('zest-badge', className)} data-standalone="" {...props}>
         {indicator}
       </span>
     );

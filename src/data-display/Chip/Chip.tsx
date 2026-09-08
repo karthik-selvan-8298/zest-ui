@@ -17,10 +17,10 @@ import './Chip.css';
 export type ChipVariant = 'soft' | 'solid' | 'outlined';
 export type ChipSize = 'sm' | 'md';
 
-export interface ChipProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'color' | 'onClick'> {
-  /** Chip text (children is an alias). */
-  label?: React.ReactNode;
+interface ChipBaseProps extends Omit<
+  React.HTMLAttributes<HTMLElement>,
+  'color' | 'onClick' | 'children'
+> {
   variant?: ChipVariant;
   color?: ZestColor;
   size?: ChipSize;
@@ -34,8 +34,17 @@ export interface ChipProps
   clickable?: boolean;
   onClick?: (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
   disabled?: boolean;
-  children?: React.ReactNode;
 }
+
+/**
+ * A chip must have visible text: pass it as `label` or as `children`
+ * (never neither — an empty pill has no accessible name).
+ */
+export type ChipProps = ChipBaseProps &
+  (
+    | { /** Chip text. */ label: React.ReactNode; children?: never }
+    | { label?: never; /** Chip text (alias for `label`). */ children: React.ReactNode }
+  );
 
 export const Chip = React.forwardRef<HTMLElement, ChipProps>(function Chip(
   {

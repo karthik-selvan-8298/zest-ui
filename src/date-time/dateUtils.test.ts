@@ -146,9 +146,7 @@ describe('isBetween', () => {
   });
 
   it('compares at day granularity, ignoring time of day', () => {
-    expect(isBetween(new Date(2026, 7, 10, 0, 0, 1), new Date(2026, 7, 10, 23, 0), end)).toBe(
-      true
-    );
+    expect(isBetween(new Date(2026, 7, 10, 0, 0, 1), new Date(2026, 7, 10, 23, 0), end)).toBe(true);
   });
 });
 

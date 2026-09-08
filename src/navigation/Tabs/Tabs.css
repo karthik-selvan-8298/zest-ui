@@ -98,7 +98,8 @@
     color var(--zest-duration-fast) var(--zest-ease-standard);
 }
 
-.zest-tabs__list[data-variant='segmented'] .zest-tabs__tab:hover:not([data-selected]):not([data-active]) {
+.zest-tabs__list[data-variant='segmented']
+  .zest-tabs__tab:hover:not([data-selected]):not([data-active]) {
   background: var(--zest-color-surface-hover);
   color: var(--zest-color-text-primary);
 }

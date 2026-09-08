@@ -3,7 +3,8 @@ import { EyeIcon, EyeOffIcon } from '../../icons';
 import { Input, type InputProps } from '../Input/Input';
 import { IconButton } from '../../actions/IconButton/IconButton';
 
-export interface PasswordInputProps extends Omit<InputProps, 'type' | 'endAdornment'> {
+/** `endAdornment`/`endIcon` are owned by the built-in visibility toggle. */
+export interface PasswordInputProps extends Omit<InputProps, 'type' | 'endAdornment' | 'endIcon'> {
   /** Initial visibility of the password. */
   defaultVisible?: boolean;
 }

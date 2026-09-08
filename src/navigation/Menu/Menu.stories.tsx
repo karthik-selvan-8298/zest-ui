@@ -14,7 +14,13 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => (
     <Menu.Root>
-      <Menu.Trigger render={<Button variant="outlined" color="neutral">Actions</Button>} />
+      <Menu.Trigger
+        render={
+          <Button variant="outlined" color="neutral">
+            Actions
+          </Button>
+        }
+      />
       <Menu.Content>
         <Menu.Item>Duplicate</Menu.Item>
         <Menu.Item>Rename</Menu.Item>
@@ -29,7 +35,13 @@ export const Default: Story = {
 export const WithIcons: Story = {
   render: () => (
     <Menu.Root>
-      <Menu.Trigger render={<Button variant="outlined" color="neutral">Edit</Button>} />
+      <Menu.Trigger
+        render={
+          <Button variant="outlined" color="neutral">
+            Edit
+          </Button>
+        }
+      />
       <Menu.Content>
         <Menu.Item>
           <EditIcon /> Rename
@@ -49,7 +61,13 @@ export const WithIcons: Story = {
 export const Grouped: Story = {
   render: () => (
     <Menu.Root>
-      <Menu.Trigger render={<Button variant="outlined" color="neutral">View</Button>} />
+      <Menu.Trigger
+        render={
+          <Button variant="outlined" color="neutral">
+            View
+          </Button>
+        }
+      />
       <Menu.Content>
         <Menu.Group>
           <Menu.GroupLabel>Layout</Menu.GroupLabel>

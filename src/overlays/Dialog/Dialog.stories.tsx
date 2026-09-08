@@ -27,7 +27,13 @@ export const Default: Story = {
           <TextField label="Job title" placeholder="e.g. Product Engineer" fullWidth />
         </Stack>
         <Dialog.Footer>
-          <Dialog.Close render={<Button variant="ghost" color="neutral">Cancel</Button>} />
+          <Dialog.Close
+            render={
+              <Button variant="ghost" color="neutral">
+                Cancel
+              </Button>
+            }
+          />
           <Dialog.Close render={<Button>Save changes</Button>} />
         </Dialog.Footer>
       </Dialog.Content>
@@ -49,7 +55,13 @@ export const LongContent: Story = {
           ))}
         </Stack>
         <Dialog.Footer>
-          <Dialog.Close render={<Button variant="ghost" color="neutral">Decline</Button>} />
+          <Dialog.Close
+            render={
+              <Button variant="ghost" color="neutral">
+                Decline
+              </Button>
+            }
+          />
           <Dialog.Close render={<Button>Accept</Button>} />
         </Dialog.Footer>
       </Dialog.Content>
@@ -95,7 +107,13 @@ export const FormLayout: Story = {
           </Grid>
         </Stack>
         <Dialog.Footer>
-          <Dialog.Close render={<Button variant="ghost" color="neutral">Cancel</Button>} />
+          <Dialog.Close
+            render={
+              <Button variant="ghost" color="neutral">
+                Cancel
+              </Button>
+            }
+          />
           <Dialog.Close render={<Button>Create webhook</Button>} />
         </Dialog.Footer>
       </Dialog.Content>

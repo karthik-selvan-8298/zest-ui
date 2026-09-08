@@ -22,8 +22,9 @@ import './AlertDialog.css';
  * ```
  */
 
-export interface AlertDialogContentProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseAlertDialog.Popup>, 'title'>> {
+export interface AlertDialogContentProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseAlertDialog.Popup>, 'title'>
+> {
   /** Dialog title (renders an accessible AlertDialog.Title). */
   title?: React.ReactNode;
   /** Supporting description under the title. */
@@ -140,7 +141,10 @@ export function ConfirmDialog({
           </BaseAlertDialog.Close>
           {isControlled ? (
             /* The consumer owns `open` — close explicitly when the work is done. */
-            React.cloneElement(confirmButton, { onClick: () => onConfirm(), children: confirmLabel })
+            React.cloneElement(confirmButton, {
+              onClick: () => onConfirm(),
+              children: confirmLabel,
+            })
           ) : (
             <BaseAlertDialog.Close render={confirmButton} onClick={() => onConfirm()}>
               {confirmLabel}

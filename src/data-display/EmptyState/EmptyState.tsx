@@ -15,8 +15,8 @@ import './EmptyState.css';
  */
 
 export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
-  /** Icon shown in a soft neutral circle; defaults to InboxIcon. */
-  icon?: React.ReactNode;
+  /** Icon shown in a soft neutral circle; defaults to InboxIcon. `null` hides the slot. */
+  icon?: React.ReactNode | null;
   title: React.ReactNode;
   description?: React.ReactNode;
   /** Call to action (e.g. a Button). */
@@ -30,9 +30,11 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(func
 ) {
   return (
     <div ref={ref} className={cx('zest-empty-state', className)} data-size={size} {...props}>
-      <span className="zest-empty-state__icon" aria-hidden>
-        {icon ?? <InboxIcon />}
-      </span>
+      {icon === null ? null : (
+        <span className="zest-empty-state__icon" aria-hidden>
+          {icon ?? <InboxIcon />}
+        </span>
+      )}
       <div className="zest-empty-state__title">{title}</div>
       {description ? <div className="zest-empty-state__description">{description}</div> : null}
       {action ? <div className="zest-empty-state__action">{action}</div> : null}

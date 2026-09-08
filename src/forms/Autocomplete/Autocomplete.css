@@ -29,7 +29,8 @@
 }
 
 .zest-autocomplete:focus-within:not([data-disabled]) {
-  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-primary),
     var(--zest-focus-glow);
 }
 

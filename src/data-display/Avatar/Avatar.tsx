@@ -70,9 +70,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(function Av
       data-variant={variant}
       {...props}
     >
-      {src ? (
-        <BaseAvatar.Image className="zest-avatar__image" src={src} alt={alt ?? name} />
-      ) : null}
+      {src ? <BaseAvatar.Image className="zest-avatar__image" src={src} alt={alt ?? name} /> : null}
       <BaseAvatar.Fallback className="zest-avatar__fallback">{fallback}</BaseAvatar.Fallback>
     </BaseAvatar.Root>
   );

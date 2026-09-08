@@ -6,8 +6,9 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './NumberInput.css';
 
-export interface NumberInputProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseNumberField.Root>, 'color'>> {
+export interface NumberInputProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseNumberField.Root>, 'color'>
+> {
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
   /** Error appearance. */

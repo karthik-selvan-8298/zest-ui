@@ -12,11 +12,10 @@ export interface ComboboxOption {
   disabled?: boolean;
 }
 
-export interface ComboboxProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
-  > {
+export interface ComboboxProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
+> {
   options: ReadonlyArray<ComboboxOption>;
   /** Selected value. Use when controlled. */
   value?: string | null;
@@ -116,9 +115,7 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
           anchor={groupRef}
         >
           <BaseCombobox.Popup className="zest-combobox__popup">
-            <BaseCombobox.Empty className="zest-combobox__empty">
-              {emptyMessage}
-            </BaseCombobox.Empty>
+            <BaseCombobox.Empty className="zest-combobox__empty">{emptyMessage}</BaseCombobox.Empty>
             <BaseCombobox.List className="zest-combobox__list">
               {(option: ComboboxOption) => (
                 <BaseCombobox.Item

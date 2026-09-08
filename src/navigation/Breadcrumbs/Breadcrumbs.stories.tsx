@@ -12,11 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    items: [
-      { label: 'Home', href: '#' },
-      { label: 'Reports', href: '#' },
-      { label: 'Q3 revenue' },
-    ],
+    items: [{ label: 'Home', href: '#' }, { label: 'Reports', href: '#' }, { label: 'Q3 revenue' }],
   },
 };
 

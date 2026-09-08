@@ -10,8 +10,7 @@ import './Pagination.css';
  * <Pagination count={20} defaultPage={1} onPageChange={(page) => …} />
  */
 
-export interface PaginationProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
+export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
   /** Total number of pages. */
   count: number;
   /** Controlled current page (1-based). */

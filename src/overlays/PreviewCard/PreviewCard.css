@@ -1,0 +1,67 @@
+.zest-preview-card__positioner {
+  z-index: var(--zest-z-popover);
+}
+
+.zest-preview-card__trigger {
+  border-radius: var(--zest-radius-sm);
+  color: var(--zest-color-primary);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 2px;
+  transition: text-decoration-color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-preview-card__trigger:hover,
+.zest-preview-card__trigger[data-popup-open] {
+  text-decoration-color: currentColor;
+}
+
+/* Popup — same surface recipe as Popover, capped for card-sized content. */
+.zest-preview-card {
+  --_max-w: 320px;
+
+  box-sizing: border-box;
+  max-width: min(var(--_max-w), var(--available-width));
+  padding: var(--zest-space-4);
+  border-radius: var(--zest-radius-panel);
+  background: var(--zest-color-surface);
+  color: var(--zest-color-text-primary);
+  box-shadow: var(--zest-shadow-dropdown);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
+  line-height: var(--zest-line-height-normal);
+  transform-origin: var(--transform-origin);
+  transition:
+    transform var(--zest-duration-fast) var(--zest-ease-standard),
+    opacity var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-preview-card[data-starting-style],
+.zest-preview-card[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.zest-preview-card__arrow {
+  display: flex;
+  color: var(--zest-color-surface);
+}
+
+.zest-preview-card__arrow[data-side='bottom'] {
+  top: -6px;
+  transform: rotate(180deg);
+}
+
+.zest-preview-card__arrow[data-side='top'] {
+  bottom: -6px;
+}
+
+.zest-preview-card__arrow[data-side='left'] {
+  right: -9px;
+  transform: rotate(-90deg);
+}
+
+.zest-preview-card__arrow[data-side='right'] {
+  left: -9px;
+  transform: rotate(90deg);
+}

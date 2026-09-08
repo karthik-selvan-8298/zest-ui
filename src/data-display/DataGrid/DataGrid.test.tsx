@@ -68,9 +68,7 @@ describe('DataGrid', () => {
   });
 
   it('sorts numeric columns with the default comparator', async () => {
-    const { container } = render(
-      <DataGrid columns={columns} rows={fruits} getRowId={getRowId} />
-    );
+    const { container } = render(<DataGrid columns={columns} rows={fruits} getRowId={getRowId} />);
     const countHeader = screen.getByRole('columnheader', { name: 'Count' });
     await userEvent.click(within(countHeader).getByRole('button'));
     expect(bodyRowTexts(container)[0]).toBe('Date'); // count 2 first

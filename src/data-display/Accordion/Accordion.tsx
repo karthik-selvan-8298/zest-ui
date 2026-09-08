@@ -66,11 +66,7 @@ export type AccordionPanelProps = WithClassName<React.ComponentProps<typeof Base
 const AccordionPanel = React.forwardRef<HTMLDivElement, AccordionPanelProps>(
   function AccordionPanel({ className, children, ...props }, ref) {
     return (
-      <BaseAccordion.Panel
-        ref={ref}
-        className={cx('zest-accordion__panel', className)}
-        {...props}
-      >
+      <BaseAccordion.Panel ref={ref} className={cx('zest-accordion__panel', className)} {...props}>
         {/* Height animates on the panel; padding lives on the inner wrapper. */}
         <div className="zest-accordion__panel-content">{children}</div>
       </BaseAccordion.Panel>

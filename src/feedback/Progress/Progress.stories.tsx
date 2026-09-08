@@ -5,7 +5,8 @@ import { Progress } from './Progress';
 const meta = {
   title: 'Feedback/Progress',
   component: Progress,
-  args: { value: 40 },
+  // `label` satisfies the required accessible name for every story.
+  args: { value: 40, label: 'Progress' },
   argTypes: {
     color: {
       control: 'select',

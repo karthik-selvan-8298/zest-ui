@@ -4,8 +4,9 @@ import { cx } from '../../utils';
 import type { WithClassName } from '../../types';
 import './ScrollArea.css';
 
-export interface ScrollAreaProps
-  extends WithClassName<React.ComponentProps<typeof BaseScrollArea.Root>> {
+export interface ScrollAreaProps extends WithClassName<
+  React.ComponentProps<typeof BaseScrollArea.Root>
+> {
   /** Constrain the scrollable height (number of px or CSS length). */
   maxHeight?: number | string;
   /** Constrain the scrollable width. */

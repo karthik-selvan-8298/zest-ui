@@ -68,8 +68,20 @@ export const Box = React.forwardRef(function Box<E extends React.ElementType = '
     className,
     style,
     children,
-    p, px, py, pt, pr, pb, pl,
-    m, mx, my, mt, mr, mb, ml,
+    p,
+    px,
+    py,
+    pt,
+    pr,
+    pb,
+    pl,
+    m,
+    mx,
+    my,
+    mt,
+    mr,
+    mb,
+    ml,
     ...rest
   } = props as BoxProps<'div'>;
   const Component = (as ?? 'div') as React.ElementType;

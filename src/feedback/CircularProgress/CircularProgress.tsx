@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { cx } from '../../utils';
-import type { ZestColor } from '../../types';
+import type { AccessibleName, ZestColor } from '../../types';
 import '../../base.css';
 import './CircularProgress.css';
 
-export interface CircularProgressProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'> {
+interface CircularProgressBaseProps extends Omit<
+  React.HTMLAttributes<HTMLSpanElement>,
+  'color' | 'aria-label' | 'aria-labelledby'
+> {
   /** Completion between 0 and 100. `undefined` renders an indeterminate spinner. */
   value?: number;
   /** Outer diameter in px. @default 40 */
@@ -16,16 +18,33 @@ export interface CircularProgressProps
 }
 
 /**
+ * The ring has no text of its own, so one of `label` (announced, not
+ * rendered), `aria-label`, or `aria-labelledby` is required.
+ */
+export type CircularProgressProps = CircularProgressBaseProps & AccessibleName;
+
+/**
  * Circular progress indicator (pure SVG).
  *
  * ```tsx
- * <CircularProgress />              // indeterminate spinner
- * <CircularProgress value={64} />   // determinate ring
+ * <CircularProgress aria-label="Loading" />       // indeterminate spinner
+ * <CircularProgress value={64} label="Upload" />  // determinate ring
  * ```
  */
 export const CircularProgress = React.forwardRef<HTMLSpanElement, CircularProgressProps>(
   function CircularProgress(
-    { value, size = 40, thickness = 3.6, color = 'primary', className, style, ...props },
+    {
+      value,
+      size = 40,
+      thickness = 3.6,
+      color = 'primary',
+      label,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledby,
+      className,
+      style,
+      ...props
+    },
     ref
   ) {
     const indeterminate = value === undefined;
@@ -33,10 +52,20 @@ export const CircularProgress = React.forwardRef<HTMLSpanElement, CircularProgre
     const center = size / 2;
     const radius = (size - thickness) / 2;
 
+    // `progressbar` takes its name from author attributes only, so a
+    // non-string `label` is rendered visually hidden and referenced by id.
+    const labelId = React.useId();
+    const labelIsText = typeof label === 'string' || typeof label === 'number';
+    const resolvedAriaLabel = ariaLabel ?? (labelIsText ? String(label) : undefined);
+    const resolvedLabelledby =
+      ariaLabelledby ?? (label != null && !labelIsText ? labelId : undefined);
+
     return (
       <span
         ref={ref}
         role="progressbar"
+        aria-label={resolvedAriaLabel}
+        aria-labelledby={resolvedLabelledby}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={clamped}
@@ -46,6 +75,11 @@ export const CircularProgress = React.forwardRef<HTMLSpanElement, CircularProgre
         style={{ width: size, height: size, ...style }}
         {...props}
       >
+        {label != null && !labelIsText ? (
+          <span id={labelId} className="zest-visually-hidden">
+            {label}
+          </span>
+        ) : null}
         <svg viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
           {!indeterminate ? (
             <circle

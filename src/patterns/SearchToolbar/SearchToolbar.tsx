@@ -26,7 +26,17 @@ export interface SearchToolbarProps extends Omit<React.HTMLAttributes<HTMLDivEle
  */
 export const SearchToolbar = React.forwardRef<HTMLDivElement, SearchToolbarProps>(
   function SearchToolbar(
-    { value, defaultValue, onValueChange, placeholder, searchProps, filters, actions, className, ...props },
+    {
+      value,
+      defaultValue,
+      onValueChange,
+      placeholder,
+      searchProps,
+      filters,
+      actions,
+      className,
+      ...props
+    },
     ref
   ) {
     return (

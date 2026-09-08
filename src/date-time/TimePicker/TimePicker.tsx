@@ -5,11 +5,10 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './TimePicker.css';
 
-export interface TimePickerProps
-  extends Omit<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
-  > {
+export interface TimePickerProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
+> {
   /** Selected time as "HH:mm" (controlled). */
   value?: string | null;
   /** Initially selected time (uncontrolled). */

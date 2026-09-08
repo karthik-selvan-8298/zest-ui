@@ -6,7 +6,9 @@ import type { WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Radio.css';
 
-export interface RadioProps extends WithClassName<Omit<React.ComponentProps<typeof BaseRadio.Root>, 'color'>> {
+export interface RadioProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseRadio.Root>, 'color'>
+> {
   label?: React.ReactNode;
   color?: ZestColor;
   size?: 'sm' | 'md';
@@ -37,7 +39,9 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(function Ra
   );
 });
 
-export interface RadioGroupProps extends WithClassName<React.ComponentProps<typeof BaseRadioGroup>> {
+export interface RadioGroupProps extends WithClassName<
+  React.ComponentProps<typeof BaseRadioGroup>
+> {
   orientation?: 'vertical' | 'horizontal';
 }
 

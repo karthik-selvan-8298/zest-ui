@@ -19,7 +19,7 @@ export const Default: Story = {
 };
 
 function ControlledDemo() {
-  const [date, setDate] = React.useState<Date | null>(new Date(2026, 7, 14));
+  const [date, setDate] = React.useState<Date | null>(() => new Date(2026, 7, 14));
   return (
     <Stack spacing={2}>
       <Calendar value={date} onValueChange={setDate} aria-label="Delivery date" />

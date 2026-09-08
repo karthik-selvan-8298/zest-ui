@@ -37,7 +37,8 @@
 .zest-select__trigger:focus-visible:not([data-disabled]) {
   /* Matches the rest of the field family — keyboard-focused triggers show
      the focus glow even before the popup opens. */
-  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-primary),
     var(--zest-focus-glow);
   outline: none;
 }
@@ -53,7 +54,7 @@
 }
 
 .zest-select__placeholder {
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-placeholder);
 }
 
 .zest-select__icon {

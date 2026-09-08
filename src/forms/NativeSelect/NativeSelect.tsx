@@ -10,8 +10,10 @@ export interface NativeSelectOption {
   disabled?: boolean;
 }
 
-export interface NativeSelectProps
-  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
+export interface NativeSelectProps extends Omit<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  'size'
+> {
   /** Options rendered as `<option>` elements. */
   options: NativeSelectOption[];
   /** Field size. Defaults to `md`. */

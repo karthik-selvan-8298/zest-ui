@@ -127,7 +127,11 @@ function StackDemo() {
     <Button
       variant="outlined"
       onClick={() => {
-        toast.add({ title: 'First', description: 'Hover the stack to expand it.', severity: 'info' });
+        toast.add({
+          title: 'First',
+          description: 'Hover the stack to expand it.',
+          severity: 'info',
+        });
         toast.add({ title: 'Second', severity: 'success' });
         toast.add({ title: 'Third', severity: 'warning' });
       }}

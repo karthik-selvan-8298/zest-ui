@@ -22,9 +22,7 @@ const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
   { variant = 'elevated', className, ...props },
   ref
 ) {
-  return (
-    <div ref={ref} className={cx('zest-card', className)} data-variant={variant} {...props} />
-  );
+  return <div ref={ref} className={cx('zest-card', className)} data-variant={variant} {...props} />;
 });
 
 export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
@@ -32,17 +30,22 @@ export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   subtitle?: React.ReactNode;
   /** Trailing element (menu button, action). */
   action?: React.ReactNode;
+  /**
+   * Heading element for `title`. Defaults to `h3` so cards slot under a page
+   * `h1`/`h2`; pass `'h2'`/`'h4'` to match the surrounding outline.
+   */
+  titleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
   children?: React.ReactNode;
 }
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(function CardHeader(
-  { title, subtitle, action, className, children, ...props },
+  { title, subtitle, action, titleAs: TitleTag = 'h3', className, children, ...props },
   ref
 ) {
   return (
     <div ref={ref} className={cx('zest-card__header', className)} {...props}>
       <div className="zest-card__heading">
-        {title ? <div className="zest-card__title">{title}</div> : null}
+        {title ? <TitleTag className="zest-card__title">{title}</TitleTag> : null}
         {subtitle ? <div className="zest-card__subtitle">{subtitle}</div> : null}
         {children}
       </div>
@@ -51,11 +54,17 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(function Ca
   );
 });
 
-const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function CardTitle({ className, ...props }, ref) {
-    return <div ref={ref} className={cx('zest-card__title', className)} {...props} />;
-  }
-);
+export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  /** Heading level. Defaults to `h3`. */
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
+}
+
+const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(function CardTitle(
+  { as: Tag = 'h3', className, ...props },
+  ref
+) {
+  return <Tag ref={ref} className={cx('zest-card__title', className)} {...props} />;
+});
 
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   function CardContent({ className, ...props }, ref) {

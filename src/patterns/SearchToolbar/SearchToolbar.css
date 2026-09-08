@@ -10,9 +10,7 @@
   grid-template-columns: 1fr auto;
 }
 
-.zest-search-toolbar:has(.zest-search-toolbar__filters):has(
-    .zest-search-toolbar__actions
-  ) {
+.zest-search-toolbar:has(.zest-search-toolbar__filters):has(.zest-search-toolbar__actions) {
   grid-template-columns: 1fr auto auto;
 }
 
@@ -37,9 +35,7 @@
   .zest-search-toolbar,
   .zest-search-toolbar:has(.zest-search-toolbar__filters),
   .zest-search-toolbar:has(.zest-search-toolbar__actions),
-  .zest-search-toolbar:has(.zest-search-toolbar__filters):has(
-      .zest-search-toolbar__actions
-    ) {
+  .zest-search-toolbar:has(.zest-search-toolbar__filters):has(.zest-search-toolbar__actions) {
     grid-template-columns: 1fr;
   }
 }

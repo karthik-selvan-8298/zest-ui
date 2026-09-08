@@ -17,17 +17,34 @@ import './Breadcrumbs.css';
  * </Breadcrumbs>
  */
 
-export interface BreadcrumbsItemProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
-  /** Link target. Omit for non-link crumbs (e.g. the current page). */
-  href?: string;
+interface BreadcrumbsItemBaseProps {
   /**
    * Marks the crumb as the current page (`aria-current="page"`, no link).
    * Set automatically on the last child by the Breadcrumbs root.
    */
   current?: boolean;
+  className?: string;
   children?: React.ReactNode;
 }
+
+/** A crumb with `href` renders `<a>` and accepts anchor attributes. */
+export type BreadcrumbsItemLinkProps = BreadcrumbsItemBaseProps &
+  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'className' | 'children'> & {
+    /** Link target. */
+    href: string;
+  };
+
+/** A crumb without `href` (e.g. the current page) renders `<span>`. */
+export type BreadcrumbsItemTextProps = BreadcrumbsItemBaseProps &
+  Omit<React.HTMLAttributes<HTMLSpanElement>, 'className' | 'children'> & {
+    href?: undefined;
+  };
+
+/**
+ * Discriminated on `href`: anchor-only attributes (`target`, `rel`,
+ * `download`) are accepted only when the crumb is actually a link.
+ */
+export type BreadcrumbsItemProps = BreadcrumbsItemLinkProps | BreadcrumbsItemTextProps;
 
 const BreadcrumbsItem = React.forwardRef<HTMLAnchorElement | HTMLSpanElement, BreadcrumbsItemProps>(
   function BreadcrumbsItem({ href, current = false, className, children, ...props }, ref) {
@@ -48,7 +65,12 @@ const BreadcrumbsItem = React.forwardRef<HTMLAnchorElement | HTMLSpanElement, Br
       <a
         ref={ref as React.Ref<HTMLAnchorElement>}
         href={href}
-        className={cx('zest-breadcrumbs__item', 'zest-breadcrumbs__link', 'zest-focusable', className)}
+        className={cx(
+          'zest-breadcrumbs__item',
+          'zest-breadcrumbs__link',
+          'zest-focusable',
+          className
+        )}
         {...props}
       >
         {children}
@@ -83,11 +105,15 @@ const BreadcrumbsRoot = React.forwardRef<HTMLElement, BreadcrumbsProps>(function
   ref
 ) {
   const crumbs: React.ReactNode[] = items
-    ? items.map((item, index) => (
-        <BreadcrumbsItem key={index} href={item.href}>
-          {item.label}
-        </BreadcrumbsItem>
-      ))
+    ? items.map((item, index) =>
+        item.href ? (
+          <BreadcrumbsItem key={index} href={item.href}>
+            {item.label}
+          </BreadcrumbsItem>
+        ) : (
+          <BreadcrumbsItem key={index}>{item.label}</BreadcrumbsItem>
+        )
+      )
     : React.Children.toArray(children);
 
   let visible: Array<React.ReactNode | typeof ELLIPSIS> = crumbs;

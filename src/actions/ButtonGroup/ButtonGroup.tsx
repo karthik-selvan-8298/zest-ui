@@ -10,22 +10,20 @@ export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** Visually joins adjacent Buttons/IconButtons into one segmented control. */
-export const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-  function ButtonGroup(
-    { orientation = 'horizontal', fullWidth, className, children, ...props },
-    ref
-  ) {
-    return (
-      <div
-        ref={ref}
-        role="group"
-        className={cx('zest-button-group', className)}
-        data-orientation={orientation}
-        data-full-width={fullWidth ? '' : undefined}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+export const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(function ButtonGroup(
+  { orientation = 'horizontal', fullWidth, className, children, ...props },
+  ref
+) {
+  return (
+    <div
+      ref={ref}
+      role="group"
+      className={cx('zest-button-group', className)}
+      data-orientation={orientation}
+      data-full-width={fullWidth ? '' : undefined}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});

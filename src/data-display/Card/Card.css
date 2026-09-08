@@ -27,6 +27,7 @@
 }
 
 .zest-card__title {
+  margin: 0; /* rendered as a heading element — drop UA margins */
   font-size: var(--zest-font-size-lg);
   font-weight: var(--zest-font-weight-bold);
   line-height: var(--zest-line-height-normal);

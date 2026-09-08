@@ -15,9 +15,7 @@ import './Collapsible.css';
  * </Collapsible.Root>
  */
 
-export type CollapsibleRootProps = WithClassName<
-  React.ComponentProps<typeof BaseCollapsible.Root>
->;
+export type CollapsibleRootProps = WithClassName<React.ComponentProps<typeof BaseCollapsible.Root>>;
 
 const CollapsibleRoot = React.forwardRef<HTMLDivElement, CollapsibleRootProps>(
   function CollapsibleRoot({ className, ...props }, ref) {

@@ -20,7 +20,13 @@ export const Adornments: Story = {
     <Stack spacing={4} style={{ maxWidth: 320 }}>
       <Input aria-label="Search" placeholder="Search…" startIcon={<SearchIcon />} fullWidth />
       <Input aria-label="Username" placeholder="Username" endIcon={<UserIcon />} fullWidth />
-      <Input aria-label="Amount" placeholder="0.00" startAdornment="$" endAdornment="USD" fullWidth />
+      <Input
+        aria-label="Amount"
+        placeholder="0.00"
+        startAdornment="$"
+        endAdornment="USD"
+        fullWidth
+      />
     </Stack>
   ),
 };

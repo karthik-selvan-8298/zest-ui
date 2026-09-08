@@ -4,8 +4,7 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './Input.css';
 
-export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
   /** Error appearance (also set automatically inside an invalid FormField). */

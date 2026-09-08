@@ -5,8 +5,9 @@ import type { WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Switch.css';
 
-export interface SwitchProps
-  extends WithClassName<Omit<React.ComponentProps<typeof BaseSwitch.Root>, 'color'>> {
+export interface SwitchProps extends WithClassName<
+  Omit<React.ComponentProps<typeof BaseSwitch.Root>, 'color'>
+> {
   label?: React.ReactNode;
   color?: ZestColor;
   size?: 'sm' | 'md';

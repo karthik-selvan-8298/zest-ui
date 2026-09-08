@@ -13,12 +13,17 @@
   transition: box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
 }
 
+/* Compact variant — tighter block padding, same type size as Input sm. */
+.zest-textarea[data-size='sm'] {
+  padding: var(--zest-space-2) var(--zest-space-3);
+}
+
 .zest-textarea[data-full-width] {
   width: 100%;
 }
 
 .zest-textarea::placeholder {
-  color: var(--zest-color-text-disabled);
+  color: var(--zest-color-text-placeholder);
 }
 
 .zest-textarea:hover:not(:disabled) {
@@ -27,7 +32,8 @@
 
 .zest-textarea:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 1px var(--zest-color-primary),
+  box-shadow:
+    inset 0 0 0 1px var(--zest-color-primary),
     var(--zest-focus-glow);
 }
 

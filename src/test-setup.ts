@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom/vitest';
+// Adds `expect(results).toHaveNoViolations()` for axe-core checks in tests.
+import 'vitest-axe/extend-expect';
 
 // jsdom is missing a few APIs Base UI relies on.
 if (!window.matchMedia) {
@@ -16,6 +18,14 @@ if (!window.matchMedia) {
 
 if (!Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = () => {};
+}
+
+if (typeof window.ResizeObserver === 'undefined') {
+  window.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof window.ResizeObserver;
 }
 
 if (typeof window.PointerEvent === 'undefined') {
