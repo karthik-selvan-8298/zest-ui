@@ -55,7 +55,10 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--zest-space-4);
-  padding: var(--zest-inset-surface) var(--zest-inset-surface) 0;
+  /* Header and footer are white chrome around the tinted body, so each
+     carries its own vertical inset — content sits centered in its strip
+     rather than hugging the body edge. */
+  padding: var(--zest-inset-surface) var(--zest-inset-surface) var(--zest-space-4);
 }
 
 .zest-dialog__heading {
@@ -103,16 +106,17 @@
 
 .zest-dialog__footer {
   display: flex;
+  align-items: center; /* mixed-height actions (ghost sm + solid md) share a centerline */
   justify-content: flex-end;
   gap: var(--zest-space-2);
-  padding: 0 var(--zest-inset-surface) var(--zest-inset-surface);
+  padding: var(--zest-space-4) var(--zest-inset-surface);
 }
 
 /* Footers rendered by hand inside the padded body (custom composition)
    still align flush with the dialog edge. */
 .zest-dialog__body > .zest-dialog__footer {
   margin: var(--zest-space-6) calc(-1 * var(--zest-space-6)) calc(-1 * var(--zest-space-6));
-  padding: 0 var(--zest-inset-surface) var(--zest-inset-surface);
+  padding: var(--zest-space-4) var(--zest-inset-surface);
 }
 
 /* ── Mobile: dialogs become bottom sheets ─────────────────────────────── */
