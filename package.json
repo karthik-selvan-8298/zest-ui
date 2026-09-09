@@ -1,6 +1,6 @@
 {
   "name": "zest-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A modern, accessible UI component framework for building consistent interfaces — one package, ~75 components, zero raw HTML. Violet-forward, grey-neutral, built on Base UI primitives.",
   "keywords": [
     "react",
