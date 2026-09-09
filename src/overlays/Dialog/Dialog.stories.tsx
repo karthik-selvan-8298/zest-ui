@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Grid, Stack } from '../../primitives';
 import { Button } from '../../actions/Button/Button';
-import { ButtonGroup } from '../../actions/ButtonGroup/ButtonGroup';
+import { Segmented } from '../../actions/Segmented/Segmented';
 import { FormField, Label } from '../../forms/FormField/FormField';
 import { TextField } from '../../forms/TextField/TextField';
 import { Dialog } from './Dialog';
@@ -91,12 +91,15 @@ export const FormLayout: Story = {
             <TextField label="Retain requests (days)" defaultValue="30" fullWidth />
             <FormField>
               <Label>Access</Label>
-              <ButtonGroup fullWidth>
-                <Button>Public</Button>
-                <Button variant="ghost" color="neutral">
-                  Auth required
-                </Button>
-              </ButtonGroup>
+              <Segmented
+                aria-label="Access"
+                fullWidth
+                defaultValue="public"
+                options={[
+                  { value: 'public', label: 'Public' },
+                  { value: 'auth', label: 'Auth required' },
+                ]}
+              />
             </FormField>
             <TextField
               label="Response delay (s)"

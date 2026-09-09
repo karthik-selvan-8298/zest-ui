@@ -7,6 +7,10 @@ breaking changes, patch = fixes only).
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [0.2.0] — 2026-09-09
+
 ### ⚠️ Breaking (type-level)
 
 - **Toggle** now requires `aria-label` (icon-only control) — parity with `IconButton`.

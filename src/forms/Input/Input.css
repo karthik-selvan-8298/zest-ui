@@ -108,8 +108,8 @@
 /* Floated: focused or has a value. Label sits FULLY INSIDE the field's top
    inset rather than straddling the border — its background is transparent
    and automatically reads whatever the field's interior color is (the
-   focused surface, the disabled neutral bg, or any override). No notch
-   variable needed, no mismatch against a raised/dark/tinted container.
+   focused surface, the disabled neutral bg, or any override). No mismatch against a
+   raised/dark/tinted container.
    Field padding-top expands so the input text doesn't collide with it. */
 .zest-input[data-floating]:focus-within .zest-input__label,
 .zest-input[data-floating] .zest-input__control:not(:placeholder-shown) ~ .zest-input__label {
