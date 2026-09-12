@@ -7,7 +7,19 @@ breaking changes, patch = fixes only).
 
 ## [Unreleased]
 
-_Nothing yet._
+### Fixed
+
+- **Sidebar**: the collapse edge-toggle no longer floats above an open Dialog/AlertDialog — its z-index dropped from above the popover layer (1401) to just above the AppBar (1101), below the modal layer (1300).
+- **Dark mode**: the primary ramp was failing AA both ways — `primary-300` as text on the dark surface (3.9:1) and white text on `primary-300` solid controls (3.9:1). Dark `--zest-color-primary`/`-hover` are lifted toward white, `-active` is `primary-300`, and `--zest-color-primary-contrast` flips to `gray-900` (Material-3 style light-on-dark primary). `--zest-color-primary-subtle-text` lifted the same way (≈6:1). Other tones were already ≥7:1.
+
+### Added
+
+- `Overview/Members Page › AppShell` story — Sidebar + AppBar + page + Dialog composed together (guards the layer order); the members page "Invite member" button now opens a real Dialog.
+
+### Tooling
+
+- Storybook Mode toolbar now offers Light / Dark / **System** (follows the OS) with sun/moon icons, and Storybook's built-in canvas-background tool is disabled — it repaints the canvas without switching Zest tokens and was easily mistaken for dark mode.
+- Visual runner now forces the bundled Roboto faces to load before capturing (`document.fonts.ready` resolves even when a face was never requested), so dev-server runs no longer drift from the static-build baselines.
 
 ## [0.2.0] — 2026-09-09
 

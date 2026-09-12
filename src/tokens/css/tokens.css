@@ -278,10 +278,21 @@
 [data-zest-theme='dark'] {
   color-scheme: dark;
 
-  --zest-color-primary: var(--zest-primary-300);
-  --zest-color-primary-hover: var(--zest-primary-500);
-  --zest-color-primary-active: var(--zest-primary-700);
-  --zest-color-primary-subtle-text: var(--zest-primary-300);
+  /* Dark primary ramp — Material-3 style: a LIGHT lavender surface with
+     dark (gray-900) contrast text. primary-300 alone is 3.9:1 both as text on
+     the dark surface and under white text, so main/hover are lifted toward
+     white and the contrast text flips dark. Every pairing ≥ 4.75:1. */
+  --zest-color-primary: color-mix(in srgb, var(--zest-primary-300) 70%, var(--zest-white));
+  --zest-color-primary-hover: color-mix(in srgb, var(--zest-primary-300) 55%, var(--zest-white));
+  --zest-color-primary-active: var(--zest-primary-300);
+  --zest-color-primary-contrast: var(--zest-gray-900);
+  /* primary-300 alone is 3.9:1 on the 8% violet tint (active nav row, soft
+     buttons) — lifted toward white to clear AA (≈6:1) while staying lavender. */
+  --zest-color-primary-subtle-text: color-mix(
+    in srgb,
+    var(--zest-primary-300) 70%,
+    var(--zest-white)
+  );
   --zest-color-secondary-subtle-text: var(--zest-secondary-300);
   --zest-color-success-subtle-text: var(--zest-success-300);
   --zest-color-warning-subtle-text: var(--zest-warning-300);
@@ -320,10 +331,21 @@
   :root:not([data-zest-theme='light']):not([data-zest-theme='dark']) {
     color-scheme: dark;
 
-    --zest-color-primary: var(--zest-primary-300);
-    --zest-color-primary-hover: var(--zest-primary-500);
-    --zest-color-primary-active: var(--zest-primary-700);
-    --zest-color-primary-subtle-text: var(--zest-primary-300);
+    /* Dark primary ramp — Material-3 style: a LIGHT lavender surface with
+       dark (gray-900) contrast text. primary-300 alone is 3.9:1 both as text on
+       the dark surface and under white text, so main/hover are lifted toward
+       white and the contrast text flips dark. Every pairing ≥ 4.75:1. */
+    --zest-color-primary: color-mix(in srgb, var(--zest-primary-300) 70%, var(--zest-white));
+    --zest-color-primary-hover: color-mix(in srgb, var(--zest-primary-300) 55%, var(--zest-white));
+    --zest-color-primary-active: var(--zest-primary-300);
+    --zest-color-primary-contrast: var(--zest-gray-900);
+    /* primary-300 alone is 3.9:1 on the 8% violet tint (active nav row, soft
+     buttons) — lifted toward white to clear AA (≈6:1) while staying lavender. */
+    --zest-color-primary-subtle-text: color-mix(
+      in srgb,
+      var(--zest-primary-300) 70%,
+      var(--zest-white)
+    );
     --zest-color-secondary-subtle-text: var(--zest-secondary-300);
     --zest-color-success-subtle-text: var(--zest-success-300);
     --zest-color-warning-subtle-text: var(--zest-warning-300);

@@ -27,8 +27,14 @@ const config: TestRunnerConfig = {
     await injectAxe(page);
   },
   async postVisit(page, context) {
-    // Let fonts/transitions settle before capturing.
-    await page.evaluate(() => document.fonts.ready);
+    // Force the bundled Roboto faces to load (fonts.ready alone resolves even
+    // when a face has not been requested yet — dev-server captures then fall
+    // back to the system font and drift from the baselines).
+    await page.evaluate(() =>
+      Promise.all(['400', '500', '700'].map((w) => document.fonts.load(`${w} 1em Roboto`))).then(
+        () => document.fonts.ready
+      )
+    );
     await page.waitForTimeout(250);
     const image = await page.screenshot({ animations: 'disabled', fullPage: true });
     expect(image).toMatchImageSnapshot({

@@ -1,8 +1,14 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Container, Divider, Flex, Grid, Stack, Typography } from '../primitives';
-import { PlusIcon } from '../icons';
+import { version } from '../../package.json';
+import { Box, Container, Divider, Flex, Grid, Stack, Typography } from '../primitives';
+import { InboxIcon, MenuIcon, PlusIcon, SettingsIcon, StarIcon, UserIcon } from '../icons';
 import { Button } from '../actions/Button/Button';
+import { IconButton } from '../actions/IconButton/IconButton';
+import { Avatar } from '../data-display/Avatar/Avatar';
+import { AppBar } from '../navigation/AppBar/AppBar';
+import { Sidebar, type SidebarNavSection } from '../navigation/Sidebar/Sidebar';
+import { Dialog } from '../overlays/Dialog/Dialog';
 import { Select } from '../forms/Select/Select';
 import { Switch } from '../forms/Switch/Switch';
 import { TextField } from '../forms/TextField/TextField';
@@ -42,7 +48,42 @@ function MembersPageDemo() {
               <Button variant="outlined" color="neutral">
                 Export
               </Button>
-              <Button startIcon={<PlusIcon />}>Invite member</Button>
+              <Dialog.Root>
+                <Dialog.Trigger render={<Button startIcon={<PlusIcon />}>Invite member</Button>} />
+                <Dialog.Content
+                  title="Invite member"
+                  description="They will get an email with a link to join this workspace."
+                >
+                  <Stack spacing={4}>
+                    <TextField
+                      label="Email"
+                      type="email"
+                      placeholder="name@company.com"
+                      required
+                      fullWidth
+                    />
+                    <Select
+                      aria-label="Role"
+                      defaultValue="member"
+                      fullWidth
+                      options={[
+                        { value: 'admin', label: 'Admin' },
+                        { value: 'member', label: 'Member' },
+                      ]}
+                    />
+                  </Stack>
+                  <Dialog.Footer>
+                    <Dialog.Close
+                      render={
+                        <Button variant="ghost" color="neutral">
+                          Cancel
+                        </Button>
+                      }
+                    />
+                    <Dialog.Close render={<Button>Send invite</Button>} />
+                  </Dialog.Footer>
+                </Dialog.Content>
+              </Dialog.Root>
             </>
           }
         />
@@ -135,7 +176,7 @@ function MembersPageDemo() {
         <Divider />
         <Flex justify="between" align="center">
           <Typography variant="caption">Zest UI — Sigma-inspired design system</Typography>
-          <Typography variant="caption">v0.1.0</Typography>
+          <Typography variant="caption">v{version}</Typography>
         </Flex>
       </Stack>
     </Container>
@@ -144,4 +185,56 @@ function MembersPageDemo() {
 
 export const MembersPage: Story = {
   render: () => <MembersPageDemo />,
+};
+
+const shellNav: SidebarNavSection[] = [
+  {
+    label: 'Workspace',
+    items: [
+      { key: 'inbox', label: 'Inbox', icon: <InboxIcon />, badge: '3', badgeColor: 'info' },
+      { key: 'members', label: 'Members', icon: <UserIcon />, active: true },
+      { key: 'starred', label: 'Starred', icon: <StarIcon /> },
+    ],
+  },
+];
+
+/**
+ * Sidebar + AppBar + page + Dialog together — the canonical app shell from
+ * llms.txt. Also guards the layer order: the sidebar edge toggle must sit
+ * under an open Dialog.
+ */
+function AppShellDemo() {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  return (
+    <Flex style={{ minHeight: '100vh' }}>
+      <Sidebar.Root
+        header={<Typography variant="subtitle1">Zest</Typography>}
+        logo={<Avatar name="Z" variant="solid" color="primary" size="sm" shape="rounded" />}
+        nav={shellNav}
+        collapsible
+        mobileOpen={mobileOpen}
+        onMobileClose={() => setMobileOpen(false)}
+        footer={
+          <Sidebar.Section>
+            <Sidebar.Item icon={<SettingsIcon />} label="Settings" />
+          </Sidebar.Section>
+        }
+      />
+      <Box style={{ flex: 1, minWidth: 0 }}>
+        <AppBar
+          start={
+            <IconButton aria-label="Open navigation" onClick={() => setMobileOpen(true)}>
+              <MenuIcon />
+            </IconButton>
+          }
+          end={<Avatar name="Aisha Patel" variant="solid" color="primary" size="sm" />}
+        />
+        <MembersPageDemo />
+      </Box>
+    </Flex>
+  );
+}
+
+export const AppShell: Story = {
+  render: () => <AppShellDemo />,
 };

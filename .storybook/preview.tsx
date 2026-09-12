@@ -7,7 +7,7 @@ import { ZestProvider } from '../src/theme';
 type Density = 'comfortable' | 'compact' | 'dashboard';
 
 const withZest: Decorator = (Story, context) => {
-  const mode = (context.globals.mode as 'light' | 'dark') ?? 'light';
+  const mode = (context.globals.mode as 'light' | 'dark' | 'system') ?? 'light';
   const density = (context.globals.density as Density) ?? 'comfortable';
   return (
     // `defaultDensity` is initial state — keying on it remounts the provider
@@ -34,11 +34,16 @@ const preview: Preview = {
   decorators: [withZest],
   globalTypes: {
     mode: {
-      description: 'Zest appearance mode',
+      description:
+        'Zest appearance mode (this is the dark-mode switch — not the paint-bucket background tool)',
       toolbar: {
         title: 'Mode',
         icon: 'mirror',
-        items: ['light', 'dark'],
+        items: [
+          { value: 'light', title: 'Light', icon: 'sun' },
+          { value: 'dark', title: 'Dark', icon: 'moon' },
+          { value: 'system', title: 'System (follows OS)', icon: 'browser' },
+        ],
         dynamicTitle: true,
       },
     },
@@ -58,6 +63,9 @@ const preview: Preview = {
   },
   parameters: {
     layout: 'fullscreen',
+    /* Storybook's own canvas-background tool only repaints the canvas and is
+       easily mistaken for dark mode; Zest dark mode is the Mode toolbar. */
+    backgrounds: { disable: true },
     controls: { expanded: true },
     /* Accessibility addon: 'todo' reports axe violations in the panel and the
        test-runner output without failing stories. Flip to 'error' once the

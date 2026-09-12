@@ -29,6 +29,8 @@ npm run storybook    # http://localhost:6006
 
 A pre-commit hook (husky + lint-staged) runs ESLint and Prettier on staged files.
 
+**Dark mode in Storybook:** use the **Mode** toolbar (Light / Dark / System) — it drives `ZestProvider`, so every token swaps. Storybook's own paint-bucket background tool is disabled because it only repaints the canvas. Restart `npm run storybook` after pulling changes to `.storybook/`.
+
 ## Adding or changing a component
 
 Every component lives in `src/<group>/<Name>/` with exactly these files:
