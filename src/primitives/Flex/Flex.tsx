@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cx } from '../../utils';
 import type { PolymorphicProps } from '../polymorphic';
 import { resolveSpace, type SpaceValue } from '../space';
+import { resolveBoxStyle, type BoxStyleProps } from '../Box/Box';
 import './Flex.css';
 
 type Align = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
@@ -23,14 +24,23 @@ const justifyMap: Record<Justify, string> = {
   evenly: 'space-evenly',
 };
 
-export interface FlexOwnProps {
+/**
+ * Flex also takes every Box style shorthand (`p`/`px`/`m`/…, `flex`, `shrink`,
+ * `width`/`minWidth`/`maxWidth`, `height`/…, `overflow`), so
+ * `<Flex p={4} minWidth={0} flex={1}>` needs no Box wrapper.
+ */
+export interface FlexOwnProps extends BoxStyleProps {
+  /** Main axis. @default 'row' */
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+  /** Cross-axis alignment (`align-items`). */
   align?: Align;
+  /** Main-axis distribution (`justify-content`). */
   justify?: Justify;
   /** Shorthand: center children on both axes. `align`/`justify` still win if set. */
   center?: boolean;
+  /** Allow children to wrap onto new lines. */
   wrap?: boolean;
-  /** Grow to fill the available space along the parent's main axis (`flex: 1`). */
+  /** Grow to fill the available space along the parent's main axis (`flex: 1`). An explicit `flex` wins. */
   grow?: boolean;
   /** Fill the cross axis (`width`/`height: 100%` depending on parent direction). */
   fullWidth?: boolean;
@@ -41,6 +51,7 @@ export interface FlexOwnProps {
    * the default `direction="row"` — explicit column directions already stack.
    */
   stackOnMobile?: boolean;
+  /** `display: inline-flex`. */
   inline?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -68,9 +79,10 @@ export const Flex = React.forwardRef(function Flex<E extends React.ElementType =
     className,
     style,
     children,
-    ...rest
+    ...others
   } = props as FlexProps<'div'>;
   const Component = (as ?? 'div') as React.ElementType;
+  const { style: boxStyle, rest } = resolveBoxStyle(others);
   return (
     <Component
       ref={ref}
@@ -85,6 +97,7 @@ export const Flex = React.forwardRef(function Flex<E extends React.ElementType =
         flex: grow ? 1 : undefined,
         width: fullWidth ? '100%' : undefined,
         gap: resolveSpace(gap),
+        ...boxStyle,
         ...style,
       }}
       {...rest}

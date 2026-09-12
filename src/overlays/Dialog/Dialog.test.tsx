@@ -43,4 +43,17 @@ describe('Dialog', () => {
     await userEvent.keyboard('{Escape}');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
+
+  it('uses an explicit Dialog.Body as-is instead of double-wrapping it', async () => {
+    render(
+      <Dialog.Root defaultOpen>
+        <Dialog.Content title="Custom">
+          <Dialog.Body data-testid="body">Owned layout</Dialog.Body>
+        </Dialog.Content>
+      </Dialog.Root>
+    );
+    const body = await screen.findByTestId('body');
+    expect(body).toHaveClass('zest-dialog__body');
+    expect(document.querySelectorAll('.zest-dialog__body')).toHaveLength(1);
+  });
 });

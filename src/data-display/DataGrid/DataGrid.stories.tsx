@@ -8,7 +8,11 @@ interface Employee {
   role: string;
   department: string;
   age: number;
+  status: Status;
 }
+
+type Status = 'Active' | 'On leave' | 'Contractor';
+const statuses: Status[] = ['Active', 'Active', 'On leave', 'Active', 'Contractor'];
 
 const firstNames = [
   'Aisha',
@@ -44,19 +48,32 @@ function pick<T>(list: T[], index: number): T {
   return list[index % list.length] as T;
 }
 
-const employees: Employee[] = firstNames.map((name, index) => ({
-  id: `emp-${index + 1}`,
-  name,
-  role: pick(roles, index),
-  department: pick(departments, index),
-  age: 24 + ((index * 7) % 30),
-}));
+function makeEmployee(index: number): Employee {
+  const cycle = Math.floor(index / firstNames.length);
+  return {
+    id: `emp-${index + 1}`,
+    name: cycle === 0 ? pick(firstNames, index) : `${pick(firstNames, index)} ${cycle + 1}`,
+    role: pick(roles, index),
+    department: pick(departments, index),
+    age: 24 + ((index * 7) % 30),
+    status: pick(statuses, index),
+  };
+}
+
+const employees: Employee[] = firstNames.map((_, index) => makeEmployee(index));
+const manyEmployees: Employee[] = Array.from({ length: 40 }, (_, index) => makeEmployee(index));
 
 const columns: DataGridColumn<Employee>[] = [
   { key: 'name', header: 'Name', sortable: true },
   { key: 'role', header: 'Role' },
   { key: 'department', header: 'Department', sortable: true },
   { key: 'age', header: 'Age', sortable: true, align: 'right', width: 96 },
+];
+
+const columnsWithStatus: DataGridColumn<Employee>[] = [
+  ...columns.slice(0, 3),
+  { key: 'status', header: 'Status', sortable: true },
+  ...columns.slice(3),
 ];
 
 const meta = {
@@ -101,6 +118,53 @@ export const Loading: Story = {
 export const Empty: Story = {
   render: () => (
     <DataGrid columns={columns} rows={[]} getRowId={(row: Employee) => row.id} selectable />
+  ),
+};
+
+/* maxHeight: rows scroll inside the grid under a pinned column header;
+   the pagination footer stays outside the scroll region. */
+export const InnerScroll: Story = {
+  render: () => (
+    <DataGrid
+      columns={columns}
+      rows={manyEmployees}
+      getRowId={(row) => row.id}
+      maxHeight={320}
+      selectable
+      defaultSort={{ key: 'name', direction: 'asc' }}
+    />
+  ),
+};
+
+/* groupBy: a header row per status, in order of first occurrence after sorting. */
+export const Grouped: Story = {
+  render: () => (
+    <DataGrid
+      columns={columnsWithStatus}
+      rows={employees}
+      getRowId={(row) => row.id}
+      groupBy={(row) => row.status}
+      defaultSort={{ key: 'status', direction: 'asc' }}
+      selectable
+      stackOnMobile
+    />
+  ),
+};
+
+/* Grouped + maxHeight: group headers scroll with their rows beneath the
+   sticky column header. */
+export const GroupedScrollable: Story = {
+  render: () => (
+    <DataGrid
+      columns={columnsWithStatus}
+      rows={manyEmployees}
+      getRowId={(row) => row.id}
+      groupBy={(row) => row.status}
+      renderGroupHeader={(key, rows) => `${key} · ${rows.length} people`}
+      defaultSort={{ key: 'status', direction: 'asc' }}
+      maxHeight={320}
+      dense
+    />
   ),
 };
 

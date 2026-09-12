@@ -12,6 +12,8 @@ import './List.css';
  *     <List.ItemText primary="Ada Lovelace" secondary="Engineering" />
  *     <List.ItemAction><IconButton …/></List.ItemAction>
  *   </List.Item>
+ *   <List.Row leading={<Avatar …/>} title="Grace Hopper" subtitle="Compilers"
+ *     trailing={<IconButton …/>} onClick={open} divider />
  * </List.Root>
  */
 
@@ -101,10 +103,113 @@ const ListItemAction = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HT
   }
 );
 
+export interface ListRowProps extends Omit<
+  React.LiHTMLAttributes<HTMLLIElement>,
+  'onClick' | 'title'
+> {
+  /** Leading visual — icon or Avatar, rendered in `List.ItemIcon`. */
+  leading?: React.ReactNode;
+  /** First line (`List.ItemText primary`). */
+  title: React.ReactNode;
+  /** Second, subdued line (`List.ItemText secondary`). */
+  subtitle?: React.ReactNode;
+  /**
+   * Trailing content in `List.ItemAction`. When the row is clickable the
+   * trailing slot stays a sibling of the row button so interactive controls
+   * (an IconButton menu) never nest inside a `<button>`.
+   */
+  trailing?: React.ReactNode;
+  /** Bottom hairline; skipped on the last row and inside bordered lists (which divide already). */
+  divider?: boolean;
+  /** Makes the title area a button. */
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  /** Makes the title area a link instead of a button. */
+  href?: string;
+  /** Disables the row button/link and dims the row. */
+  disabled?: boolean;
+  /** Highlights the row and marks the control `aria-current`. */
+  selected?: boolean;
+}
+
+/**
+ * One-line row recipe on top of the List parts: leading + two-line text +
+ * trailing. Clickable rows keep the title area as the control and the
+ * trailing slot as a sibling, so a trailing menu button is never nested
+ * inside another button.
+ */
+const ListRow = React.forwardRef<HTMLLIElement, ListRowProps>(function ListRow(
+  {
+    leading,
+    title,
+    subtitle,
+    trailing,
+    divider = false,
+    onClick,
+    href,
+    disabled = false,
+    selected = false,
+    className,
+    ...props
+  },
+  ref
+) {
+  const interactive = Boolean(onClick || href);
+  const content = (
+    <>
+      {leading !== undefined && leading !== null ? <ListItemIcon>{leading}</ListItemIcon> : null}
+      <ListItemText primary={title} secondary={subtitle} />
+    </>
+  );
+
+  let main: React.ReactNode = content;
+  if (interactive) {
+    const mainClassName = 'zest-list__item-button zest-list__row-main zest-focusable';
+    main = href ? (
+      <a
+        className={mainClassName}
+        href={disabled ? undefined : href}
+        aria-disabled={disabled || undefined}
+        aria-current={selected ? 'true' : undefined}
+        onClick={disabled ? undefined : onClick}
+      >
+        {content}
+      </a>
+    ) : (
+      <button
+        type="button"
+        className={mainClassName}
+        disabled={disabled}
+        aria-current={selected ? 'true' : undefined}
+        onClick={onClick}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <ListItem
+      ref={ref}
+      className={cx('zest-list__row', className)}
+      data-clickable={interactive ? '' : undefined}
+      data-divider={divider ? '' : undefined}
+      data-disabled={disabled ? '' : undefined}
+      data-selected={selected ? '' : undefined}
+      {...props}
+    >
+      {main}
+      {trailing !== undefined && trailing !== null ? (
+        <ListItemAction>{trailing}</ListItemAction>
+      ) : null}
+    </ListItem>
+  );
+});
+
 export const List = {
   Root: ListRoot,
   Item: ListItem,
   ItemIcon: ListItemIcon,
   ItemText: ListItemText,
   ItemAction: ListItemAction,
+  Row: ListRow,
 };

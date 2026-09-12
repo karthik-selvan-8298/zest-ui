@@ -81,7 +81,10 @@
   border-radius: var(--zest-radius-panel);
   background: var(--zest-color-surface);
   box-shadow: var(--zest-shadow-dropdown);
-  overflow-y: auto;
+  /* The popup is a column: an optional pinned search row, then the scrolling list. */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   transform-origin: var(--transform-origin);
   transition:
     transform var(--zest-duration-fast) var(--zest-ease-standard),
@@ -159,4 +162,162 @@
 /* Focused fields lift to the surface color (QA field style). */
 .zest-select__trigger[data-popup-open] {
   background: var(--zest-color-surface);
+}
+
+/* ── Multiple: selected values as compact chips ─────────────────────────
+   Single line, clipped — the trigger never grows with the selection. */
+.zest-select__trigger[data-multiple] .zest-select__value {
+  display: flex;
+  align-items: center;
+  text-overflow: clip;
+}
+
+.zest-select__chips {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--zest-space-1);
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Chip look (soft neutral, sm) inlined as spans — Chip renders a <div>,
+   which is not valid inside the trigger <button>. */
+.zest-select__chip {
+  --_chip-height: 24px;
+
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  min-width: 0;
+  height: var(--_chip-height);
+  padding-inline: var(--zest-space-2);
+  border-radius: var(--zest-radius-full);
+  background: color-mix(in srgb, var(--zest-accent) 16%, transparent);
+  color: var(--zest-color-text-primary);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.zest-select__chip--overflow {
+  flex: none;
+}
+
+.zest-select__chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zest-select__trigger[data-disabled] .zest-select__chip {
+  background: var(--zest-color-surface-disabled);
+  color: var(--zest-color-text-disabled);
+}
+
+/* ── Clearable shell ────────────────────────────────────────────────────
+   The clear control is a sibling of the trigger (no nested buttons),
+   absolutely positioned just before the chevron. */
+.zest-select {
+  --_clear-size: 24px;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.zest-select[data-full-width] {
+  display: flex;
+  width: 100%;
+}
+
+/* Reserve room for the clear button between the value and the chevron so
+   nothing shifts when it appears. */
+.zest-select__trigger[data-clearable] .zest-select__icon {
+  margin-inline-start: calc(var(--_clear-size, 24px) + var(--zest-space-1));
+}
+
+.zest-select__clear {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: calc(var(--zest-inset-control-x) + 1.25em + var(--zest-space-2));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_clear-size);
+  height: var(--_clear-size);
+  padding: 0;
+  border: 0;
+  border-radius: var(--zest-radius-full);
+  background: transparent;
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-sm);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color var(--zest-duration-fast) var(--zest-ease-standard),
+    color var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-select__clear:hover {
+  background: var(--zest-color-surface-hover);
+  color: var(--zest-color-text-primary);
+}
+
+/* ── In-popup search (shown automatically above `searchThreshold` options) ── */
+.zest-select__list {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.zest-select__search {
+  display: flex;
+  align-items: center;
+  gap: var(--zest-space-2);
+  flex: 0 0 auto;
+  height: var(--zest-button-height-sm);
+  margin-bottom: var(--zest-inset-panel);
+  padding-inline: var(--zest-space-2);
+  border-radius: var(--zest-radius-row);
+  background: var(--zest-color-field);
+  box-shadow: inset 0 0 0 1px var(--zest-color-border);
+  color: var(--zest-color-text-secondary);
+  transition: box-shadow var(--zest-duration-fast) var(--zest-ease-standard);
+}
+
+.zest-select__search:focus-within {
+  box-shadow: inset 0 0 0 1px var(--zest-color-primary);
+}
+
+.zest-select__search-icon {
+  flex-shrink: 0;
+  font-size: var(--zest-font-size-md);
+}
+
+.zest-select__search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--zest-color-text-primary);
+  font-family: inherit;
+  font-size: var(--zest-font-size-sm);
+  outline: none;
+}
+
+.zest-select__search-input::placeholder {
+  color: var(--zest-color-text-placeholder);
+}
+
+.zest-select__empty {
+  padding: var(--zest-space-2) var(--zest-space-3);
+  color: var(--zest-color-text-secondary);
+  font-family: var(--zest-font-family-sans);
+  font-size: var(--zest-font-size-sm);
 }

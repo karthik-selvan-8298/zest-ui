@@ -36,3 +36,40 @@ export const AsElement: Story = {
     </Box>
   ),
 };
+
+export const SizingProps: Story = {
+  render: () => (
+    <Box
+      as="section"
+      p={4}
+      width="100%"
+      maxWidth={480}
+      minHeight={96}
+      overflow="auto"
+      style={{
+        border: '1px dashed var(--zest-color-border)',
+        borderRadius: 'var(--zest-radius-surface)',
+      }}
+    >
+      <Typography variant="body2" color="secondary">
+        Size shorthands: width=&quot;100%&quot; maxWidth={'{480}'} minHeight={'{96}'} overflow=
+        &quot;auto&quot;. Numbers are px; strings pass through.
+      </Typography>
+    </Box>
+  ),
+};
+
+export const FlexChild: Story = {
+  render: () => (
+    <Box style={{ display: 'flex', gap: 'var(--zest-space-2)', maxWidth: 480 }}>
+      <Box flex minWidth={0} p={3} style={{ background: 'var(--zest-color-background-neutral)' }}>
+        <Typography variant="body2" truncate>
+          flex + minWidth={'{0}'} — fills and truncates instead of overflowing the row.
+        </Typography>
+      </Box>
+      <Box shrink={false} p={3} style={{ background: 'var(--zest-color-background-neutral)' }}>
+        <Typography variant="body2">shrink={'{false}'}</Typography>
+      </Box>
+    </Box>
+  ),
+};

@@ -11,12 +11,21 @@ export interface FormFieldProps extends WithClassName<React.ComponentProps<typeo
   children?: React.ReactNode;
 }
 
+/* Base UI's Field parts throw without a Field.Root ancestor. Zest tracks the
+   ancestor itself so Label/HelperText/FieldError degrade to plain elements
+   when used standalone (a toolbar label, a caption under a custom control). */
+const InFieldContext = React.createContext(false);
+
 /** Form field context wrapper: `<FormField><Label/><Input/><HelperText/><FieldError/></FormField>` */
 export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(function FormField(
   { className, ...props },
   ref
 ) {
-  return <Field.Root ref={ref} className={cx('zest-form-field', className)} {...props} />;
+  return (
+    <InFieldContext.Provider value={true}>
+      <Field.Root ref={ref} className={cx('zest-form-field', className)} {...props} />
+    </InFieldContext.Provider>
+  );
 });
 
 export interface LabelProps extends WithClassName<React.ComponentProps<typeof Field.Label>> {
@@ -31,14 +40,32 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(function Lab
   // The asterisk is decorative (aria-hidden); the requirement itself is
   // announced from the control (`required` on Input/Select sets
   // aria-required there — `aria-required` is not a valid attribute on <label>).
-  return (
-    <Field.Label ref={ref} className={cx('zest-label', className)} {...props}>
+  const inField = React.useContext(InFieldContext);
+  const content = (
+    <>
       {children}
       {required ? (
         <span aria-hidden className="zest-label__asterisk">
           *
         </span>
       ) : null}
+    </>
+  );
+  if (!inField) {
+    const { render: _render, ...labelProps } = props as typeof props & { render?: unknown };
+    return (
+      <label
+        ref={ref}
+        className={cx('zest-label', className)}
+        {...(labelProps as React.LabelHTMLAttributes<HTMLLabelElement>)}
+      >
+        {content}
+      </label>
+    );
+  }
+  return (
+    <Field.Label ref={ref} className={cx('zest-label', className)} {...props}>
+      {content}
     </Field.Label>
   );
 });
@@ -47,6 +74,17 @@ export type HelperTextProps = WithClassName<React.ComponentProps<typeof Field.De
 
 export const HelperText = React.forwardRef<HTMLParagraphElement, HelperTextProps>(
   function HelperText({ className, ...props }, ref) {
+    const inField = React.useContext(InFieldContext);
+    if (!inField) {
+      const { render: _render, ...rest } = props as typeof props & { render?: unknown };
+      return (
+        <p
+          ref={ref}
+          className={cx('zest-helper-text', className)}
+          {...(rest as React.HTMLAttributes<HTMLParagraphElement>)}
+        />
+      );
+    }
     return <Field.Description ref={ref} className={cx('zest-helper-text', className)} {...props} />;
   }
 );
@@ -57,5 +95,21 @@ export const FieldError = React.forwardRef<HTMLDivElement, FieldErrorProps>(func
   { className, ...props },
   ref
 ) {
+  const inField = React.useContext(InFieldContext);
+  if (!inField) {
+    const {
+      render: _render,
+      match: _match,
+      ...rest
+    } = props as typeof props & { render?: unknown };
+    return (
+      <div
+        ref={ref}
+        role="alert"
+        className={cx('zest-field-error', className)}
+        {...(rest as React.HTMLAttributes<HTMLDivElement>)}
+      />
+    );
+  }
   return <Field.Error ref={ref} className={cx('zest-field-error', className)} {...props} />;
 });

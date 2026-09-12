@@ -47,6 +47,11 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(funct
   const bodyChildren = childArray.filter(
     (child) => !(React.isValidElement(child) && child.type === DialogFooter)
   );
+  // An explicit <Dialog.Body> means the caller owns the body layout —
+  // render it directly instead of nesting it inside the implicit body.
+  const hasExplicitBody = bodyChildren.some(
+    (child) => React.isValidElement(child) && child.type === DialogBody
+  );
   return (
     <BaseDialog.Portal>
       <BaseDialog.Backdrop className="zest-dialog__backdrop" />
@@ -79,7 +84,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(funct
             ) : null}
           </header>
         ) : null}
-        <div className="zest-dialog__body">{bodyChildren}</div>
+        {hasExplicitBody ? bodyChildren : <div className="zest-dialog__body">{bodyChildren}</div>}
         {footerChildren}
       </BaseDialog.Popup>
     </BaseDialog.Portal>

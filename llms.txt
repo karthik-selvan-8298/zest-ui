@@ -107,9 +107,18 @@ NumberInput: value/defaultValue/onValueChange (number|null), min, max, step, siz
 Select (custom popup):
   options: {value: string, label: ReactNode, disabled?}[]
   value/defaultValue: string|null, onValueChange(value: string|null)
+  multiple: value/defaultValue string[], onValueChange(value: string[]); popup stays open, items toggle.
+    Selected labels render as sm chips in the trigger, maxVisible (default 2) then "+N";
+    renderValue(selected: SelectOption[]) overrides. With name, submits one hidden input per value
+    (FormData.getAll(name)).
+  clearable: sibling "Clear" button at trigger end → null / [].
+  searchable: 'auto'(default: search field appears in the popup once options > searchThreshold (8)) | true | false.
+    Filters by string label / value / option.keywords; ArrowDown hands focus to the list; Enter picks a
+    single match; noResultsText ('No matches'), searchPlaceholder. Works in single and multiple mode.
   placeholder, size, error, fullWidth, disabled, required, name + any trigger <button> attrs
   (id, aria-label, data-*, onBlur…); ref → the trigger button.
   <Select options={roles} placeholder="Role" onValueChange={setRole} />
+  <Select multiple options={tags} value={tags} onValueChange={setTags} clearable />
   For a long filterable list use Combobox instead.
 NativeSelect: same options API, native <select>.
 Combobox: Select + text filtering. Same options API + emptyMessage. Extra props → the <input>.
@@ -155,6 +164,10 @@ Menu (composition):
   <Menu.Root><Menu.Trigger render={<Button/>}/>
     <Menu.Content><Menu.Item onClick>…</Menu.Item><Menu.Separator/>
       <Menu.Group><Menu.GroupLabel/>…</Menu.Group>
+      <Menu.SubmenuRoot><Menu.SubmenuTrigger>Share</Menu.SubmenuTrigger>
+        <Menu.Content>…</Menu.Content></Menu.SubmenuRoot>   (chevron auto; opens beside trigger)
+      <Menu.CheckboxItem checked/defaultChecked/onCheckedChange/>
+      <Menu.RadioGroup value/defaultValue/onValueChange><Menu.RadioItem value/></Menu.RadioGroup>
       <Menu.Item destructive>Delete</Menu.Item>
     </Menu.Content></Menu.Root>
 ContextMenu (right-click / long-press, pointer-anchored; same popup + rows as Menu):
@@ -235,6 +248,9 @@ PreviewCard: <PreviewCard.Root delay=600 closeDelay=300><PreviewCard.Trigger hre
   — hover card for link/user previews; Trigger renders <a> (pass render= for another element). Sighted-user
   enhancement only: keep essential info on the linked page.
 
+Dialog.Content already renders the body: pass children directly. Passing an explicit <Dialog.Body>
+is fine too — it is used as-is (no double wrap) for custom body layouts.
+
 ## FEEDBACK
 
 Alert: severity: 'info'|'success'|'warning'|'error', variant: 'soft'(default)|'solid'|'outlined',
@@ -257,8 +273,9 @@ Skeleton: variant 'text'|'circular'|'rectangular'|'rounded', width, height, anim
 
 ## DATA DISPLAY
 
-Card: <Card variant='elevated'|'outlined'><Card.Header title (renders an <h3>; titleAs='h2'|'h4'…)
-  subtitle action/><Card.Content/><Card.Footer/><Card.Media/></Card>. Header→content inset is 24px.
+Card: <Card variant='elevated'|'outlined' fullHeight?><Card.Header title (renders an <h3>; titleAs='h2'|'h4'…)
+  subtitle action/><Card.Content scroll?/><Card.Footer/><Card.Media/></Card>. Header→content inset is 24px.
+  fullHeight = flex column at 100% height; Content scroll = fills remaining height and scrolls, Header/Footer pinned.
 Table (manual): <Table.Root dense? striped? scrollable? stackOnMobile? (give Cells label="Col";
   mark optional columns with hideOnMobile on both HeaderCell and Cell)><Table.Head><Table.Row><Table.HeaderCell align>
   …<Table.Body><Table.Row hover selected><Table.Cell align>…
@@ -270,6 +287,9 @@ DataGrid (prefer for data): generic <DataGrid<Row>
   sort/defaultSort/onSortChange ({key, direction:'asc'|'desc'}|null), sortComparator?
   selectable?, selected?/defaultSelected?/onSelectedChange? (string[])
   pageSize? (enables client pagination), dense?, striped?, loading?, emptyState?, onRowClick?,
+  maxHeight? (number|string: rows scroll inside the grid under a sticky column header; footer stays outside)
+  groupBy?(row)=>string + renderGroupHeader?(key, rows) — header row per group in sort order
+    (default "Key (n)"); headers don't count toward pageSize or selection; composes with maxHeight
   stackOnMobile? (rows become labeled blocks under 600px; labels auto-filled from headers)
 CodeBlock: code (string), language? ('bash'…, shown uppercase in header), title? (e.g. filename),
   hideCopy?, maxHeight? (default 400 — content scrolls inside), wrap?, onCopy?(code).
@@ -290,7 +310,11 @@ Chip: label OR children (one is required), variant 'soft'(default)|'solid'|'outl
 Accordion: <Accordion.Root multiple? value/defaultValue (string[])><Accordion.Item value disabled?>
   <Accordion.Trigger>…</Accordion.Trigger><Accordion.Panel>…</Accordion.Panel></Accordion.Item></Accordion.Root>
 List: <List.Root bordered? inset?><List.Item onClick?><List.ItemIcon/><List.ItemText primary secondary/><List.ItemAction/></List.Item></List.Root>
-EmptyState: icon? (null hides the slot), title, description?, action?, size 'sm'|'md'.
+  List.Row: one-line recipe — <List.Row leading title subtitle? trailing? divider? onClick?|href? disabled? selected?/>.
+  Clickable rows make the title area the button/link; trailing stays a sibling (a menu IconButton never nests in a button).
+EmptyState: state 'empty'(default)|'loading'|'error', icon? (null hides the slot; overrides state default), title?
+  (loading defaults to "Loading…"), description?, action? (hidden while loading; use for Retry in error), size 'sm'|'md'.
+  loading → Spinner, role="status", aria-busy; error → ErrorCircleIcon in error tone, role="alert".
 
 ## DATE & TIME (values are JS Date | null; no date library needed)
 
@@ -303,12 +327,14 @@ TimePicker: value/defaultValue/onValueChange (string 'HH:mm'), step (minutes, de
 
 ## LAYOUT & TEXT
 
-Box: polymorphic (as prop) + spacing props p px py pt pr pb pl m mx my mt mr mb ml
-  taking Zest steps 1|2|3|4|5|6|8|10|12|16 (×4px) or CSS strings.
+Box: polymorphic (as prop) + spacing props p px py pt pr pb pl m mx my mt mr mb ml (Zest steps or CSS strings)
+  + flex (true → '1 1 0%'), grow, shrink, width/height/minWidth/minHeight/maxWidth/maxHeight (numbers → px), overflow.
+  resolveBoxStyle(props) → { style, rest } is exported for custom primitives.
 Stack: vertical flex; spacing (gap, default 2), direction, align, justify, divider={<Divider/>},
-  stackOnMobile (direction="row" collapses to a column <600px).
-Flex: horizontal flex; gap, align, justify ('start'|'center'|'end'|'between'|…), wrap, inline,
-  stackOnMobile (row → column <600px, children stretch full-width).
+  stackOnMobile (direction="row" collapses to a column <600px). Takes all Box spacing/size props.
+Flex: horizontal flex; gap, align, justify ('start'|'center'|'end'|'between'|…), wrap, inline, grow,
+  stackOnMobile (row → column <600px, children stretch full-width). Takes all Box spacing/size props
+  (<Flex p={4} minWidth={0} flex={1}> — no Box wrapper needed).
 Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap (both-axis
   gutter like MUI spacing; default 4 = 16px). Numeric columns auto-adjust: max 2 <900px, 1 <600px.
 Container: maxWidth 'sm'|'md'|'lg'(default)|'xl'|false, disableGutters.
@@ -319,6 +345,15 @@ Typography: MUI-style variant 'h1'|'h2'|'h3'|'h4'|'h5'|'h6'|'subtitle1'|'subtitl
   'body1'(default)|'body2'|'caption'|'overline'; color 'primary'|'secondary'|'disabled'|
   'brand'|'success'|'warning'|'error'|'info'; align; truncate (true = 1 line, number = clamp);
   gutterBottom; as (element override).
+
+Spacing props (gap/spacing/p/m…): steps 1|2|3|4|5|6|8|10|12|16 map to --zest-space-*; ANY other
+number is a multiple of 4px (1.5 → 6px, 7 → 28px); strings pass through. NaN throws.
+Toolbars: size="sm" fields (Input/Select/SearchInput/DatePicker…) share --zest-button-height-md, so
+they line up with md Buttons and md Segmented by default — no height overrides.
+Standalone <Label>/<HelperText>/<FieldError> work outside FormField (plain <label>/<p>/<div>); inside
+FormField they gain the aria wiring. `.zest-visually-hidden` is also a plain CSS class (e.g. a real
+<input type="file"> behind a styled Button) — same as the VisuallyHidden component.
+Patterns (SearchToolbar, FormSection, DetailHeader) are exported from the main entry too.
 
 ## ICONS (zest-ui/icons)
 
@@ -352,6 +387,16 @@ const theme = createTheme({
   cssVars: { '--zest-any-token': 'value' },  // escape hatch
 });
 <ZestProvider theme={theme}>
+
+Overrides + dark mode: Zest's dark values live at `:root[data-zest-theme='dark']`, so an app's
+`:root { --zest-… }` override applies to LIGHT only — give it a dark twin:
+`:root[data-zest-theme='dark'] { --zest-color-background: … }`. ZestProvider stamps the RESOLVED
+theme on <html> even in system mode (`data-zest-theme="light|dark"`) plus `data-zest-mode="light|dark|system"`
+— target `[data-zest-theme='dark']` in app CSS, never repeat the media query.
+Mode persists in localStorage under `ZEST_MODE_STORAGE_KEY` ('zest-mode', exported); `storageKey={null}` disables.
+Density 'dashboard' scales the rem tokens once: the body size is set on <body>, never on <html>.
+Component border knobs: `--zest-card-border`, `--zest-paper-border` (fall back to --zest-color-border);
+Card/Paper variant borders are declared with :where() so one app class overrides them.
 
 ## TOKENS (use in custom CSS instead of hardcoded values)
 

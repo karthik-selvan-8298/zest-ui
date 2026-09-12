@@ -22,8 +22,11 @@ Components are designed to be:
 Requires **Node ≥ 22** and **React 18 or 19**.
 
 ```bash
-npm install github:karthik-selvan-8298/zest-ui#main
+npm install github:karthik-selvan-8298/zest-ui#v0.2.0
 ```
+
+Pin a release tag (see `CHANGELOG.md`); `#main` tracks every commit. Move to a newer tag with
+`npm install github:karthik-selvan-8298/zest-ui#v0.x.y` (or `npm update zest-ui` when tracking `#main`).
 
 For local development:
 
@@ -180,6 +183,18 @@ createRoot(document.getElementById('root')!).render(
 
 Only override the tokens you need. Zest provides defaults for the rest.
 
+Dark mode uses `:root[data-zest-theme='dark']`, which out-ranks a plain `:root` override — so a
+`:root { --zest-color-background: … }` rule applies to light only. Give every override a dark twin:
+
+```css
+:root[data-zest-theme='dark'] {
+  --zest-color-background: #0f141a;
+}
+```
+
+`ZestProvider` stamps the _resolved_ theme on `<html>` (`data-zest-theme="light|dark"`, also in system
+mode) and the requested mode as `data-zest-mode`, so app CSS can target the active theme directly.
+
 ### Scoped — `<Theme>`
 
 Apply a theme to a specific subtree:
@@ -277,6 +292,8 @@ setMode('dark');
 setMode('system');
 ```
 
+The chosen mode persists in `localStorage` under `ZEST_MODE_STORAGE_KEY` (`'zest-mode'`, exported).
+
 `system` follows the user's OS preference.
 
 The selected mode persists in `localStorage`. Use the `ZestProvider` `storageKey` prop to customize the key or set it to `null` to disable persistence.
@@ -336,6 +353,15 @@ npm run check        # typecheck · lint · format · tests
 ```
 
 ---
+
+## Composition rules worth knowing
+
+- **Overlay triggers take `render`, not children:** `<Dialog.Trigger render={<Button>Open</Button>} />` (same for Menu, Popover, Drawer, Tooltip, PreviewCard).
+- **Every cell in a form `<Grid>` must be a `FormField`/`TextField`.** FormField becomes a 3-row subgrid (label / control / helper) so rows align across columns; a bare cell in the same row makes labels drift. Wrap custom controls: `<FormField><Label>Access</Label><Segmented … /></FormField>`.
+- **`Dialog.Content` already provides the body.** Pass children directly; an explicit `<Dialog.Body>` is used as-is.
+- **Toolbars:** `size="sm"` fields share the md button height, so `<SearchInput size="sm">` + `<Button>` + `<Segmented>` line up without overrides.
+- **Spacing props** accept steps (`4` → 16px), any other number as ×4px (`1.5` → 6px), or a CSS length.
+- **Patterns** (`SearchToolbar`, `FormSection`, `DetailHeader`) are on the main entry as well as `zest-ui/patterns`.
 
 ## Philosophy
 

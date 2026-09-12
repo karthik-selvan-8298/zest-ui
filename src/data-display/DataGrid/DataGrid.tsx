@@ -11,7 +11,7 @@ import './DataGrid.css';
 
 /*
  * DataGrid — client-side data grid on top of the Table parts.
- * Sorting, row selection, and pagination all run in the browser.
+ * Sorting, row selection, grouping, and pagination all run in the browser.
  *
  * <DataGrid
  *   columns={[{ key: 'name', header: 'Name', sortable: true }]}
@@ -19,6 +19,8 @@ import './DataGrid.css';
  *   getRowId={(row) => row.id}
  *   selectable
  *   pageSize={10}
+ *   maxHeight={320}
+ *   groupBy={(row) => row.status}
  * />
  */
 
@@ -63,6 +65,22 @@ export interface DataGridProps<Row> extends Omit<React.HTMLAttributes<HTMLDivEle
   /** Under 600px, rows stack into labeled blocks (labels come from headers). */
   stackOnMobile?: boolean;
 
+  /**
+   * Caps the table height; rows scroll inside the grid while the column
+   * header stays pinned to the top. The pagination footer sits outside the
+   * scroll region.
+   */
+  maxHeight?: number | string;
+
+  /**
+   * Groups rows under a header row spanning every column. Groups follow the
+   * current sort order and appear in order of first occurrence; header rows
+   * are not counted as rows for pagination or selection.
+   */
+  groupBy?: (row: Row) => string;
+  /** Custom group header content. Defaults to `"{key} ({count})"`. */
+  renderGroupHeader?: (key: string, rows: Row[]) => React.ReactNode;
+
   /** Renders the selection checkbox column. */
   selectable?: boolean;
   /** Controlled selected row ids. */
@@ -104,6 +122,9 @@ function DataGridInner<Row>(
     onSortChange,
     sortComparator = defaultComparator,
     stackOnMobile = false,
+    maxHeight,
+    groupBy,
+    renderGroupHeader,
     selectable = false,
     selected: selectedProp,
     defaultSelected,
@@ -161,6 +182,19 @@ function DataGridInner<Row>(
 
   const columnCount = columns.length + (selectable ? 1 : 0);
 
+  // Group the visible page only: header rows never count toward pageSize.
+  const groups = React.useMemo(() => {
+    if (!groupBy) return null;
+    const map = new Map<string, Row[]>();
+    for (const row of pageRows) {
+      const key = groupBy(row);
+      const bucket = map.get(key);
+      if (bucket) bucket.push(row);
+      else map.set(key, [row]);
+    }
+    return Array.from(map, ([key, rows]) => ({ key, rows }));
+  }, [groupBy, pageRows]);
+
   const cycleSort = (key: string) => {
     if (!sort || sort.key !== key) setSort({ key, direction: 'asc' });
     else if (sort.direction === 'asc') setSort({ key, direction: 'desc' });
@@ -199,7 +233,7 @@ function DataGridInner<Row>(
       );
     }
 
-    return pageRows.map((row) => {
+    const renderRow = (row: Row) => {
       const id = getRowId(row);
       const isSelected = selectedSet.has(id);
       return (
@@ -237,11 +271,91 @@ function DataGridInner<Row>(
           ))}
         </Table.Row>
       );
-    });
+    };
+
+    if (groups) {
+      return groups.map(({ key, rows: groupRows }) => (
+        <React.Fragment key={`group-${key}`}>
+          <Table.Row className="zest-datagrid__group-row" data-group-key={key}>
+            <th scope="rowgroup" colSpan={columnCount} className="zest-datagrid__group-cell">
+              {renderGroupHeader
+                ? renderGroupHeader(key, groupRows)
+                : `${key} (${groupRows.length})`}
+            </th>
+          </Table.Row>
+          {groupRows.map(renderRow)}
+        </React.Fragment>
+      ));
+    }
+
+    return pageRows.map(renderRow);
   };
 
   const rangeStart = pageSize ? (currentPage - 1) * pageSize + 1 : 1;
   const rangeEnd = pageSize ? Math.min(currentPage * pageSize, total) : total;
+
+  const table = (
+    // Inside a maxHeight wrapper the outer scroller owns both axes; Table's
+    // own x-scroller would otherwise capture the sticky header.
+    <Table.Root
+      dense={dense}
+      striped={striped}
+      stackOnMobile={stackOnMobile}
+      scrollable={maxHeight == null}
+      data-sticky-header={maxHeight != null ? '' : undefined}
+    >
+      <Table.Head>
+        <Table.Row>
+          {selectable ? (
+            <Table.HeaderCell className="zest-datagrid__checkbox-cell">
+              <Checkbox
+                size="sm"
+                aria-label="Select all rows"
+                checked={allSelected}
+                indeterminate={selectedCount > 0 && !allSelected}
+                disabled={loading || rowIds.length === 0}
+                onCheckedChange={() => setSelected(allSelected ? [] : rowIds)}
+              />
+            </Table.HeaderCell>
+          ) : null}
+          {columns.map((column) => {
+            const direction = sort && sort.key === column.key ? sort.direction : undefined;
+            return (
+              <Table.HeaderCell
+                key={column.key}
+                hideOnMobile={column.hideOnMobile}
+                aria-sort={
+                  direction ? (direction === 'asc' ? 'ascending' : 'descending') : undefined
+                }
+                className={column.sortable ? 'zest-datagrid__sortable-header' : undefined}
+                style={{ width: column.width, textAlign: column.align }}
+              >
+                {column.sortable ? (
+                  <button
+                    type="button"
+                    className="zest-datagrid__sort-button zest-focusable"
+                    data-align={column.align}
+                    data-sorted={direction}
+                    onClick={() => cycleSort(column.key)}
+                  >
+                    <span className="zest-datagrid__sort-label">{column.header}</span>
+                    {direction ? (
+                      <span className="zest-datagrid__sort-icon" aria-hidden>
+                        {direction === 'asc' ? <ArrowUpIcon /> : <ArrowDownIcon />}
+                      </span>
+                    ) : null}
+                  </button>
+                ) : (
+                  column.header
+                )}
+              </Table.HeaderCell>
+            );
+          })}
+        </Table.Row>
+      </Table.Head>
+      <Table.Body>{renderBody()}</Table.Body>
+    </Table.Root>
+  );
 
   return (
     <div
@@ -250,58 +364,13 @@ function DataGridInner<Row>(
       data-loading={loading ? '' : undefined}
       {...props}
     >
-      <Table.Root dense={dense} striped={striped} stackOnMobile={stackOnMobile}>
-        <Table.Head>
-          <Table.Row>
-            {selectable ? (
-              <Table.HeaderCell className="zest-datagrid__checkbox-cell">
-                <Checkbox
-                  size="sm"
-                  aria-label="Select all rows"
-                  checked={allSelected}
-                  indeterminate={selectedCount > 0 && !allSelected}
-                  disabled={loading || rowIds.length === 0}
-                  onCheckedChange={() => setSelected(allSelected ? [] : rowIds)}
-                />
-              </Table.HeaderCell>
-            ) : null}
-            {columns.map((column) => {
-              const direction = sort && sort.key === column.key ? sort.direction : undefined;
-              return (
-                <Table.HeaderCell
-                  key={column.key}
-                  hideOnMobile={column.hideOnMobile}
-                  aria-sort={
-                    direction ? (direction === 'asc' ? 'ascending' : 'descending') : undefined
-                  }
-                  className={column.sortable ? 'zest-datagrid__sortable-header' : undefined}
-                  style={{ width: column.width, textAlign: column.align }}
-                >
-                  {column.sortable ? (
-                    <button
-                      type="button"
-                      className="zest-datagrid__sort-button zest-focusable"
-                      data-align={column.align}
-                      data-sorted={direction}
-                      onClick={() => cycleSort(column.key)}
-                    >
-                      <span className="zest-datagrid__sort-label">{column.header}</span>
-                      {direction ? (
-                        <span className="zest-datagrid__sort-icon" aria-hidden>
-                          {direction === 'asc' ? <ArrowUpIcon /> : <ArrowDownIcon />}
-                        </span>
-                      ) : null}
-                    </button>
-                  ) : (
-                    column.header
-                  )}
-                </Table.HeaderCell>
-              );
-            })}
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>{renderBody()}</Table.Body>
-      </Table.Root>
+      {maxHeight != null ? (
+        <div className="zest-datagrid__scroll" style={{ maxHeight }}>
+          {table}
+        </div>
+      ) : (
+        table
+      )}
       {pageSize && !loading && total > 0 ? (
         <div className="zest-datagrid__footer">
           <span className="zest-datagrid__range">{`${rangeStart}–${rangeEnd} of ${total}`}</span>
@@ -315,7 +384,8 @@ function DataGridInner<Row>(
 /**
  * Client-side data grid composing Table, Checkbox, Pagination, Skeleton, and
  * EmptyState. Sorting and selection support both controlled and uncontrolled
- * usage.
+ * usage; `groupBy` adds header rows and `maxHeight` scrolls rows under a
+ * sticky column header.
  */
 export const DataGrid = React.forwardRef(DataGridInner) as <Row>(
   props: DataGridProps<Row> & { ref?: React.ForwardedRef<HTMLDivElement> }

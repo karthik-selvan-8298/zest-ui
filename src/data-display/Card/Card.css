@@ -14,11 +14,14 @@
   box-shadow: var(--zest-shadow-card);
 }
 
-.zest-card[data-variant='outlined'] {
-  border: 1px solid var(--zest-color-border);
+/* :where() keeps this at zero specificity so a single consumer class can
+   recolour the edge; `--zest-card-border` is the token-level knob. */
+:where(.zest-card[data-variant='outlined']) {
+  border: 1px solid var(--zest-card-border, var(--zest-color-border));
 }
 
 .zest-card__header {
+  flex: 0 0 auto;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -51,7 +54,16 @@
   line-height: var(--zest-line-height-normal);
 }
 
+/* Scrolling body: min-height 0 lets the flex child shrink below its content
+   so the overflow lands here instead of stretching the card. */
+.zest-card__content[data-scroll] {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
 .zest-card__footer {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: var(--zest-space-2);

@@ -8,6 +8,7 @@ export {
   type ZestContextValue,
   type ZestMode,
   type ZestDensity,
+  ZEST_MODE_STORAGE_KEY,
 } from './ZestProvider';
 export type {
   ZestTheme,

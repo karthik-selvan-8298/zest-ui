@@ -15,14 +15,28 @@ import './Card.css';
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Outlined instead of elevated. */
   variant?: 'elevated' | 'outlined';
+  /**
+   * Stretch to the parent's height (`height: 100%`) as a flex column, so a
+   * `<Card.Content scroll>` can fill the remaining space and scroll while
+   * Header/Footer stay pinned.
+   */
+  fullHeight?: boolean;
   children?: React.ReactNode;
 }
 
 const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
-  { variant = 'elevated', className, ...props },
+  { variant = 'elevated', fullHeight = false, className, ...props },
   ref
 ) {
-  return <div ref={ref} className={cx('zest-card', className)} data-variant={variant} {...props} />;
+  return (
+    <div
+      ref={ref}
+      className={cx('zest-card', className)}
+      data-variant={variant}
+      data-full-height={fullHeight ? '' : undefined}
+      {...props}
+    />
+  );
 });
 
 export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
@@ -66,11 +80,28 @@ const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(function 
   return <Tag ref={ref} className={cx('zest-card__title', className)} {...props} />;
 });
 
-const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function CardContent({ className, ...props }, ref) {
-    return <div ref={ref} className={cx('zest-card__content', className)} {...props} />;
-  }
-);
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Let the content area scroll (`flex: 1 1 auto; min-height: 0; overflow: auto`)
+   * instead of growing the card. Pair with `<Card fullHeight>` or a fixed height.
+   */
+  scroll?: boolean;
+  children?: React.ReactNode;
+}
+
+const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(function CardContent(
+  { scroll = false, className, ...props },
+  ref
+) {
+  return (
+    <div
+      ref={ref}
+      className={cx('zest-card__content', className)}
+      data-scroll={scroll ? '' : undefined}
+      {...props}
+    />
+  );
+});
 
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   function CardFooter({ className, ...props }, ref) {

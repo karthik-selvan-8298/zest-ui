@@ -59,3 +59,10 @@
 .zest-empty-state__action {
   margin-top: var(--zest-space-4);
 }
+
+/* Error tone: the icon wrap stamps data-accent="error" and reads the shared
+   accent locals, so no per-tone colors live here. */
+.zest-empty-state__icon[data-accent] {
+  background: color-mix(in srgb, var(--zest-accent) 12%, transparent);
+  color: var(--zest-accent-subtle-text);
+}

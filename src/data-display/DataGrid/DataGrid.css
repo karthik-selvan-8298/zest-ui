@@ -61,6 +61,59 @@
   font-size: var(--zest-font-size-xs);
 }
 
+/* ── Inner scroll (maxHeight) ─────────────────────────────────────────── */
+/* Owns both axes so the sticky header pins to this box, not Table's own
+   horizontal scroller. */
+.zest-datagrid__scroll {
+  width: 100%;
+  overflow: auto;
+}
+
+/* The header background is translucent in dark mode: paint it over the
+   surface so scrolled rows never show through, and keep a hairline under it
+   in place of the first row's dashed top edge. */
+.zest-datagrid__scroll .zest-table__head .zest-table__header-cell {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: linear-gradient(
+      var(--zest-color-background-neutral),
+      var(--zest-color-background-neutral)
+    )
+    var(--zest-color-surface);
+  box-shadow: inset 0 -1px 0 var(--zest-color-border);
+}
+
+/* ── Group header rows ────────────────────────────────────────────────── */
+/* Reads like a Menu group label: quiet caps on the raised surface. */
+.zest-datagrid__group-cell {
+  padding: var(--zest-space-2) var(--zest-space-4);
+  border-bottom: 1px dashed var(--zest-color-border);
+  background: var(--zest-color-surface-raised);
+  color: var(--zest-color-text-secondary);
+  font-size: var(--zest-font-size-xs);
+  font-weight: var(--zest-font-weight-medium);
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.zest-datagrid .zest-table[data-dense] .zest-datagrid__group-cell {
+  padding: var(--zest-space-1) var(--zest-space-4);
+}
+
+@media (max-width: 600px) {
+  /* Stacked mode: the header becomes a full-width labelled block. */
+  .zest-datagrid .zest-table[data-stack-mobile] .zest-datagrid__group-row {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .zest-datagrid .zest-table[data-stack-mobile] .zest-datagrid__group-cell {
+    display: block;
+  }
+}
+
 /* ── Rows ─────────────────────────────────────────────────────────────── */
 .zest-datagrid .zest-table__row[data-clickable] {
   cursor: pointer;

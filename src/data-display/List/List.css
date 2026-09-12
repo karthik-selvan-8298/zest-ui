@@ -107,3 +107,69 @@
   margin-left: auto;
   color: var(--zest-color-text-secondary);
 }
+
+/* ── Row recipe ───────────────────────────────────────────────────────── */
+/* Clickable rows keep the li as the flex shell: the title area is the
+   control, the trailing slot a sibling — so a trailing menu button is never
+   nested inside another button. */
+.zest-list__row[data-clickable] {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+}
+
+.zest-list__row-main {
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Single-highlight rule: the hover wash belongs to the whole row, driven by
+   the control, so the row and a trailing IconButton never both light up. */
+.zest-list__row[data-clickable] > .zest-list__row-main:hover,
+.zest-list__row[data-clickable] > .zest-list__row-main:active {
+  background: transparent;
+}
+
+.zest-list__row[data-clickable]:has(> .zest-list__row-main:hover) {
+  background: var(--zest-color-surface-hover);
+}
+
+.zest-list__row[data-clickable]:has(> .zest-list__row-main:active) {
+  background: var(--zest-color-surface-active);
+}
+
+.zest-list__row[data-clickable] > .zest-list__item-action {
+  margin-left: 0;
+  padding-right: var(--zest-space-3);
+}
+
+.zest-list__row[data-divider]:not(:last-child) {
+  box-shadow: inset 0 -1px 0 var(--zest-color-border-subtle);
+}
+
+/* Bordered lists already draw a border between rows — avoid a double line. */
+.zest-list[data-bordered] .zest-list__row[data-divider] {
+  box-shadow: none;
+}
+
+.zest-list__row[data-selected] {
+  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
+}
+
+.zest-list__row[data-disabled] {
+  color: var(--zest-color-text-disabled);
+  pointer-events: none;
+}
+
+.zest-list__row[data-disabled] .zest-list__item-primary,
+.zest-list__row[data-disabled] .zest-list__item-secondary,
+.zest-list__row[data-disabled] .zest-list__item-icon {
+  color: inherit;
+}
+
+.zest-list__row[data-disabled] > .zest-list__row-main {
+  cursor: default;
+}

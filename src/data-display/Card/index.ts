@@ -1,1 +1,1 @@
-export { Card, type CardProps, type CardHeaderProps } from './Card';
+export { Card, type CardProps, type CardHeaderProps, type CardContentProps } from './Card';

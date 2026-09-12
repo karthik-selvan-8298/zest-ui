@@ -1,56 +1,9 @@
-/* Popup, rows, separators and group labels come from ../Menu/Menu.css.
-   This file only adds what Menu lacks: the trigger area, submenu chevrons
-   and checkbox/radio indicators. */
+/* Popup, rows, separators, group labels, submenu chevrons and checkbox/radio
+   indicators all come from ../Menu/Menu.css (imported by ContextMenu.tsx).
+   This file only adds what Menu lacks: the right-click trigger area. */
 
 .zest-context-menu__trigger {
   display: block;
   width: 100%;
   box-sizing: border-box;
-}
-
-/* Submenu trigger keeps its highlight while its child menu is open. */
-.zest-menu__item[data-popup-open] {
-  background: color-mix(in srgb, var(--zest-color-primary) 8%, transparent);
-  color: var(--zest-color-primary-subtle-text);
-}
-
-.zest-menu__submenu-chevron {
-  display: inline-flex;
-  align-items: center;
-  margin-left: auto;
-  padding-left: var(--zest-space-2);
-  color: var(--zest-color-text-secondary);
-}
-
-.zest-menu__item[data-highlighted] .zest-menu__submenu-chevron,
-.zest-menu__item[data-popup-open] .zest-menu__submenu-chevron {
-  color: inherit;
-}
-
-/* Fixed-width slot so labels line up whether or not the item is checked. */
-.zest-menu__item-indicator {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  margin-right: var(--zest-space-2);
-  color: var(--zest-color-primary);
-}
-
-.zest-menu__item[data-highlighted] .zest-menu__item-indicator {
-  color: inherit;
-}
-
-.zest-menu__item[data-disabled] .zest-menu__item-indicator {
-  color: var(--zest-color-text-disabled);
-}
-
-.zest-menu__radio-dot {
-  display: block;
-  width: 6px;
-  height: 6px;
-  border-radius: var(--zest-radius-full);
-  background: currentColor;
 }

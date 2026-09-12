@@ -89,3 +89,45 @@ export const Clickable: Story = {
     </div>
   ),
 };
+
+const people = [
+  { name: 'Ada Lovelace', role: 'Engineering', color: 'primary' },
+  { name: 'Grace Hopper', role: 'Compilers', color: 'secondary' },
+  { name: 'Katherine Johnson', role: 'Orbital mechanics', color: 'info' },
+  { name: 'Margaret Hamilton', role: 'Flight software', color: 'success' },
+  { name: 'Radia Perlman', role: 'Networking', color: 'warning' },
+] as const;
+
+export const Rows: Story = {
+  render: () => (
+    <div style={{ width: 360 }}>
+      <List.Root>
+        {people.map((person, index) => (
+          <List.Row
+            key={person.name}
+            leading={<Avatar name={person.name} size="sm" color={person.color} />}
+            title={person.name}
+            subtitle={person.role}
+            trailing={
+              <IconButton aria-label={`More options for ${person.name}`} size="sm">
+                <MoreVerticalIcon />
+              </IconButton>
+            }
+            onClick={() => {}}
+            selected={index === 1}
+            disabled={index === 4}
+            divider
+          />
+        ))}
+      </List.Root>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`List.Row` is the one-line recipe: `leading` + `title`/`subtitle` + `trailing`. With `onClick`/`href` the title area becomes the control and the trailing slot stays a sibling, so the menu button is never nested inside another button.',
+      },
+    },
+  },
+};

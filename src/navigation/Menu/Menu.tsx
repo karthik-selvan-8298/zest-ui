@@ -2,17 +2,27 @@ import * as React from 'react';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { cx } from '../../utils';
 import type { WithClassName } from '../../types';
+import { CheckIcon, ChevronRightIcon } from '../../icons';
 import '../../base.css';
 import './Menu.css';
 
 /*
  * Menu on Base UI — keyboard navigation, typeahead, and aria wiring come
- * from the primitive.
+ * from the primitive. Submenus, checkbox items and radio items share the
+ * indicator recipe with ContextMenu (same `zest-menu__*` classes).
  *
  * <Menu.Root>
  *   <Menu.Trigger render={<Button variant="outlined">Actions</Button>} />
  *   <Menu.Content>
  *     <Menu.Item onClick={…}><EditIcon /> Rename</Menu.Item>
+ *     <Menu.SubmenuRoot>
+ *       <Menu.SubmenuTrigger>Share</Menu.SubmenuTrigger>
+ *       <Menu.Content><Menu.Item>Email</Menu.Item></Menu.Content>
+ *     </Menu.SubmenuRoot>
+ *     <Menu.CheckboxItem defaultChecked>Compact rows</Menu.CheckboxItem>
+ *     <Menu.RadioGroup defaultValue="light">
+ *       <Menu.RadioItem value="light">Light</Menu.RadioItem>
+ *     </Menu.RadioGroup>
  *     <Menu.Separator />
  *     <Menu.Item destructive><TrashIcon /> Delete</Menu.Item>
  *   </Menu.Content>
@@ -22,14 +32,18 @@ import './Menu.css';
 export interface MenuContentProps extends WithClassName<
   React.ComponentProps<typeof BaseMenu.Popup>
 > {
-  side?: 'top' | 'bottom' | 'left' | 'right';
+  /**
+   * Side of the anchor the popup opens on. Defaults to `bottom` for a root
+   * menu and beside the trigger (`inline-end`) inside a `SubmenuRoot`.
+   */
+  side?: 'top' | 'bottom' | 'left' | 'right' | 'inline-start' | 'inline-end';
   align?: 'start' | 'center' | 'end';
   sideOffset?: number;
   children?: React.ReactNode;
 }
 
 const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(function MenuContent(
-  { side = 'bottom', align = 'start', sideOffset = 4, className, children, ...props },
+  { side, align = 'start', sideOffset = 4, className, children, ...props },
   ref
 ) {
   return (
@@ -101,6 +115,81 @@ const MenuGroupLabel = React.forwardRef<HTMLDivElement, MenuGroupLabelProps>(
   }
 );
 
+export type MenuSubmenuRootProps = React.ComponentProps<typeof BaseMenu.SubmenuRoot>;
+
+export type MenuSubmenuTriggerProps = WithClassName<
+  React.ComponentProps<typeof BaseMenu.SubmenuTrigger>
+>;
+
+/** A row that opens a nested menu. Renders a trailing chevron automatically. */
+const MenuSubmenuTrigger = React.forwardRef<HTMLElement, MenuSubmenuTriggerProps>(
+  function MenuSubmenuTrigger({ className, children, ...props }, ref) {
+    return (
+      <BaseMenu.SubmenuTrigger ref={ref} className={cx('zest-menu__item', className)} {...props}>
+        {children}
+        <span className="zest-menu__submenu-chevron" aria-hidden>
+          <ChevronRightIcon size={16} />
+        </span>
+      </BaseMenu.SubmenuTrigger>
+    );
+  }
+);
+
+export type MenuCheckboxItemProps = WithClassName<
+  React.ComponentProps<typeof BaseMenu.CheckboxItem>
+>;
+
+/**
+ * A row that toggles a setting. `checked` / `defaultChecked` /
+ * `onCheckedChange` come from Base UI; a check mark shows when ticked.
+ */
+const MenuCheckboxItem = React.forwardRef<HTMLElement, MenuCheckboxItemProps>(
+  function MenuCheckboxItem({ className, children, ...props }, ref) {
+    return (
+      <BaseMenu.CheckboxItem ref={ref} className={cx('zest-menu__item', className)} {...props}>
+        <span className="zest-menu__item-indicator" aria-hidden>
+          <BaseMenu.CheckboxItemIndicator>
+            <CheckIcon size={16} />
+          </BaseMenu.CheckboxItemIndicator>
+        </span>
+        {children}
+      </BaseMenu.CheckboxItem>
+    );
+  }
+);
+
+export type MenuRadioGroupProps = WithClassName<React.ComponentProps<typeof BaseMenu.RadioGroup>>;
+
+/** Groups `RadioItem`s; `value` / `defaultValue` / `onValueChange` select one. */
+const MenuRadioGroup = React.forwardRef<HTMLDivElement, MenuRadioGroupProps>(
+  function MenuRadioGroup({ className, ...props }, ref) {
+    return (
+      <BaseMenu.RadioGroup
+        ref={ref}
+        className={cx('zest-menu__radio-group', className)}
+        {...props}
+      />
+    );
+  }
+);
+
+export type MenuRadioItemProps = WithClassName<React.ComponentProps<typeof BaseMenu.RadioItem>>;
+
+/** A row that works like a radio button inside `RadioGroup`; shows a dot when selected. */
+const MenuRadioItem = React.forwardRef<HTMLElement, MenuRadioItemProps>(function MenuRadioItem(
+  { className, children, ...props },
+  ref
+) {
+  return (
+    <BaseMenu.RadioItem ref={ref} className={cx('zest-menu__item', className)} {...props}>
+      <span className="zest-menu__item-indicator" aria-hidden>
+        <BaseMenu.RadioItemIndicator className="zest-menu__radio-dot" />
+      </span>
+      {children}
+    </BaseMenu.RadioItem>
+  );
+});
+
 export const Menu = {
   Root: BaseMenu.Root,
   Trigger: BaseMenu.Trigger,
@@ -109,6 +198,11 @@ export const Menu = {
   Separator: MenuSeparator,
   Group: MenuGroup,
   GroupLabel: MenuGroupLabel,
+  SubmenuRoot: BaseMenu.SubmenuRoot,
+  SubmenuTrigger: MenuSubmenuTrigger,
+  CheckboxItem: MenuCheckboxItem,
+  RadioGroup: MenuRadioGroup,
+  RadioItem: MenuRadioItem,
 };
 
 export type MenuRootProps = React.ComponentProps<typeof BaseMenu.Root>;

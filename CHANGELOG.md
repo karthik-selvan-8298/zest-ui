@@ -9,15 +9,34 @@ breaking changes, patch = fixes only).
 
 ### Fixed
 
+- **Density**: the body type size is set on `<body>` (not `<html>`), so rem tokens under `density="dashboard"` scale once instead of twice.
+- **Dark-mode overrides no longer leak**: dark semantic tokens now live at `:root[data-zest-theme='dark']`, out-ranking an app's `:root { --zest-… }` override (give overrides a dark twin — see README).
+- **Label/HelperText/FieldError render standalone** (plain `<label>/<p>/<div>`) instead of throwing `FieldRootContext is missing` outside a FormField.
+- **Card/Paper borders** are declared with `:where()` (zero specificity) and expose `--zest-card-border` / `--zest-paper-border`, so a single app class can recolour them.
+- **Toolbars align by default**: `--zest-field-height-sm` now equals `--zest-button-height-md` in every density (36 / 32 / 32px), so sm fields, md buttons and Segmented share a height.
+- **Dialog**: an explicit `<Dialog.Body>` child is used as-is instead of being nested inside the implicit body.
+- **Spacing props** accept any number (×4px, e.g. `gap={1.5}`) instead of silently breaking on non-step values; `NaN` throws.
 - **Sidebar**: the collapse edge-toggle no longer floats above an open Dialog/AlertDialog — its z-index dropped from above the popover layer (1401) to just above the AppBar (1101), below the modal layer (1300).
 - **Dark mode**: the primary ramp was failing AA both ways — `primary-300` as text on the dark surface (3.9:1) and white text on `primary-300` solid controls (3.9:1). Dark `--zest-color-primary`/`-hover` are lifted toward white, `-active` is `primary-300`, and `--zest-color-primary-contrast` flips to `gray-900` (Material-3 style light-on-dark primary). `--zest-color-primary-subtle-text` lifted the same way (≈6:1). Other tones were already ≥7:1.
 
 ### Added
 
+- **Select search**: an in-popup search field appears automatically once there are more than `searchThreshold` (8) options — single and multiple mode — filtering by label/value/`keywords`; `searchable` forces it on/off; `searchPlaceholder`, `noResultsText`. Short lists stay uncluttered.
+- **EmptyState:** new `state` prop (`'empty' | 'loading' | 'error'`). Loading renders a Spinner with `role="status"`/`aria-busy` and a default "Loading…" title; error renders the error icon in the error tone with `role="alert"` and keeps `action` for a Retry. `title` is now optional.
+- **List:** new `List.Row` one-line recipe (`leading`, `title`, `subtitle`, `trailing`, `divider`, `onClick`/`href`, `disabled`, `selected`). Clickable rows make the title area the control and keep `trailing` as a sibling, so a trailing menu button never nests inside a `<button>`.
+- **Box:** new sizing shorthands — `flex` (`true` → `1 1 0%`), `grow`, `shrink`, `width`, `height`, `minWidth`, `minHeight`, `maxWidth`, `maxHeight` (numbers → px), `overflow`. `resolveBoxStyle(props)` is exported for building custom primitives.
+- **Flex / Stack:** accept every Box spacing and sizing prop (`<Flex p={4} minWidth={0} flex={1}>`) — no Box wrapper needed.
+- **Card:** new `fullHeight` prop and `Card.Content scroll` prop for fill-height cards whose body scrolls while Header/Footer stay pinned.
+- **Menu**: `Menu.SubmenuRoot` / `Menu.SubmenuTrigger`, `Menu.CheckboxItem`, `Menu.RadioGroup` / `Menu.RadioItem` — parity with ContextMenu, same indicator recipe. `Menu.Content` inside a `SubmenuRoot` opens beside its trigger. Submenu/indicator CSS moved from ContextMenu.css into Menu.css so all three menus share one source.
+- **DataGrid**: `maxHeight` scrolls rows inside the grid under a sticky column header (pagination footer stays fixed below); `groupBy` + `renderGroupHeader` render a full-width `rowgroup` header row per group in current sort order — headers don't count toward `pageSize` or select-all, and stack correctly under `stackOnMobile`.
+- **Select `multiple`** (discriminated union — `value`/`onValueChange` become `T[]`): selected values render as compact chips with `maxVisible` (default 2) + `+N` overflow and a `renderValue` override; new `clearable` prop for both modes. With `name`, multiple values submit as one hidden input per value (`FormData.getAll`). ⚠️ `SelectProps` is now a union type — extend it with `&` instead of `extends`.
+- `ZestProvider` stamps the **resolved** theme as `data-zest-theme` even in system mode, plus `data-zest-mode` (requested mode). `ZEST_MODE_STORAGE_KEY` is exported.
+- Patterns (`SearchToolbar`, `FormSection`, `DetailHeader`) are re-exported from the main entry.
 - `Overview/Members Page › AppShell` story — Sidebar + AppBar + page + Dialog composed together (guards the layer order); the members page "Invite member" button now opens a real Dialog.
 
 ### Tooling
 
+- Unit tests: `toHaveNoViolations` (vitest-axe) is now actually registered — `vitest-axe/extend-expect` is a no-op under Vitest 4, so the matchers are extended explicitly in `src/test-setup.ts`.
 - Storybook Mode toolbar now offers Light / Dark / **System** (follows the OS) with sun/moon icons, and Storybook's built-in canvas-background tool is disabled — it repaints the canvas without switching Zest tokens and was easily mistaken for dark mode.
 - Visual runner now forces the bundled Roboto faces to load before capturing (`document.fonts.ready` resolves even when a face was never requested), so dev-server runs no longer drift from the static-build baselines.
 

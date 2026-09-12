@@ -144,7 +144,8 @@
   --zest-button-height-sm: 30px;
   --zest-button-height-md: 36px;
   --zest-button-height-lg: 48px;
-  --zest-field-height-sm: 40px;
+  /* sm fields track the md button height so toolbars line up by default. */
+  --zest-field-height-sm: var(--zest-button-height-md);
   --zest-field-height-md: 44px;
   --zest-focus-ring-width: 2px;
 
@@ -275,7 +276,11 @@
 /* ════════════════════════════════════════════════════════════════════════
    Semantic tokens — DARK (explicit)
    ═══════════════════════════════════════════════════════════════════════ */
-[data-zest-theme='dark'] {
+/* :root[…] (0,2,0) so an app's own `:root { --zest-… }` override — which
+   ties with a bare attribute selector and would win by source order — can
+   no longer leak light values into dark mode. Override dark explicitly with
+   `:root[data-zest-theme='dark'] { … }`. */
+:root[data-zest-theme='dark'] {
   color-scheme: dark;
 
   /* Dark primary ramp — Material-3 style: a LIGHT lavender surface with
@@ -379,7 +384,7 @@
   --zest-button-height-sm: 26px;
   --zest-button-height-md: 32px;
   --zest-button-height-lg: 40px;
-  --zest-field-height-sm: 34px;
+  --zest-field-height-sm: var(--zest-button-height-md);
   --zest-field-height-md: 40px;
 }
 
@@ -399,17 +404,25 @@
   --zest-button-height-sm: 26px;
   --zest-button-height-md: 32px;
   --zest-button-height-lg: 40px;
-  --zest-field-height-sm: 30px;
+  --zest-field-height-sm: var(--zest-button-height-md);
   --zest-field-height-md: 36px;
 }
 
 /* ── Base document defaults ───────────────────────────────────────────── */
 .zest-root {
   font-family: var(--zest-font-family-sans);
-  font-size: var(--zest-font-size-md);
-  line-height: var(--zest-line-height-normal);
   color: var(--zest-color-text-primary);
   -webkit-font-smoothing: antialiased;
+}
+
+/* The type scale is rem-based, so the body size must NOT be set on <html>
+   (rem would then resolve against the already-scaled root and every token
+   would shrink twice under a density). It lands on <body>, or directly on
+   the root when ZestProvider/Theme mounts on a non-html element. */
+html.zest-root > body,
+.zest-root:not(html) {
+  font-size: var(--zest-font-size-md);
+  line-height: var(--zest-line-height-normal);
 }
 
 /* Thin rounded scrollbars — the Sigma dashboard scrollbar language. */

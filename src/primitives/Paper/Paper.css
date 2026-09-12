@@ -3,8 +3,8 @@
   color: var(--zest-color-text-primary);
 }
 
-.zest-paper[data-bordered] {
-  border: 1px solid var(--zest-color-border);
+:where(.zest-paper[data-bordered]) {
+  border: 1px solid var(--zest-paper-border, var(--zest-color-border));
 }
 
 .zest-paper[data-radius='none'] {

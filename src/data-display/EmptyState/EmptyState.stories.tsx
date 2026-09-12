@@ -47,3 +47,35 @@ export const Sizes: Story = {
     </Flex>
   ),
 };
+
+export const States: Story = {
+  render: () => (
+    <Flex gap={6} align="start" wrap>
+      <EmptyState
+        state="empty"
+        title="No projects yet"
+        description="Create your first project to get started."
+        action={<Button startIcon={<PlusIcon />}>New project</Button>}
+      />
+      <EmptyState state="loading" description="Fetching your projects." />
+      <EmptyState
+        state="error"
+        title="Couldn't load projects"
+        description="Something went wrong on our side. Please try again."
+        action={
+          <Button color="neutral" variant="outlined">
+            Retry
+          </Button>
+        }
+      />
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`state` covers the async lifecycle: `loading` shows a Spinner with `role="status"`, `error` shows the error icon with `role="alert"` and keeps the action for a Retry.',
+      },
+    },
+  },
+};

@@ -7,14 +7,15 @@ interface Fruit {
   id: string;
   name: string;
   count: number;
+  color: string;
 }
 
 const fruits: Fruit[] = [
-  { id: '1', name: 'Banana', count: 12 },
-  { id: '2', name: 'Apple', count: 5 },
-  { id: '3', name: 'Cherry', count: 30 },
-  { id: '4', name: 'Date', count: 2 },
-  { id: '5', name: 'Elderberry', count: 8 },
+  { id: '1', name: 'Banana', count: 12, color: 'Yellow' },
+  { id: '2', name: 'Apple', count: 5, color: 'Red' },
+  { id: '3', name: 'Cherry', count: 30, color: 'Red' },
+  { id: '4', name: 'Date', count: 2, color: 'Brown' },
+  { id: '5', name: 'Elderberry', count: 8, color: 'Purple' },
 ];
 
 const columns: DataGridColumn<Fruit>[] = [
@@ -26,9 +27,17 @@ const getRowId = (row: Fruit) => row.id;
 
 function bodyRowTexts(container: HTMLElement): string[] {
   return Array.from(container.querySelectorAll('tbody tr')).map(
-    (row) => within(row as HTMLElement).getAllByRole('cell')[0]?.textContent ?? ''
+    (row) => within(row as HTMLElement).queryAllByRole('cell')[0]?.textContent ?? ''
   );
 }
+
+function groupHeaderTexts(container: HTMLElement): string[] {
+  return Array.from(container.querySelectorAll('.zest-datagrid__group-row th')).map(
+    (cell) => cell.textContent ?? ''
+  );
+}
+
+const groupByColor = (row: Fruit) => row.color;
 
 describe('DataGrid', () => {
   it('renders a row per entry with column headers', () => {
@@ -172,5 +181,196 @@ describe('DataGrid', () => {
 
     await userEvent.click(screen.getByRole('checkbox', { name: 'Select row 1' }));
     expect(onRowClick).toHaveBeenCalledTimes(1);
+  });
+
+  describe('maxHeight', () => {
+    it('wraps the table in a scroll region with the given max height', () => {
+      const { container } = render(
+        <DataGrid columns={columns} rows={fruits} getRowId={getRowId} maxHeight={320} />
+      );
+      const scroll = container.querySelector('.zest-datagrid__scroll');
+      expect(scroll).toBeInTheDocument();
+      expect(scroll).toHaveStyle({ maxHeight: '320px' });
+      expect(scroll?.querySelector('table')).toBeInTheDocument();
+      // Table's own x-scroller would trap the sticky header; the wrapper owns both axes.
+      expect(container.querySelector('.zest-table__scroller')).not.toBeInTheDocument();
+    });
+
+    it('accepts string heights and marks the header sticky', () => {
+      const { container } = render(
+        <DataGrid columns={columns} rows={fruits} getRowId={getRowId} maxHeight="50vh" />
+      );
+      const scroll = container.querySelector<HTMLElement>('.zest-datagrid__scroll');
+      expect(scroll?.style.maxHeight).toBe('50vh');
+      const table = container.querySelector('table');
+      expect(table).toHaveAttribute('data-sticky-header');
+      expect(
+        container.querySelector('.zest-datagrid__scroll .zest-table__head .zest-table__header-cell')
+      ).toBeInTheDocument();
+    });
+
+    it('keeps the pagination footer outside the scroll region', () => {
+      const { container } = render(
+        <DataGrid
+          columns={columns}
+          rows={fruits}
+          getRowId={getRowId}
+          maxHeight={200}
+          pageSize={2}
+        />
+      );
+      const scroll = container.querySelector('.zest-datagrid__scroll');
+      const footer = container.querySelector('.zest-datagrid__footer');
+      expect(footer).toBeInTheDocument();
+      expect(scroll?.contains(footer)).toBe(false);
+    });
+
+    it('renders no scroll wrapper without maxHeight', () => {
+      const { container } = render(
+        <DataGrid columns={columns} rows={fruits} getRowId={getRowId} />
+      );
+      expect(container.querySelector('.zest-datagrid__scroll')).not.toBeInTheDocument();
+      expect(container.querySelector('table')).not.toHaveAttribute('data-sticky-header');
+    });
+  });
+
+  describe('groupBy', () => {
+    it('renders one full-width header row per group in order of first occurrence', () => {
+      const { container } = render(
+        <DataGrid columns={columns} rows={fruits} getRowId={getRowId} groupBy={groupByColor} />
+      );
+      const groupRows = container.querySelectorAll('.zest-datagrid__group-row');
+      expect(groupRows).toHaveLength(4);
+      expect(groupHeaderTexts(container)).toEqual([
+        'Yellow (1)',
+        'Red (2)',
+        'Brown (1)',
+        'Purple (1)',
+      ]);
+      const cell = groupRows[0]?.querySelector('th');
+      expect(cell).toHaveAttribute('scope', 'rowgroup');
+      expect(cell).toHaveAttribute('colspan', '2');
+      expect(groupRows[0]).toHaveAttribute('data-group-key', 'Yellow');
+      // Data rows still all render, underneath their headers.
+      expect(bodyRowTexts(container).filter(Boolean)).toEqual([
+        'Banana',
+        'Apple',
+        'Cherry',
+        'Date',
+        'Elderberry',
+      ]);
+    });
+
+    it('spans the selection column too', () => {
+      const { container } = render(
+        <DataGrid
+          columns={columns}
+          rows={fruits}
+          getRowId={getRowId}
+          groupBy={groupByColor}
+          selectable
+        />
+      );
+      expect(container.querySelector('.zest-datagrid__group-row th')).toHaveAttribute(
+        'colspan',
+        '3'
+      );
+    });
+
+    it('uses renderGroupHeader when provided', () => {
+      const { container } = render(
+        <DataGrid
+          columns={columns}
+          rows={fruits}
+          getRowId={getRowId}
+          groupBy={groupByColor}
+          renderGroupHeader={(key, rows) => <em>{`${key.toUpperCase()}:${rows.length}`}</em>}
+        />
+      );
+      expect(groupHeaderTexts(container)).toEqual(['YELLOW:1', 'RED:2', 'BROWN:1', 'PURPLE:1']);
+      expect(container.querySelector('.zest-datagrid__group-row em')).toBeInTheDocument();
+    });
+
+    it('groups in the current sort order', async () => {
+      const { container } = render(
+        <DataGrid
+          columns={columns}
+          rows={fruits}
+          getRowId={getRowId}
+          groupBy={groupByColor}
+          defaultSort={{ key: 'name', direction: 'desc' }}
+        />
+      );
+      // Elderberry, Date, Cherry, Banana, Apple → Purple, Brown, Red, Yellow, Red
+      // Groups collapse to first occurrence but keep rows in sorted order.
+      expect(groupHeaderTexts(container)).toEqual([
+        'Purple (1)',
+        'Brown (1)',
+        'Red (2)',
+        'Yellow (1)',
+      ]);
+      const redRow = container.querySelector('[data-group-key="Red"]');
+      const next = redRow?.nextElementSibling;
+      expect(next?.textContent).toContain('Cherry');
+      expect(next?.nextElementSibling?.textContent).toContain('Apple');
+
+      await userEvent.click(
+        within(screen.getByRole('columnheader', { name: 'Name' })).getByRole('button')
+      );
+      // Cycle desc → none: back to source order.
+      expect(groupHeaderTexts(container)).toEqual([
+        'Yellow (1)',
+        'Red (2)',
+        'Brown (1)',
+        'Purple (1)',
+      ]);
+    });
+
+    it('does not count group headers toward pageSize and selects every row via select all', async () => {
+      const onSelectedChange = vi.fn();
+      const { container } = render(
+        <DataGrid
+          columns={columns}
+          rows={fruits}
+          getRowId={getRowId}
+          groupBy={groupByColor}
+          pageSize={2}
+          selectable
+          onSelectedChange={onSelectedChange}
+        />
+      );
+      // Page 1 = Banana, Apple → two groups, two data rows.
+      expect(container.querySelectorAll('.zest-datagrid__group-row')).toHaveLength(2);
+      expect(screen.getByText('Banana')).toBeInTheDocument();
+      expect(screen.getByText('Apple')).toBeInTheDocument();
+      expect(screen.queryByText('Cherry')).not.toBeInTheDocument();
+      expect(screen.getByText('1–2 of 5')).toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('checkbox', { name: 'Select all rows' }));
+      expect(onSelectedChange).toHaveBeenLastCalledWith(['1', '2', '3', '4', '5']);
+    });
+
+    it('composes with maxHeight — group rows scroll inside the region', () => {
+      const { container } = render(
+        <DataGrid
+          columns={columns}
+          rows={fruits}
+          getRowId={getRowId}
+          groupBy={groupByColor}
+          maxHeight={240}
+        />
+      );
+      const scroll = container.querySelector('.zest-datagrid__scroll');
+      expect(scroll?.querySelectorAll('.zest-datagrid__group-row')).toHaveLength(4);
+      expect(scroll?.querySelector('thead')).toBeInTheDocument();
+    });
+
+    it('shows the empty state instead of group rows when there is no data', () => {
+      const { container } = render(
+        <DataGrid columns={columns} rows={[]} getRowId={getRowId} groupBy={groupByColor} />
+      );
+      expect(container.querySelectorAll('.zest-datagrid__group-row')).toHaveLength(0);
+      expect(screen.getByText('No data')).toBeInTheDocument();
+    });
   });
 });

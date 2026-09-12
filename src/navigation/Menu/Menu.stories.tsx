@@ -84,3 +84,61 @@ export const Grouped: Story = {
     </Menu.Root>
   ),
 };
+
+export const Submenu: Story = {
+  render: () => (
+    <Menu.Root>
+      <Menu.Trigger
+        render={
+          <Button variant="outlined" color="neutral">
+            File
+          </Button>
+        }
+      />
+      <Menu.Content>
+        <Menu.Item>Open</Menu.Item>
+        <Menu.Item>Download</Menu.Item>
+        <Menu.SubmenuRoot>
+          <Menu.SubmenuTrigger>Share</Menu.SubmenuTrigger>
+          <Menu.Content>
+            <Menu.Item>Copy link</Menu.Item>
+            <Menu.Item>Email</Menu.Item>
+            <Menu.Item>Invite people…</Menu.Item>
+          </Menu.Content>
+        </Menu.SubmenuRoot>
+        <Menu.Separator />
+        <Menu.Item destructive>
+          <TrashIcon /> Move to trash
+        </Menu.Item>
+      </Menu.Content>
+    </Menu.Root>
+  ),
+};
+
+/* Radio items pick one theme; the checkbox item toggles an independent setting. */
+export const Appearance: Story = {
+  render: () => (
+    <Menu.Root>
+      <Menu.Trigger
+        render={
+          <Button variant="outlined" color="neutral">
+            Appearance
+          </Button>
+        }
+      />
+      <Menu.Content>
+        <Menu.Group>
+          <Menu.GroupLabel>Theme</Menu.GroupLabel>
+          <Menu.RadioGroup defaultValue="system">
+            <Menu.RadioItem value="light">Light</Menu.RadioItem>
+            <Menu.RadioItem value="dark">Dark</Menu.RadioItem>
+            <Menu.RadioItem value="system">System</Menu.RadioItem>
+          </Menu.RadioGroup>
+        </Menu.Group>
+        <Menu.Separator />
+        <Menu.CheckboxItem defaultChecked>Compact rows</Menu.CheckboxItem>
+        <Menu.CheckboxItem disabled>Show line numbers</Menu.CheckboxItem>
+      </Menu.Content>
+    </Menu.Root>
+  ),
+};

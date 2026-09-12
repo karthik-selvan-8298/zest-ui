@@ -82,3 +82,35 @@ export const WithSections: Story = {
     </Card>
   ),
 };
+
+export const FillHeightScroll: Story = {
+  render: () => (
+    <div style={{ height: 360, maxWidth: 360 }}>
+      <Card fullHeight>
+        <Card.Header title="Activity" subtitle="Header stays pinned" />
+        <Card.Content scroll>
+          <Stack spacing={2}>
+            {Array.from({ length: 30 }, (_, i) => (
+              <Typography key={i} variant="body2" color="secondary">
+                Event {i + 1} — the content area scrolls on its own.
+              </Typography>
+            ))}
+          </Stack>
+        </Card.Content>
+        <Card.Footer>
+          <Button size="sm" variant="ghost" color="neutral">
+            Footer stays pinned
+          </Button>
+        </Card.Footer>
+      </Card>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`<Card fullHeight>` fills its container as a flex column; `<Card.Content scroll>` takes the remaining height and scrolls while Header and Footer stay put.',
+      },
+    },
+  },
+};

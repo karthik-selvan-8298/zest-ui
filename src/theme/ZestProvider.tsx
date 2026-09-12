@@ -4,6 +4,9 @@ import '../tokens/css/tokens.css';
 import type { ZestTheme } from './types';
 
 export type ZestMode = 'light' | 'dark' | 'system';
+
+/** localStorage key under which ZestProvider persists the chosen mode. */
+export const ZEST_MODE_STORAGE_KEY = 'zest-mode';
 /**
  * Layout + type density.
  * - `comfortable` — default; roomy spacing and 16px body text.
@@ -67,7 +70,7 @@ function themeStyleText(theme: ZestTheme): string {
   let css = '';
   if (light) css += `:root, [data-zest-theme='light'] { ${light} }\n`;
   if (dark) {
-    css += `[data-zest-theme='dark'] { ${dark} }\n`;
+    css += `:root[data-zest-theme='dark'] { ${dark} }\n`;
     css += `@media (prefers-color-scheme: dark) { :root:not([data-zest-theme='light']):not([data-zest-theme='dark']) { ${dark} } }\n`;
   }
   return css;
@@ -83,7 +86,7 @@ export function ZestProvider({
   mode: controlledMode,
   onModeChange,
   defaultDensity = 'comfortable',
-  storageKey = 'zest-mode',
+  storageKey = ZEST_MODE_STORAGE_KEY,
   children,
 }: ZestProviderProps) {
   const [uncontrolledMode, setUncontrolledMode] = React.useState<ZestMode>(
@@ -117,19 +120,24 @@ export function ZestProvider({
     [controlledMode, onModeChange, storageKey]
   );
 
-  // Stamp mode + density attributes on <html>.
+  // Stamp attributes on <html>:
+  //   data-zest-theme = the RESOLVED appearance ('light' | 'dark'), also in
+  //                     system mode, so app CSS can target the active theme
+  //                     without repeating the prefers-color-scheme query;
+  //   data-zest-mode  = the requested mode ('light' | 'dark' | 'system').
   React.useEffect(() => {
     const root = document.documentElement;
-    if (mode === 'system') root.removeAttribute('data-zest-theme');
-    else root.setAttribute('data-zest-theme', mode);
+    root.setAttribute('data-zest-theme', mode === 'system' ? systemMode : mode);
+    root.setAttribute('data-zest-mode', mode);
     if (density === 'comfortable') root.removeAttribute('data-zest-density');
     else root.setAttribute('data-zest-density', density);
     root.classList.add('zest-root');
     return () => {
       root.removeAttribute('data-zest-theme');
+      root.removeAttribute('data-zest-mode');
       root.removeAttribute('data-zest-density');
     };
-  }, [mode, density]);
+  }, [mode, systemMode, density]);
 
   const value = React.useMemo<ZestContextValue>(
     () => ({

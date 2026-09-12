@@ -1,6 +1,10 @@
+import { expect } from 'vitest';
 import '@testing-library/jest-dom/vitest';
+import * as axeMatchers from 'vitest-axe/matchers';
+
 // Adds `expect(results).toHaveNoViolations()` for axe-core checks in tests.
-import 'vitest-axe/extend-expect';
+// (`vitest-axe/extend-expect` is a no-op under Vitest 4, so extend explicitly.)
+expect.extend(axeMatchers);
 
 // jsdom is missing a few APIs Base UI relies on.
 if (!window.matchMedia) {

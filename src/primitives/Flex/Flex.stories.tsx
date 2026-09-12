@@ -61,3 +61,34 @@ export const Wrapping: Story = {
     </Flex>
   ),
 };
+
+export const SpacingAndSizing: Story = {
+  render: () => (
+    <Flex
+      gap={2}
+      align="center"
+      p={4}
+      maxWidth={480}
+      style={{
+        border: '1px dashed var(--zest-color-border)',
+        borderRadius: 'var(--zest-radius-surface)',
+      }}
+    >
+      <Flex flex minWidth={0} p={2} style={{ background: 'var(--zest-color-background-neutral)' }}>
+        <Typography variant="body2" truncate>
+          Flex takes Box shorthands directly: p={'{4}'} maxWidth={'{480}'} on the parent, flex +
+          minWidth={'{0}'} here.
+        </Typography>
+      </Flex>
+      <Demo>Trailing</Demo>
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Flex (and Stack) accept every Box spacing/sizing prop, so a padded, fill-width row no longer needs a Box wrapper.',
+      },
+    },
+  },
+};
