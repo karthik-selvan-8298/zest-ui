@@ -86,6 +86,10 @@ npm run test:visual:update   # in another
 Commit the updated PNGs with the change. Never update baselines to make an
 unexpected diff go away — investigate it.
 
+If the runner reports `0 of N total` with `Executable doesn't exist … ms-playwright`, a
+`npm update` moved Playwright to a version whose Chromium build isn't downloaded yet — run
+`npx playwright install chromium` once (CI already does this).
+
 ## Dependency policy
 
 Stable over newest: a major is adopted only when it has at least one patch release

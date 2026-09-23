@@ -40,6 +40,12 @@ breaking changes, patch = fixes only).
 - Storybook Mode toolbar now offers Light / Dark / **System** (follows the OS) with sun/moon icons, and Storybook's built-in canvas-background tool is disabled — it repaints the canvas without switching Zest tokens and was easily mistaken for dark mode.
 - Visual runner now forces the bundled Roboto faces to load before capturing (`document.fonts.ready` resolves even when a face was never requested), so dev-server runs no longer drift from the static-build baselines.
 
+### Dependencies
+
+- **Vite 8** (8.3.0) — adopted now that it has 27 patch releases and every peer accepts it; `@vitejs/plugin-react` stays on 5.x (its peer range already includes Vite 8). plugin-react 6 remains deferred: it pulls Babel 8 while Storybook 10.6 ships Babel 7.
+- In-range refresh: React 19.3, `lucide-react` 1.47, ESLint 10.11, typescript-eslint 8.70, jsdom 30.1, Prettier 3.9.8, `@storybook/test-runner` 0.24.5 (Jest stays pinned `~30.4` via `overrides` — 30.5 still rejects Storybook's config loader).
+- Still deferred: **Vitest 5** (5.0.1 is its only patch; `@storybook/addon-vitest` pins `^3 || ^4`), **TypeScript 7** (`typescript-eslint` supports `<6.1`).
+
 ## [0.2.0] — 2026-09-09
 
 ### ⚠️ Breaking (type-level)
