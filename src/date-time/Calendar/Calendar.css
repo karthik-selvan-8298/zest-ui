@@ -90,7 +90,6 @@
   background: var(--zest-color-primary);
   color: var(--zest-color-primary-contrast);
   font-weight: var(--zest-font-weight-medium);
-  opacity: 1;
 }
 
 .zest-calendar__day[data-selected]:hover:not([data-disabled]) {

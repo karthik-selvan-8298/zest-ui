@@ -5,27 +5,6 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './Toolbar.css';
 
-/*
- * Accessible toolbar on Base UI Toolbar — `role="toolbar"`, `aria-orientation`
- * and arrow-key roving focus come from the primitive.
- *
- * Toolbar.Button is a focus-management shell: pass a Zest control through
- * `render` to give it a look, or leave `render` off for the built-in ghost
- * icon-button styling.
- *
- * <Toolbar.Root variant="contained" aria-label="Formatting">
- *   <Toolbar.Group>
- *     <Toolbar.Button render={<Toggle aria-label="Bold"><BoldIcon /></Toggle>} />
- *     <Toolbar.Button render={<Toggle aria-label="Italic"><ItalicIcon /></Toggle>} />
- *   </Toolbar.Group>
- *   <Toolbar.Separator />
- *   <Toolbar.Button render={<IconButton aria-label="Copy"><CopyIcon /></IconButton>} />
- *   <Toolbar.Button render={<Button variant="ghost">Share</Button>} />
- *   <Toolbar.Separator />
- *   <Toolbar.Input render={<Input size="sm" placeholder="Search" />} />
- * </Toolbar.Root>
- */
-
 export interface ToolbarRootProps extends WithClassName<
   React.ComponentProps<typeof BaseToolbar.Root>
 > {
@@ -39,6 +18,7 @@ export interface ToolbarRootProps extends WithClassName<
   variant?: 'plain' | 'contained';
 }
 
+/** The `role="toolbar"` container; owns orientation and roving focus. */
 const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarRootProps>(function ToolbarRoot(
   { orientation = 'horizontal', variant = 'plain', className, ...props },
   ref
@@ -56,6 +36,7 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarRootProps>(function 
 
 export type ToolbarGroupProps = WithClassName<React.ComponentProps<typeof BaseToolbar.Group>>;
 
+/** Groups related items; they sit closer together than ungrouped items. */
 const ToolbarGroup = React.forwardRef<HTMLDivElement, ToolbarGroupProps>(function ToolbarGroup(
   { className, ...props },
   ref
@@ -135,6 +116,28 @@ const ToolbarInput = React.forwardRef<HTMLInputElement, ToolbarInputProps>(funct
   );
 });
 
+/**
+ * Accessible toolbar on Base UI Toolbar — `role="toolbar"`, `aria-orientation`
+ * and arrow-key roving focus come from the primitive.
+ *
+ * `Toolbar.Button` is a focus-management shell: pass a Zest control through
+ * `render` to give it a look, or leave `render` off for the built-in ghost
+ * icon-button styling.
+ *
+ * ```tsx
+ * <Toolbar.Root variant="contained" aria-label="Formatting">
+ *   <Toolbar.Group>
+ *     <Toolbar.Button render={<Toggle aria-label="Bold"><BoldIcon /></Toggle>} />
+ *     <Toolbar.Button render={<Toggle aria-label="Italic"><ItalicIcon /></Toggle>} />
+ *   </Toolbar.Group>
+ *   <Toolbar.Separator />
+ *   <Toolbar.Button render={<IconButton aria-label="Copy"><CopyIcon /></IconButton>} />
+ *   <Toolbar.Button render={<Button variant="ghost">Share</Button>} />
+ *   <Toolbar.Separator />
+ *   <Toolbar.Input render={<Input size="sm" placeholder="Search" />} />
+ * </Toolbar.Root>
+ * ```
+ */
 export const Toolbar = {
   Root: ToolbarRoot,
   Group: ToolbarGroup,

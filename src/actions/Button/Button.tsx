@@ -6,6 +6,7 @@ import type { ButtonProps, ButtonVariant } from './Button.types';
 import '../../base.css';
 import './Button.css';
 
+/** Expands the `primary`/`danger` variant aliases into variant + tone. */
 function resolveVariant(
   variant: ButtonVariant,
   color: ZestColor | undefined
@@ -84,6 +85,8 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
       </>
     );
 
+    // Disabled links can't be truly disabled, so `as`/`href` fall back to a
+    // native disabled <button> while disabled or loading.
     if (as && !isDisabled) {
       const Component = as as React.ElementType;
       return (

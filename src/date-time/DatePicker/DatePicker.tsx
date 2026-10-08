@@ -14,17 +14,25 @@ export interface DatePickerProps extends Omit<
   value?: Date | null;
   /** Initially selected date (uncontrolled). */
   defaultValue?: Date | null;
+  /** Fired when the date is picked or cleared. */
   onValueChange?: (value: Date | null) => void;
+  /** Shown while no date is set. */
   placeholder?: string;
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
+  /** Error styling (pair with FormField for the message). */
   error?: boolean;
+  /** Stretch to the container width. */
   fullWidth?: boolean;
+  /** Disables the trigger and clear button. */
   disabled?: boolean;
   /** Show a clear button when a date is set. */
   clearable?: boolean;
+  /** Days before this are disabled in the calendar. */
   minDate?: Date;
+  /** Days after this are disabled in the calendar. */
   maxDate?: Date;
+  /** Predicate disabling arbitrary days (holidays, weekends…). */
   disabledDates?: (date: Date) => boolean;
   /** BCP 47 locale for the display format and calendar. Defaults to the browser locale. */
   locale?: string;

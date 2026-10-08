@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import { Button } from '../../actions/Button/Button';
 import {
   CopyIcon,
@@ -22,6 +23,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// `fn()` spies log each selection to the Actions panel.
 const items: CommandItem[] = [
   {
     id: 'new-file',
@@ -30,7 +32,7 @@ const items: CommandItem[] = [
     icon: <PlusIcon />,
     shortcut: '⌘+N',
     keywords: ['create', 'add'],
-    onSelect: () => console.log('New file'),
+    onSelect: fn().mockName('New file'),
   },
   {
     id: 'rename',
@@ -38,7 +40,7 @@ const items: CommandItem[] = [
     group: 'Actions',
     icon: <EditIcon />,
     keywords: ['edit'],
-    onSelect: () => console.log('Rename'),
+    onSelect: fn().mockName('Rename'),
   },
   {
     id: 'duplicate',
@@ -47,7 +49,7 @@ const items: CommandItem[] = [
     icon: <CopyIcon />,
     shortcut: '⌘+D',
     keywords: ['copy', 'clone'],
-    onSelect: () => console.log('Duplicate'),
+    onSelect: fn().mockName('Duplicate'),
   },
   {
     id: 'download',
@@ -55,7 +57,7 @@ const items: CommandItem[] = [
     group: 'Actions',
     icon: <DownloadIcon />,
     keywords: ['export', 'save'],
-    onSelect: () => console.log('Download'),
+    onSelect: fn().mockName('Download'),
   },
   {
     id: 'delete',
@@ -64,7 +66,7 @@ const items: CommandItem[] = [
     icon: <TrashIcon />,
     shortcut: '⌘+⌫',
     keywords: ['remove', 'trash'],
-    onSelect: () => console.log('Delete'),
+    onSelect: fn().mockName('Delete'),
   },
   {
     id: 'profile',
@@ -72,7 +74,7 @@ const items: CommandItem[] = [
     group: 'Account',
     icon: <UserIcon />,
     keywords: ['user', 'me'],
-    onSelect: () => console.log('Profile'),
+    onSelect: fn().mockName('Profile'),
   },
   {
     id: 'settings',
@@ -81,7 +83,7 @@ const items: CommandItem[] = [
     icon: <SettingsIcon />,
     shortcut: '⌘+,',
     keywords: ['preferences', 'config'],
-    onSelect: () => console.log('Settings'),
+    onSelect: fn().mockName('Settings'),
   },
   {
     id: 'theme',
@@ -89,7 +91,7 @@ const items: CommandItem[] = [
     group: 'Account',
     icon: <MoonIcon />,
     keywords: ['appearance', 'light', 'dark'],
-    onSelect: () => console.log('Theme'),
+    onSelect: fn().mockName('Theme'),
   },
 ];
 
@@ -104,6 +106,6 @@ function PaletteDemo() {
 }
 
 export const Default: Story = {
-  args: { open: false, onOpenChange: () => {}, items },
+  args: { open: false, onOpenChange: fn(), items },
   render: () => <PaletteDemo />,
 };

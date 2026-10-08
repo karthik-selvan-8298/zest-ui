@@ -8,6 +8,7 @@ import '../../base.css';
 // Reuses the zest-date-picker field shell — both pickers share one look.
 import '../DatePicker/DatePicker.css';
 
+/** A possibly partial range — `end` is null while only the start is picked. */
 export interface DateRange {
   start: Date | null;
   end: Date | null;
@@ -21,17 +22,25 @@ export interface DateRangePickerProps extends Omit<
   value?: DateRange;
   /** Initially selected range (uncontrolled). */
   defaultValue?: DateRange;
+  /** Fired when the range is completed or cleared. */
   onValueChange?: (value: DateRange) => void;
+  /** Shown while no range is set. */
   placeholder?: string;
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
+  /** Error styling (pair with FormField for the message). */
   error?: boolean;
+  /** Stretch to the container width. */
   fullWidth?: boolean;
+  /** Disables the trigger and clear button. */
   disabled?: boolean;
   /** Show a clear button when a range is set. */
   clearable?: boolean;
+  /** Days before this are disabled in the calendar. */
   minDate?: Date;
+  /** Days after this are disabled in the calendar. */
   maxDate?: Date;
+  /** Predicate disabling arbitrary days (holidays, weekends…). */
   disabledDates?: (date: Date) => boolean;
   /** BCP 47 locale for the display format and calendar. Defaults to the browser locale. */
   locale?: string;

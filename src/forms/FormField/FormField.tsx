@@ -16,7 +16,20 @@ export interface FormFieldProps extends WithClassName<React.ComponentProps<typeo
    when used standalone (a toolbar label, a caption under a custom control). */
 const InFieldContext = React.createContext(false);
 
-/** Form field context wrapper: `<FormField><Label/><Input/><HelperText/><FieldError/></FormField>` */
+/**
+ * Field context wrapper (Base UI Field.Root). Associates its `Label`,
+ * `HelperText` and `FieldError` with the control inside and carries the
+ * `name`, `disabled`, `invalid` and validation state.
+ *
+ * ```tsx
+ * <FormField name="email" invalid={!!error}>
+ *   <Label required>Email</Label>
+ *   <Input type="email" error={!!error} />
+ *   <HelperText>We never share it.</HelperText>
+ *   <FieldError match>{error}</FieldError>
+ * </FormField>
+ * ```
+ */
 export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(function FormField(
   { className, ...props },
   ref
@@ -33,6 +46,7 @@ export interface LabelProps extends WithClassName<React.ComponentProps<typeof Fi
   required?: boolean;
 }
 
+/** Field label. Inside a `FormField` it labels the control; standalone it is a plain `<label>`. */
 export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(function Label(
   { className, required, children, ...props },
   ref
@@ -72,6 +86,7 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(function Lab
 
 export type HelperTextProps = WithClassName<React.ComponentProps<typeof Field.Description>>;
 
+/** Supporting text under a control, wired as its description inside a `FormField`. */
 export const HelperText = React.forwardRef<HTMLParagraphElement, HelperTextProps>(
   function HelperText({ className, ...props }, ref) {
     const inField = React.useContext(InFieldContext);
@@ -91,6 +106,10 @@ export const HelperText = React.forwardRef<HTMLParagraphElement, HelperTextProps
 
 export type FieldErrorProps = WithClassName<React.ComponentProps<typeof Field.Error>>;
 
+/**
+ * Validation message. Inside a `FormField` it shows when the field is invalid
+ * (or always, with `match`); standalone it renders an always-visible alert.
+ */
 export const FieldError = React.forwardRef<HTMLDivElement, FieldErrorProps>(function FieldError(
   { className, ...props },
   ref

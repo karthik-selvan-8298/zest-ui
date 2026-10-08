@@ -4,7 +4,7 @@ import type { PolymorphicProps } from '../polymorphic';
 import './Container.css';
 
 export interface ContainerOwnProps {
-  /** Max content width, keyed to theme breakpoints. `false` = fluid. */
+  /** Max content width, keyed to theme breakpoints. `false` = fluid. @default 'lg' */
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | false;
   /** Remove the responsive horizontal padding. */
   disableGutters?: boolean;
@@ -17,6 +17,15 @@ export type ContainerProps<E extends React.ElementType = 'div'> = PolymorphicPro
   ContainerOwnProps
 >;
 
+/**
+ * Centers page content and caps its width at a breakpoint token, with
+ * responsive horizontal gutters (16px, 24px from 600px up).
+ *
+ * ```tsx
+ * <Container maxWidth="md">…</Container>
+ * <Container maxWidth={false} disableGutters>…</Container>
+ * ```
+ */
 export const Container = React.forwardRef(function Container<E extends React.ElementType = 'div'>(
   props: ContainerProps<E>,
   ref: React.ForwardedRef<Element>

@@ -2,32 +2,27 @@ import * as React from 'react';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { cx } from '../../utils';
 import type { WithClassName } from '../../types';
-import { CheckIcon, ChevronRightIcon } from '../../icons';
+import {
+  Menu,
+  type MenuCheckboxItemProps,
+  type MenuGroupLabelProps,
+  type MenuGroupProps,
+  type MenuItemProps,
+  type MenuRadioGroupProps,
+  type MenuRadioItemProps,
+  type MenuSeparatorProps,
+  type MenuSubmenuRootProps,
+  type MenuSubmenuTriggerProps,
+} from '../Menu/Menu';
 import '../../base.css';
 import '../Menu/Menu.css';
 import './ContextMenu.css';
 
 /*
- * ContextMenu on Base UI — opens on right click or long press, positioned at
- * the pointer. Shares the popup/row recipe with Menu (same `zest-menu__*`
- * classes) and adds submenus, checkbox items and radio items.
- *
- * <ContextMenu.Root>
- *   <ContextMenu.Trigger>Right-click me</ContextMenu.Trigger>
- *   <ContextMenu.Content>
- *     <ContextMenu.Item onClick={…}><CopyIcon /> Copy</ContextMenu.Item>
- *     <ContextMenu.SubmenuRoot>
- *       <ContextMenu.SubmenuTrigger>Share</ContextMenu.SubmenuTrigger>
- *       <ContextMenu.Content><ContextMenu.Item>Email</ContextMenu.Item></ContextMenu.Content>
- *     </ContextMenu.SubmenuRoot>
- *     <ContextMenu.CheckboxItem defaultChecked>Show hidden files</ContextMenu.CheckboxItem>
- *     <ContextMenu.RadioGroup defaultValue="name">
- *       <ContextMenu.RadioItem value="name">Sort by name</ContextMenu.RadioItem>
- *     </ContextMenu.RadioGroup>
- *     <ContextMenu.Separator />
- *     <ContextMenu.Item destructive><TrashIcon /> Delete</ContextMenu.Item>
- *   </ContextMenu.Content>
- * </ContextMenu.Root>
+ * Base UI's ContextMenu re-exports the Menu parts (Item, Group, Separator,
+ * SubmenuRoot, CheckboxItem, …) — they are the very same components. So only
+ * the Trigger and Content differ here; every row part is Zest's Menu part,
+ * which keeps one implementation of the row recipe.
  */
 
 export type ContextMenuRootProps = React.ComponentProps<typeof BaseContextMenu.Root>;
@@ -64,8 +59,9 @@ export interface ContextMenuContentProps extends WithClassName<
 }
 
 /**
- * Portal + Positioner + Popup. The root popup follows the pointer (Base UI
- * default); used inside `ContextMenu.SubmenuRoot` it opens beside the trigger.
+ * Portal + Positioner + Popup. Unlike `Menu.Content` it sets no side/align
+ * defaults: the root popup follows the pointer (Base UI default) and, inside
+ * `ContextMenu.SubmenuRoot`, it opens beside the trigger.
  */
 const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentProps>(
   function ContextMenuContent({ sideOffset, className, children, ...props }, ref) {
@@ -81,167 +77,50 @@ const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuContentPr
   }
 );
 
-export interface ContextMenuItemProps extends WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.Item>
-> {
-  /** Styles the item with the error tone for irreversible actions. */
-  destructive?: boolean;
-}
-
-const ContextMenuItem = React.forwardRef<HTMLElement, ContextMenuItemProps>(
-  function ContextMenuItem({ destructive = false, className, ...props }, ref) {
-    return (
-      <BaseContextMenu.Item
-        ref={ref}
-        className={cx('zest-menu__item', className)}
-        data-destructive={destructive ? '' : undefined}
-        {...props}
-      />
-    );
-  }
-);
-
-export type ContextMenuSeparatorProps = WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.Separator>
->;
-
-const ContextMenuSeparator = React.forwardRef<HTMLDivElement, ContextMenuSeparatorProps>(
-  function ContextMenuSeparator({ className, ...props }, ref) {
-    return (
-      <BaseContextMenu.Separator
-        ref={ref}
-        className={cx('zest-menu__separator', className)}
-        {...props}
-      />
-    );
-  }
-);
-
-export type ContextMenuGroupProps = WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.Group>
->;
-
-const ContextMenuGroup = React.forwardRef<HTMLDivElement, ContextMenuGroupProps>(
-  function ContextMenuGroup({ className, ...props }, ref) {
-    return (
-      <BaseContextMenu.Group ref={ref} className={cx('zest-menu__group', className)} {...props} />
-    );
-  }
-);
-
-export type ContextMenuGroupLabelProps = WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.GroupLabel>
->;
-
-const ContextMenuGroupLabel = React.forwardRef<HTMLDivElement, ContextMenuGroupLabelProps>(
-  function ContextMenuGroupLabel({ className, ...props }, ref) {
-    return (
-      <BaseContextMenu.GroupLabel
-        ref={ref}
-        className={cx('zest-menu__group-label', className)}
-        {...props}
-      />
-    );
-  }
-);
-
-export type ContextMenuSubmenuRootProps = React.ComponentProps<typeof BaseContextMenu.SubmenuRoot>;
-
-export type ContextMenuSubmenuTriggerProps = WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.SubmenuTrigger>
->;
-
-/** A row that opens a nested menu. Renders a trailing chevron automatically. */
-const ContextMenuSubmenuTrigger = React.forwardRef<HTMLElement, ContextMenuSubmenuTriggerProps>(
-  function ContextMenuSubmenuTrigger({ className, children, ...props }, ref) {
-    return (
-      <BaseContextMenu.SubmenuTrigger
-        ref={ref}
-        className={cx('zest-menu__item', className)}
-        {...props}
-      >
-        {children}
-        <span className="zest-menu__submenu-chevron" aria-hidden>
-          <ChevronRightIcon size={16} />
-        </span>
-      </BaseContextMenu.SubmenuTrigger>
-    );
-  }
-);
-
-export type ContextMenuCheckboxItemProps = WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.CheckboxItem>
->;
+export type ContextMenuItemProps = MenuItemProps;
+export type ContextMenuSeparatorProps = MenuSeparatorProps;
+export type ContextMenuGroupProps = MenuGroupProps;
+export type ContextMenuGroupLabelProps = MenuGroupLabelProps;
+export type ContextMenuSubmenuRootProps = MenuSubmenuRootProps;
+export type ContextMenuSubmenuTriggerProps = MenuSubmenuTriggerProps;
+export type ContextMenuCheckboxItemProps = MenuCheckboxItemProps;
+export type ContextMenuRadioGroupProps = MenuRadioGroupProps;
+export type ContextMenuRadioItemProps = MenuRadioItemProps;
 
 /**
- * A row that toggles a setting. `checked` / `defaultChecked` /
- * `onCheckedChange` come from Base UI; a check mark shows when ticked.
+ * Right-click / long-press menu positioned at the pointer. Shares every row
+ * part (and the `zest-menu__*` styling) with `Menu`.
+ *
+ * ```tsx
+ * <ContextMenu.Root>
+ *   <ContextMenu.Trigger>Right-click me</ContextMenu.Trigger>
+ *   <ContextMenu.Content>
+ *     <ContextMenu.Item onClick={copy}><CopyIcon /> Copy</ContextMenu.Item>
+ *     <ContextMenu.SubmenuRoot>
+ *       <ContextMenu.SubmenuTrigger>Share</ContextMenu.SubmenuTrigger>
+ *       <ContextMenu.Content><ContextMenu.Item>Email</ContextMenu.Item></ContextMenu.Content>
+ *     </ContextMenu.SubmenuRoot>
+ *     <ContextMenu.CheckboxItem defaultChecked>Show hidden files</ContextMenu.CheckboxItem>
+ *     <ContextMenu.RadioGroup defaultValue="name">
+ *       <ContextMenu.RadioItem value="name">Sort by name</ContextMenu.RadioItem>
+ *     </ContextMenu.RadioGroup>
+ *     <ContextMenu.Separator />
+ *     <ContextMenu.Item destructive><TrashIcon /> Delete</ContextMenu.Item>
+ *   </ContextMenu.Content>
+ * </ContextMenu.Root>
+ * ```
  */
-const ContextMenuCheckboxItem = React.forwardRef<HTMLElement, ContextMenuCheckboxItemProps>(
-  function ContextMenuCheckboxItem({ className, children, ...props }, ref) {
-    return (
-      <BaseContextMenu.CheckboxItem
-        ref={ref}
-        className={cx('zest-menu__item', className)}
-        {...props}
-      >
-        <span className="zest-menu__item-indicator" aria-hidden>
-          <BaseContextMenu.CheckboxItemIndicator>
-            <CheckIcon size={16} />
-          </BaseContextMenu.CheckboxItemIndicator>
-        </span>
-        {children}
-      </BaseContextMenu.CheckboxItem>
-    );
-  }
-);
-
-export type ContextMenuRadioGroupProps = WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.RadioGroup>
->;
-
-/** Groups `RadioItem`s; `value` / `defaultValue` / `onValueChange` select one. */
-const ContextMenuRadioGroup = React.forwardRef<HTMLDivElement, ContextMenuRadioGroupProps>(
-  function ContextMenuRadioGroup({ className, ...props }, ref) {
-    return (
-      <BaseContextMenu.RadioGroup
-        ref={ref}
-        className={cx('zest-menu__radio-group', className)}
-        {...props}
-      />
-    );
-  }
-);
-
-export type ContextMenuRadioItemProps = WithClassName<
-  React.ComponentProps<typeof BaseContextMenu.RadioItem>
->;
-
-/** A row that works like a radio button inside `RadioGroup`; shows a dot when selected. */
-const ContextMenuRadioItem = React.forwardRef<HTMLElement, ContextMenuRadioItemProps>(
-  function ContextMenuRadioItem({ className, children, ...props }, ref) {
-    return (
-      <BaseContextMenu.RadioItem ref={ref} className={cx('zest-menu__item', className)} {...props}>
-        <span className="zest-menu__item-indicator" aria-hidden>
-          <BaseContextMenu.RadioItemIndicator className="zest-menu__radio-dot" />
-        </span>
-        {children}
-      </BaseContextMenu.RadioItem>
-    );
-  }
-);
-
 export const ContextMenu = {
   Root: BaseContextMenu.Root,
   Trigger: ContextMenuTrigger,
   Content: ContextMenuContent,
-  Item: ContextMenuItem,
-  Separator: ContextMenuSeparator,
-  Group: ContextMenuGroup,
-  GroupLabel: ContextMenuGroupLabel,
-  SubmenuRoot: BaseContextMenu.SubmenuRoot,
-  SubmenuTrigger: ContextMenuSubmenuTrigger,
-  CheckboxItem: ContextMenuCheckboxItem,
-  RadioGroup: ContextMenuRadioGroup,
-  RadioItem: ContextMenuRadioItem,
+  Item: Menu.Item,
+  Separator: Menu.Separator,
+  Group: Menu.Group,
+  GroupLabel: Menu.GroupLabel,
+  SubmenuRoot: Menu.SubmenuRoot,
+  SubmenuTrigger: Menu.SubmenuTrigger,
+  CheckboxItem: Menu.CheckboxItem,
+  RadioGroup: Menu.RadioGroup,
+  RadioItem: Menu.RadioItem,
 };

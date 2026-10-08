@@ -6,15 +6,6 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './Collapsible.css';
 
-/*
- * Standalone disclosure — the themed replacement for <details>/<summary>.
- *
- * <Collapsible.Root defaultOpen>
- *   <Collapsible.Trigger>Advanced options</Collapsible.Trigger>
- *   <Collapsible.Panel>…</Collapsible.Panel>
- * </Collapsible.Root>
- */
-
 export type CollapsibleRootProps = WithClassName<React.ComponentProps<typeof BaseCollapsible.Root>>;
 
 const CollapsibleRoot = React.forwardRef<HTMLDivElement, CollapsibleRootProps>(
@@ -29,6 +20,7 @@ export type CollapsibleTriggerProps = WithClassName<
   React.ComponentProps<typeof BaseCollapsible.Trigger>
 >;
 
+/** Full-width trigger button with a chevron that flips while open. */
 const CollapsibleTrigger = React.forwardRef<HTMLButtonElement, CollapsibleTriggerProps>(
   function CollapsibleTrigger({ className, children, ...props }, ref) {
     return (
@@ -48,6 +40,7 @@ export type CollapsiblePanelProps = WithClassName<
   React.ComponentProps<typeof BaseCollapsible.Panel>
 >;
 
+/** Height-animated panel; padding lives on the inner wrapper so the animation can reach 0. */
 const CollapsiblePanel = React.forwardRef<HTMLDivElement, CollapsiblePanelProps>(
   function CollapsiblePanel({ className, children, ...props }, ref) {
     return (
@@ -62,6 +55,17 @@ const CollapsiblePanel = React.forwardRef<HTMLDivElement, CollapsiblePanelProps>
   }
 );
 
+/**
+ * Standalone disclosure on Base UI — the themed replacement for
+ * `<details>`/`<summary>`.
+ *
+ * ```tsx
+ * <Collapsible.Root defaultOpen>
+ *   <Collapsible.Trigger>Advanced options</Collapsible.Trigger>
+ *   <Collapsible.Panel>…</Collapsible.Panel>
+ * </Collapsible.Root>
+ * ```
+ */
 export const Collapsible = {
   Root: CollapsibleRoot,
   Trigger: CollapsibleTrigger,

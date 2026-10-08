@@ -3,7 +3,10 @@ import { cx } from '../../utils';
 import './AppBar.css';
 
 export interface AppBarProps extends React.HTMLAttributes<HTMLElement> {
-  /** Sticks to the top with a translucent blur while content scrolls under it. */
+  /**
+   * Sticks to the top with a translucent blur while content scrolls under it.
+   * Defaults to `true`.
+   */
   sticky?: boolean;
   /** Leading slot (menu button, breadcrumbs, title). */
   start?: React.ReactNode;
@@ -11,6 +14,7 @@ export interface AppBarProps extends React.HTMLAttributes<HTMLElement> {
   center?: React.ReactNode;
   /** Trailing slot (actions, avatar). */
   end?: React.ReactNode;
+  /** Free-form content, rendered between the center and end slots. */
   children?: React.ReactNode;
 }
 

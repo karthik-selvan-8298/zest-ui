@@ -9,7 +9,13 @@ export interface PasswordInputProps extends Omit<InputProps, 'type' | 'endAdornm
   defaultVisible?: boolean;
 }
 
-/** Password input with a visibility toggle. */
+/**
+ * Password input with a show/hide visibility toggle.
+ *
+ * ```tsx
+ * <PasswordInput aria-label="Password" autoComplete="current-password" />
+ * ```
+ */
 export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   function PasswordInput({ defaultVisible = false, ...props }, ref) {
     const [visible, setVisible] = React.useState(defaultVisible);

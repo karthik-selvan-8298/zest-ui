@@ -6,39 +6,39 @@ import { Checkbox } from '../../forms/Checkbox/Checkbox';
 import { Skeleton } from '../../feedback/Skeleton/Skeleton';
 import { ArrowDownIcon, ArrowUpIcon } from '../../icons';
 import { cx, useControllableState } from '../../utils';
+import {
+  columnsFromRow,
+  defaultComparator,
+  getPageWindow,
+  groupRows,
+  nextSort,
+  readCell,
+  sortRows,
+} from './DataGrid.utils';
 import '../../base.css';
 import './DataGrid.css';
 
-/*
- * DataGrid — client-side data grid on top of the Table parts.
- * Sorting, row selection, grouping, and pagination all run in the browser.
- *
- * <DataGrid
- *   columns={[{ key: 'name', header: 'Name', sortable: true }]}
- *   rows={people}
- *   getRowId={(row) => row.id}
- *   selectable
- *   pageSize={10}
- *   maxHeight={320}
- *   groupBy={(row) => row.status}
- * />
- */
-
+/** Placeholder rows rendered while `loading`. */
 const SKELETON_ROW_COUNT = 3;
 
 export interface DataGridColumn<Row> {
   /** Unique column key; also the row property read by the default renderer/sort. */
   key: string;
+  /** Header content. A string header doubles as the cell label in the stacked mobile view. */
   header: React.ReactNode;
   /** Custom cell renderer. Defaults to `row[key]`. */
   render?: (row: Row) => React.ReactNode;
+  /** Makes the header a button that cycles asc → desc → unsorted. */
   sortable?: boolean;
+  /** Text alignment for the header and every cell in the column. */
   align?: 'left' | 'center' | 'right';
+  /** Column width (any CSS length; numbers are px). */
   width?: number | string;
   /** Hides this column under 600px — optional-on-mobile columns. */
   hideOnMobile?: boolean;
 }
 
+/** Active sort: the column `key` and its direction. */
 export interface DataGridSort {
   key: string;
   direction: 'asc' | 'desc';
@@ -50,6 +50,7 @@ export interface DataGridProps<Row> extends Omit<React.HTMLAttributes<HTMLDivEle
    * keys (header = capitalized key, all sortable) — handy for API-driven data.
    */
   columns?: DataGridColumn<Row>[];
+  /** The full data set; sorting, grouping and pagination are applied client-side. */
   rows: Row[];
   /** Stable row identity — used for React keys and selection. */
   getRowId: (row: Row) => string;
@@ -58,6 +59,7 @@ export interface DataGridProps<Row> extends Omit<React.HTMLAttributes<HTMLDivEle
   sort?: DataGridSort | null;
   /** Initial sort for uncontrolled usage. */
   defaultSort?: DataGridSort | null;
+  /** Called on every sort change (controlled and uncontrolled). */
   onSortChange?: (sort: DataGridSort | null) => void;
   /** Custom row comparator; defaults to comparing `row[key]` values with `<`. */
   sortComparator?: (a: Row, b: Row, key: string) => number;
@@ -85,31 +87,24 @@ export interface DataGridProps<Row> extends Omit<React.HTMLAttributes<HTMLDivEle
   selectable?: boolean;
   /** Controlled selected row ids. */
   selected?: string[];
+  /** Initial selected row ids for uncontrolled usage. */
   defaultSelected?: string[];
+  /** Called with the next selected ids on every selection change. */
   onSelectedChange?: (selected: string[]) => void;
 
   /** When set, paginates client-side with an embedded Pagination footer. */
   pageSize?: number;
 
+  /** Compact row height (forwarded to `Table.Root`). */
   dense?: boolean;
+  /** Zebra striping (forwarded to `Table.Root`). */
   striped?: boolean;
   /** Replaces the rows area with skeleton rows. */
   loading?: boolean;
   /** Custom empty content; defaults to an EmptyState titled "No data". */
   emptyState?: React.ReactNode;
+  /** Makes rows clickable (pointer cursor + hover wash). Checkbox clicks don't trigger it. */
   onRowClick?: (row: Row) => void;
-}
-
-function defaultComparator<Row>(a: Row, b: Row, key: string): number {
-  const va = (a as Record<string, unknown>)[key];
-  const vb = (b as Record<string, unknown>)[key];
-  if (va == null && vb == null) return 0;
-  if (va == null) return -1;
-  if (vb == null) return 1;
-  // Relational compare works for both numbers and strings at runtime.
-  const left = va as number;
-  const right = vb as number;
-  return left < right ? -1 : left > right ? 1 : 0;
 }
 
 function DataGridInner<Row>(
@@ -152,54 +147,34 @@ function DataGridInner<Row>(
   });
   const [page, setPage] = React.useState(1);
 
-  const sortedRows = React.useMemo(() => {
-    if (!sort) return rows;
-    const factor = sort.direction === 'asc' ? 1 : -1;
-    return [...rows].sort((a, b) => factor * sortComparator(a, b, sort.key));
-  }, [rows, sort, sortComparator]);
+  const sortedRows = React.useMemo(
+    () => sortRows(rows, sort, sortComparator),
+    [rows, sort, sortComparator]
+  );
 
   const total = sortedRows.length;
-  const pageCount = pageSize ? Math.max(1, Math.ceil(total / pageSize)) : 1;
-  const currentPage = Math.min(page, pageCount);
-  const pageRows = pageSize
-    ? sortedRows.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-    : sortedRows;
+  const { pageCount, currentPage, start, end } = getPageWindow(total, pageSize, page);
+  const pageRows = React.useMemo(
+    () => (pageSize ? sortedRows.slice(start, end) : sortedRows),
+    [pageSize, sortedRows, start, end]
+  );
 
+  // Selection is tracked across every row, not just the visible page.
   const rowIds = React.useMemo(() => rows.map(getRowId), [rows, getRowId]);
   const selectedSet = React.useMemo(() => new Set(selected), [selected]);
   const selectedCount = rowIds.reduce((count, id) => (selectedSet.has(id) ? count + 1 : count), 0);
   const allSelected = rowIds.length > 0 && selectedCount === rowIds.length;
-  const columns = React.useMemo<DataGridColumn<Row>[]>(() => {
-    if (columnsProp) return columnsProp;
-    const first = rows[0];
-    if (!first) return [];
-    return Object.keys(first as object).map((key) => ({
-      key,
-      header: key.charAt(0).toUpperCase() + key.slice(1).replace(/[_-]/g, ' '),
-      sortable: true,
-    }));
-  }, [columnsProp, rows]);
 
+  const columns = React.useMemo(() => columnsProp ?? columnsFromRow(rows[0]), [columnsProp, rows]);
   const columnCount = columns.length + (selectable ? 1 : 0);
 
   // Group the visible page only: header rows never count toward pageSize.
-  const groups = React.useMemo(() => {
-    if (!groupBy) return null;
-    const map = new Map<string, Row[]>();
-    for (const row of pageRows) {
-      const key = groupBy(row);
-      const bucket = map.get(key);
-      if (bucket) bucket.push(row);
-      else map.set(key, [row]);
-    }
-    return Array.from(map, ([key, rows]) => ({ key, rows }));
-  }, [groupBy, pageRows]);
+  const groups = React.useMemo(
+    () => (groupBy ? groupRows(pageRows, groupBy) : null),
+    [groupBy, pageRows]
+  );
 
-  const cycleSort = (key: string) => {
-    if (!sort || sort.key !== key) setSort({ key, direction: 'asc' });
-    else if (sort.direction === 'asc') setSort({ key, direction: 'desc' });
-    else setSort(null);
-  };
+  const cycleSort = (key: string) => setSort(nextSort(sort, key));
 
   const toggleRow = (id: string, checked: boolean) => {
     setSelected(checked ? [...selected, id] : selected.filter((other) => other !== id));
@@ -264,9 +239,7 @@ function DataGridInner<Row>(
               hideOnMobile={column.hideOnMobile}
               label={typeof column.header === 'string' ? column.header : undefined}
             >
-              {column.render
-                ? column.render(row)
-                : ((row as Record<string, unknown>)[column.key] as React.ReactNode)}
+              {column.render ? column.render(row) : (readCell(row, column.key) as React.ReactNode)}
             </Table.Cell>
           ))}
         </Table.Row>
@@ -274,25 +247,20 @@ function DataGridInner<Row>(
     };
 
     if (groups) {
-      return groups.map(({ key, rows: groupRows }) => (
+      return groups.map(({ key, rows: members }) => (
         <React.Fragment key={`group-${key}`}>
           <Table.Row className="zest-datagrid__group-row" data-group-key={key}>
             <th scope="rowgroup" colSpan={columnCount} className="zest-datagrid__group-cell">
-              {renderGroupHeader
-                ? renderGroupHeader(key, groupRows)
-                : `${key} (${groupRows.length})`}
+              {renderGroupHeader ? renderGroupHeader(key, members) : `${key} (${members.length})`}
             </th>
           </Table.Row>
-          {groupRows.map(renderRow)}
+          {members.map(renderRow)}
         </React.Fragment>
       ));
     }
 
     return pageRows.map(renderRow);
   };
-
-  const rangeStart = pageSize ? (currentPage - 1) * pageSize + 1 : 1;
-  const rangeEnd = pageSize ? Math.min(currentPage * pageSize, total) : total;
 
   const table = (
     // Inside a maxHeight wrapper the outer scroller owns both axes; Table's
@@ -373,7 +341,7 @@ function DataGridInner<Row>(
       )}
       {pageSize && !loading && total > 0 ? (
         <div className="zest-datagrid__footer">
-          <span className="zest-datagrid__range">{`${rangeStart}–${rangeEnd} of ${total}`}</span>
+          <span className="zest-datagrid__range">{`${start + 1}–${end} of ${total}`}</span>
           <Pagination count={pageCount} page={currentPage} onPageChange={setPage} size="sm" />
         </div>
       ) : null}
@@ -381,11 +349,27 @@ function DataGridInner<Row>(
   );
 }
 
+// forwardRef erases generics, so the export below is cast back to a generic
+// signature to keep `<Row>` inference for callers.
+
 /**
  * Client-side data grid composing Table, Checkbox, Pagination, Skeleton, and
- * EmptyState. Sorting and selection support both controlled and uncontrolled
- * usage; `groupBy` adds header rows and `maxHeight` scrolls rows under a
+ * EmptyState. Sorting, selection, grouping and pagination all run in the
+ * browser; sorting and selection support both controlled and uncontrolled
+ * usage. `groupBy` adds header rows and `maxHeight` scrolls rows under a
  * sticky column header.
+ *
+ * ```tsx
+ * <DataGrid
+ *   columns={[{ key: 'name', header: 'Name', sortable: true }]}
+ *   rows={people}
+ *   getRowId={(row) => row.id}
+ *   selectable
+ *   pageSize={10}
+ *   maxHeight={320}
+ *   groupBy={(row) => row.status}
+ * />
+ * ```
  */
 export const DataGrid = React.forwardRef(DataGridInner) as <Row>(
   props: DataGridProps<Row> & { ref?: React.ForwardedRef<HTMLDivElement> }

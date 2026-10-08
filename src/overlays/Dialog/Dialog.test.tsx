@@ -56,4 +56,15 @@ describe('Dialog', () => {
     expect(body).toHaveClass('zest-dialog__body');
     expect(document.querySelectorAll('.zest-dialog__body')).toHaveLength(1);
   });
+
+  it('renders a description-only header when the close button is hidden', async () => {
+    render(
+      <Dialog.Root defaultOpen>
+        <Dialog.Content description="Only a description" hideClose>
+          Body
+        </Dialog.Content>
+      </Dialog.Root>
+    );
+    expect(await screen.findByText('Only a description')).toHaveClass('zest-dialog__description');
+  });
 });

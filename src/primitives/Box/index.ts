@@ -1,1 +1,9 @@
-export { Box, type BoxProps, type BoxOwnProps } from './Box';
+export {
+  Box,
+  type BoxProps,
+  type BoxOwnProps,
+  type BoxStyleProps,
+  type BoxSpacingProps,
+  type BoxSizeProps,
+  type CSSLength,
+} from './Box';

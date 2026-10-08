@@ -14,7 +14,9 @@ interface ProgressBaseProps extends WithClassName<
    * @default null
    */
   value?: number | null;
+  /** Tone of the indicator. @default 'primary' */
   color?: ZestColor;
+  /** Track thickness. @default 'md' */
   size?: 'sm' | 'md';
   /** Show the formatted value (e.g. "40%") next to the label. */
   showValue?: boolean;

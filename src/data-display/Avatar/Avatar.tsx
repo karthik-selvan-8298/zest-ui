@@ -6,14 +6,6 @@ import type { WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Avatar.css';
 
-/*
- * Avatar on Base UI — image with graceful fallback to initials.
- *
- * <Avatar src="/kai.png" alt="Kai" name="Kai Zhang" />
- * <Avatar name="Ada Lovelace" color="secondary" size="lg" />
- * <AvatarGroup max={3}>…<Avatar/>s…</AvatarGroup>
- */
-
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type AvatarShape = 'circle' | 'rounded';
 
@@ -24,7 +16,9 @@ export interface AvatarProps extends WithClassName<React.ComponentProps<typeof B
   alt?: string;
   /** Person's name — the fallback shows up to 2 initials derived from it. */
   name?: string;
+  /** 24 / 32 / 40 / 48 / 64px. @default 'md' */
   size?: AvatarSize;
+  /** @default 'circle' */
   shape?: AvatarShape;
   /** Tonal color of the fallback. */
   color?: ZestColor;
@@ -42,6 +36,15 @@ export function initialsFromName(name: string): string {
   return (first + last).toUpperCase();
 }
 
+/**
+ * Avatar on Base UI — an image with a graceful fallback to initials (or a
+ * user icon) while it loads or when it fails.
+ *
+ * ```tsx
+ * <Avatar src="/kai.png" alt="Kai" name="Kai Zhang" />
+ * <Avatar name="Ada Lovelace" color="secondary" size="lg" />
+ * ```
+ */
 export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
   {
     src,
@@ -86,6 +89,18 @@ export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
 
+/**
+ * Overlapping row of avatars. `size`/`shape` override each child's own, and
+ * children past `max` collapse into a trailing "+N" avatar.
+ *
+ * ```tsx
+ * <AvatarGroup max={3} size="sm">
+ *   <Avatar name="Ada Lovelace" />
+ *   <Avatar name="Grace Hopper" />
+ *   …
+ * </AvatarGroup>
+ * ```
+ */
 export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(function AvatarGroup(
   { max, size, shape, className, children, ...props },
   ref

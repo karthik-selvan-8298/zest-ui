@@ -21,7 +21,9 @@ const defaultIcons: Record<AlertSeverity, React.ReactNode> = {
 };
 
 export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  /** Tone, default icon, and live-region politeness. @default 'info' */
   severity?: AlertSeverity;
+  /** Surface treatment. @default 'soft' */
   variant?: 'soft' | 'solid' | 'outlined';
   /** Bold first line. */
   title?: React.ReactNode;
@@ -34,6 +36,15 @@ export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   children?: React.ReactNode;
 }
 
+/**
+ * Inline status message. Renders as a live region: `alert` for
+ * warning/error, `status` for info/success.
+ *
+ * ```tsx
+ * <Alert severity="success" title="Saved">Your changes are live.</Alert>
+ * <Alert severity="error" variant="outlined" onClose={dismiss}>Upload failed.</Alert>
+ * ```
+ */
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   {
     severity = 'info',

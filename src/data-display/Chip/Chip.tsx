@@ -5,15 +5,6 @@ import type { ZestColor } from '../../types';
 import '../../base.css';
 import './Chip.css';
 
-/*
- * Chip — compact pill for tags, filters and selections.
- *
- * <Chip label="Design" />
- * <Chip label="Filter" variant="outlined" onDelete={remove} />
- * <Chip label="Choose me" clickable onClick={select} />
- * <Chip avatar={<Avatar name="Ada" size="xs" />} label="Ada" />
- */
-
 export type ChipVariant = 'soft' | 'solid' | 'outlined';
 export type ChipSize = 'sm' | 'md';
 
@@ -21,8 +12,11 @@ interface ChipBaseProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   'color' | 'onClick' | 'children'
 > {
+  /** @default 'soft' */
   variant?: ChipVariant;
+  /** @default 'neutral' */
   color?: ZestColor;
+  /** 24px (`sm`) or 32px (`md`) tall. @default 'md' */
   size?: ChipSize;
   /** Leading icon slot. */
   startIcon?: React.ReactNode;
@@ -32,7 +26,9 @@ interface ChipBaseProps extends Omit<
   onDelete?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   /** Hover/active affordance; implied by `onClick`. */
   clickable?: boolean;
+  /** Fires on click, and on Enter/Space when the chip is a `role="button"` div. */
   onClick?: (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+  /** Blocks `onClick` and `onDelete` and dims the chip. */
   disabled?: boolean;
 }
 
@@ -46,6 +42,18 @@ export type ChipProps = ChipBaseProps &
     | { label?: never; /** Chip text (alias for `label`). */ children: React.ReactNode }
   );
 
+/**
+ * Compact pill for tags, filters and selections. Renders a `<button>` when
+ * clickable, otherwise a `<div>`; with both `onClick` and `onDelete` it is a
+ * `role="button"` div so the remove button is not nested in another button.
+ *
+ * ```tsx
+ * <Chip label="Design" />
+ * <Chip label="Filter" variant="outlined" onDelete={remove} />
+ * <Chip label="Choose me" clickable onClick={select} />
+ * <Chip avatar={<Avatar name="Ada" size="xs" />} label="Ada" />
+ * ```
+ */
 export const Chip = React.forwardRef<HTMLElement, ChipProps>(function Chip(
   {
     label,
@@ -129,6 +137,10 @@ export const Chip = React.forwardRef<HTMLElement, ChipProps>(function Chip(
           tabIndex: 0,
           onClick: handleClick,
           onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
+            // Ignore keys bubbling up from the nested remove button: handling
+            // them here would preventDefault its own Enter/Space activation
+            // and fire onClick instead of onDelete.
+            if (event.target !== event.currentTarget) return;
             if (event.key === 'Enter' || event.key === ' ') {
               event.preventDefault();
               onClick?.(event);

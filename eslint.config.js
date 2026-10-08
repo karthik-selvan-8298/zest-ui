@@ -3,28 +3,22 @@
 // Accessibility linting: eslint-plugin-jsx-a11y does not yet support ESLint 10,
 // so a11y is enforced at runtime instead — axe via the Storybook a11y addon,
 // axe-playwright in the visual test-runner, and vitest-axe in unit tests.
+import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import eslintReact from '@eslint-react/eslint-plugin';
 import reactHooks from 'eslint-plugin-react-hooks';
 import storybook from 'eslint-plugin-storybook';
 import prettier from 'eslint-config-prettier';
 
-export default tseslint.config(
-  {
-    ignores: ['dist/**', 'node_modules/**', 'storybook-static/**', 'coverage/**', '.husky/_/**'],
-  },
+export default defineConfig(
+  globalIgnores(['dist/', 'storybook-static/', 'coverage/', '.husky/_/']),
 
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
 
   // React correctness rules (TypeScript-aware) + hooks rules.
   {
     files: ['**/*.{ts,tsx}'],
-    ...eslintReact.configs['recommended-typescript'],
-  },
-  {
-    files: ['**/*.{ts,tsx}'],
-    plugins: { 'react-hooks': reactHooks },
-    rules: reactHooks.configs.recommended.rules,
+    extends: [eslintReact.configs['recommended-typescript'], reactHooks.configs.flat.recommended],
   },
 
   {

@@ -2,6 +2,7 @@
  * Material-style press ripple. Call from a pointerdown handler; the host
  * element needs the `zest-ripple-host` class (position/overflow containment).
  * The ripple span animates via .zest-ripple in base.css and removes itself.
+ * Touches the DOM, so call it only from event handlers (never during render).
  */
 export function spawnRipple(host: HTMLElement, event: { clientX: number; clientY: number }): void {
   const rect = host.getBoundingClientRect();

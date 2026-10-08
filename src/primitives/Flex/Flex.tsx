@@ -5,17 +5,19 @@ import { resolveSpace, type SpaceValue } from '../space';
 import { resolveBoxStyle, type BoxStyleProps } from '../Box/Box';
 import './Flex.css';
 
-type Align = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-type Justify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
+/** Cross-axis alignment keywords (mapped to `align-items`). */
+export type FlexAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
+/** Main-axis distribution keywords (mapped to `justify-content`). */
+export type FlexJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 
-const alignMap: Record<Align, string> = {
+const alignMap: Record<FlexAlign, string> = {
   start: 'flex-start',
   center: 'center',
   end: 'flex-end',
   stretch: 'stretch',
   baseline: 'baseline',
 };
-const justifyMap: Record<Justify, string> = {
+const justifyMap: Record<FlexJustify, string> = {
   start: 'flex-start',
   center: 'center',
   end: 'flex-end',
@@ -33,16 +35,16 @@ export interface FlexOwnProps extends BoxStyleProps {
   /** Main axis. @default 'row' */
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   /** Cross-axis alignment (`align-items`). */
-  align?: Align;
+  align?: FlexAlign;
   /** Main-axis distribution (`justify-content`). */
-  justify?: Justify;
+  justify?: FlexJustify;
   /** Shorthand: center children on both axes. `align`/`justify` still win if set. */
   center?: boolean;
   /** Allow children to wrap onto new lines. */
   wrap?: boolean;
   /** Grow to fill the available space along the parent's main axis (`flex: 1`). An explicit `flex` wins. */
   grow?: boolean;
-  /** Fill the cross axis (`width`/`height: 100%` depending on parent direction). */
+  /** `width: 100%`. */
   fullWidth?: boolean;
   /** Gap between children — Zest space step or CSS length. */
   gap?: SpaceValue;
@@ -60,6 +62,18 @@ export interface FlexOwnProps extends BoxStyleProps {
 
 export type FlexProps<E extends React.ElementType = 'div'> = PolymorphicProps<E, FlexOwnProps>;
 
+/**
+ * One-dimensional flexbox layout with token-aware `gap` and the full set of
+ * Box style shorthands.
+ *
+ * ```tsx
+ * <Flex align="center" justify="between" gap={3}>
+ *   <Typography variant="h6">Members</Typography>
+ *   <Button>Invite</Button>
+ * </Flex>
+ * <Flex gap={2} stackOnMobile>…</Flex>
+ * ```
+ */
 export const Flex = React.forwardRef(function Flex<E extends React.ElementType = 'div'>(
   props: FlexProps<E>,
   ref: React.ForwardedRef<Element>

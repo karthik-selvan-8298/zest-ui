@@ -9,27 +9,7 @@ import '../../base.css';
 import '../Menu/Menu.css';
 import './Menubar.css';
 
-/*
- * Menubar on Base UI — a desktop-app style row of menu triggers. Base UI's
- * Menubar wraps ordinary Menu roots, so each dropdown is a Menu underneath
- * and reuses the Menu popup/row recipe. Left/Right arrows move between
- * triggers and hovering another trigger while one menu is open switches menus.
- *
- * <Menubar.Root>
- *   <Menubar.Menu>
- *     <Menubar.Trigger>File</Menubar.Trigger>
- *     <Menubar.Content>
- *       <Menubar.Item>New</Menubar.Item>
- *       <Menubar.Separator />
- *       <Menubar.Item destructive>Delete</Menubar.Item>
- *     </Menubar.Content>
- *   </Menubar.Menu>
- *   <Menubar.Menu>…</Menubar.Menu>
- * </Menubar.Root>
- *
- * Nested: <Menubar.SubmenuRoot><Menubar.SubmenuTrigger>Export</Menubar.SubmenuTrigger>
- *   <Menubar.SubmenuContent>…</Menubar.SubmenuContent></Menubar.SubmenuRoot>
- */
+export type MenubarMenuProps = React.ComponentProps<typeof BaseMenu.Root>;
 
 export interface MenubarRootProps extends WithClassName<React.ComponentProps<typeof BaseMenubar>> {
   /**
@@ -39,6 +19,7 @@ export interface MenubarRootProps extends WithClassName<React.ComponentProps<typ
   variant?: 'contained' | 'plain';
 }
 
+/** The bar itself — a Base UI `Menubar` (roving focus across the triggers). */
 const MenubarRoot = React.forwardRef<HTMLDivElement, MenubarRootProps>(function MenubarRoot(
   { variant = 'contained', className, ...props },
   ref
@@ -68,6 +49,30 @@ const MenubarTrigger = React.forwardRef<HTMLButtonElement, MenubarTriggerProps>(
   }
 );
 
+/**
+ * Desktop-app style row of menu triggers. Base UI's Menubar wraps ordinary
+ * Menu roots, so each dropdown is a `Menu` underneath and reuses its parts.
+ * Left/Right arrows move between triggers, and hovering another trigger while
+ * one menu is open switches menus.
+ *
+ * ```tsx
+ * <Menubar.Root>
+ *   <Menubar.Menu>
+ *     <Menubar.Trigger>File</Menubar.Trigger>
+ *     <Menubar.Content>
+ *       <Menubar.Item>New</Menubar.Item>
+ *       <Menubar.SubmenuRoot>
+ *         <Menubar.SubmenuTrigger>Export</Menubar.SubmenuTrigger>
+ *         <Menubar.SubmenuContent>…</Menubar.SubmenuContent>
+ *       </Menubar.SubmenuRoot>
+ *       <Menubar.Separator />
+ *       <Menubar.Item destructive>Delete</Menubar.Item>
+ *     </Menubar.Content>
+ *   </Menubar.Menu>
+ *   <Menubar.Menu>…</Menubar.Menu>
+ * </Menubar.Root>
+ * ```
+ */
 export const Menubar = {
   Root: MenubarRoot,
   /** One dropdown in the bar — a Base UI `Menu.Root`. */
@@ -78,15 +83,14 @@ export const Menubar = {
   Separator: Menu.Separator,
   Group: Menu.Group,
   GroupLabel: Menu.GroupLabel,
-  /* Nested menus and toggles share their implementation with ContextMenu —
-     they are the same Base UI Menu parts, valid inside any Menu.Root. */
-  SubmenuRoot: ContextMenu.SubmenuRoot,
-  SubmenuTrigger: ContextMenu.SubmenuTrigger,
-  /** Popup for a `SubmenuRoot` — opens beside its trigger (Base UI's nested default). */
+  SubmenuRoot: Menu.SubmenuRoot,
+  SubmenuTrigger: Menu.SubmenuTrigger,
+  /**
+   * Popup for a `SubmenuRoot`. ContextMenu's Content sets no side/align
+   * defaults, so Base UI's nested placement (beside the trigger) applies.
+   */
   SubmenuContent: ContextMenu.Content,
-  CheckboxItem: ContextMenu.CheckboxItem,
-  RadioGroup: ContextMenu.RadioGroup,
-  RadioItem: ContextMenu.RadioItem,
+  CheckboxItem: Menu.CheckboxItem,
+  RadioGroup: Menu.RadioGroup,
+  RadioItem: Menu.RadioItem,
 };
-
-export type MenubarMenuProps = React.ComponentProps<typeof BaseMenu.Root>;

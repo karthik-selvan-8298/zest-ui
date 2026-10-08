@@ -5,6 +5,7 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './Combobox.css';
 
+/** One row of a Combobox. */
 export interface ComboboxOption {
   value: string;
   /** Plain-text label — also what the filter matches against. */
@@ -21,9 +22,13 @@ export interface ComboboxProps extends Omit<
   value?: string | null;
   defaultValue?: string | null;
   onValueChange?: (value: string | null) => void;
+  /** Input placeholder. @default 'Search…' */
   placeholder?: string;
+  /** Field size. @default 'md' */
   size?: 'sm' | 'md';
+  /** Error appearance; also sets `aria-invalid` on the input. */
   error?: boolean;
+  /** Stretch to container width. */
   fullWidth?: boolean;
   disabled?: boolean;
   required?: boolean;
@@ -63,8 +68,10 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
   },
   ref
 ) {
+  // The popup anchors to the whole input group (input + chevron), not the input.
   const groupRef = React.useRef<HTMLDivElement | null>(null);
 
+  // Zest's API speaks option values; Base UI's items are the option objects.
   const toOption = (next: string | null | undefined) =>
     next == null ? null : (options.find((option) => option.value === next) ?? null);
 
@@ -94,8 +101,10 @@ export const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(functi
           ref={ref}
           placeholder={placeholder}
           className="zest-combobox__input"
+          aria-invalid={error || undefined}
           {...inputProps}
         />
+        {/* Pointer affordance only — keyboard users open the list from the input. */}
         <BaseCombobox.Trigger
           className="zest-combobox__trigger zest-focusable"
           aria-label="Open options"

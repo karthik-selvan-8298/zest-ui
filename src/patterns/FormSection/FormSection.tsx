@@ -9,13 +9,22 @@ export interface FormSectionProps extends Omit<React.HTMLAttributes<HTMLElement>
   description?: React.ReactNode;
   /** Fields (usually a Stack of TextField/Select/etc). */
   children?: React.ReactNode;
-  /** Two-column layout on wide screens (heading left, fields right). */
+  /**
+   * `split` puts the heading left and fields right from 900px up; `stacked`
+   * always stacks them. @default 'split'
+   */
   layout?: 'stacked' | 'split';
 }
 
 /**
  * Groups related form fields under a heading — the standard settings-page
- * building block.
+ * building block. Renders a `<section>` with an `h3` title.
+ *
+ * ```tsx
+ * <FormSection title="Profile" description="How you appear across the workspace.">
+ *   <TextField label="Display name" fullWidth />
+ * </FormSection>
+ * ```
  */
 export const FormSection = React.forwardRef<HTMLElement, FormSectionProps>(function FormSection(
   { title, description, layout = 'split', className, children, ...props },

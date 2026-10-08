@@ -2,19 +2,6 @@ import * as React from 'react';
 import { cx } from '../../utils';
 import './Table.css';
 
-/*
- * Composable semantic table with Sigma styling.
- *
- * <Table.Root>
- *   <Table.Head>
- *     <Table.Row><Table.HeaderCell>Name</Table.HeaderCell>…</Table.Row>
- *   </Table.Head>
- *   <Table.Body>
- *     <Table.Row hover><Table.Cell>…</Table.Cell></Table.Row>
- *   </Table.Body>
- * </Table.Root>
- */
-
 export interface TableRootProps extends React.TableHTMLAttributes<HTMLTableElement> {
   /** Compact row height. */
   dense?: boolean;
@@ -30,6 +17,7 @@ export interface TableRootProps extends React.TableHTMLAttributes<HTMLTableEleme
   stackOnMobile?: boolean;
 }
 
+/** The `<table>`; the ref targets the table even when `scrollable` adds a wrapper. */
 const TableRoot = React.forwardRef<HTMLTableElement, TableRootProps>(function TableRoot(
   { dense, striped, scrollable = true, stackOnMobile, className, ...props },
   ref
@@ -86,6 +74,7 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(function T
 });
 
 export interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
+  /** Text alignment; merged under any `style.textAlign` the caller passes. */
   align?: 'left' | 'center' | 'right';
   /** Column name shown before the value in the mobile stacked view. */
   label?: string;
@@ -113,11 +102,13 @@ const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(functio
 });
 
 export interface TableHeaderCellProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
+  /** Text alignment; merged under any `style.textAlign` the caller passes. */
   align?: 'left' | 'center' | 'right';
   /** Hides this header (and its column) under 600px. */
   hideOnMobile?: boolean;
 }
 
+/** Column header `<th>`; `scope` defaults to `"col"`. */
 const TableHeaderCell = React.forwardRef<HTMLTableCellElement, TableHeaderCellProps>(
   function TableHeaderCell({ align, hideOnMobile, className, scope, style, ...props }, ref) {
     const mergedStyle = align ? { textAlign: align, ...style } : style;
@@ -134,6 +125,21 @@ const TableHeaderCell = React.forwardRef<HTMLTableCellElement, TableHeaderCellPr
   }
 );
 
+/**
+ * Composable semantic table with Sigma styling. For sorting, selection and
+ * pagination use `DataGrid`, which is built on these parts.
+ *
+ * ```tsx
+ * <Table.Root>
+ *   <Table.Head>
+ *     <Table.Row><Table.HeaderCell>Name</Table.HeaderCell>…</Table.Row>
+ *   </Table.Head>
+ *   <Table.Body>
+ *     <Table.Row hover><Table.Cell>…</Table.Cell></Table.Row>
+ *   </Table.Body>
+ * </Table.Root>
+ * ```
+ */
 export const Table = {
   Root: TableRoot,
   Head: TableHead,

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 export type ZestColor =
   'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'neutral';
 
+/** Control size scale shared by buttons, toggles and fields. */
 export type ZestSize = 'sm' | 'md' | 'lg';
 
 /**

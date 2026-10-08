@@ -9,15 +9,6 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './PreviewCard.css';
 
-/*
- * Hover card for link previews and user cards on Base UI Preview Card.
- *
- * <PreviewCard.Root>
- *   <PreviewCard.Trigger href="/users/ada">@ada</PreviewCard.Trigger>
- *   <PreviewCard.Content side="bottom" arrow>…</PreviewCard.Content>
- * </PreviewCard.Root>
- */
-
 interface PreviewCardTiming {
   /** Delay in ms before the card opens on hover. Defaults to 600. */
   delay?: number;
@@ -25,6 +16,7 @@ interface PreviewCardTiming {
   closeDelay?: number;
 }
 
+/** Root-level timing defaults, read by every Trigger inside the Root. */
 const TimingContext = React.createContext<PreviewCardTiming>({});
 
 export interface PreviewCardRootProps extends BasePreviewCardRootProps, PreviewCardTiming {}
@@ -66,7 +58,9 @@ const PreviewCardTrigger = React.forwardRef<HTMLAnchorElement, PreviewCardTrigge
 export interface PreviewCardContentProps extends WithClassName<
   React.ComponentProps<typeof BasePreviewCard.Popup>
 > {
+  /** Side of the trigger the card is placed on. @default 'bottom' */
   side?: 'top' | 'bottom' | 'left' | 'right';
+  /** Alignment along the chosen side. @default 'center' */
   align?: 'start' | 'center' | 'end';
   /** Gap between the anchor and the card, in px. Defaults to 8. */
   sideOffset?: number;
@@ -117,6 +111,16 @@ const PreviewCardContent = React.forwardRef<HTMLDivElement, PreviewCardContentPr
   }
 );
 
+/**
+ * Hover card for link previews and user cards on Base UI Preview Card.
+ *
+ * ```tsx
+ * <PreviewCard.Root delay={400}>
+ *   <PreviewCard.Trigger href="/users/ada">@ada</PreviewCard.Trigger>
+ *   <PreviewCard.Content side="bottom" arrow>…</PreviewCard.Content>
+ * </PreviewCard.Root>
+ * ```
+ */
 export const PreviewCard = {
   Root: PreviewCardRoot,
   Trigger: PreviewCardTrigger,

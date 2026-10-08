@@ -9,15 +9,25 @@ import './Checkbox.css';
 export interface CheckboxProps extends WithClassName<
   Omit<React.ComponentProps<typeof BaseCheckbox.Root>, 'color'>
 > {
-  /** Visible label rendered next to the box. */
+  /**
+   * Visible label rendered next to the box. When set, the control is wrapped
+   * in a `<label>` and `className` moves to that wrapper.
+   */
   label?: React.ReactNode;
+  /** Fill tone when checked/indeterminate. Defaults to `primary`. */
   color?: ZestColor;
+  /** Box size (16px / 20px). Defaults to `md`. */
   size?: 'sm' | 'md';
 }
 
 /**
  * Checkbox on Base UI — supports checked/unchecked/indeterminate, keyboard
  * interaction, and form integration.
+ *
+ * ```tsx
+ * <Checkbox label="Email me updates" defaultChecked />
+ * <Checkbox aria-label="Select all" indeterminate />
+ * ```
  */
 export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(function Checkbox(
   { label, color = 'primary', size = 'md', className, ...props },
@@ -31,6 +41,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(funct
       data-size={size}
       {...props}
     >
+      {/* Kept mounted so the check/dash can fade via CSS instead of popping in. */}
       <BaseCheckbox.Indicator className="zest-checkbox__indicator" keepMounted>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5">
           <path
@@ -56,7 +67,16 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(funct
 
 export type CheckboxGroupProps = WithClassName<React.ComponentProps<typeof BaseCheckboxGroup>>;
 
-/** Groups checkboxes sharing a `value` array (Base UI CheckboxGroup). */
+/**
+ * Groups checkboxes sharing a `value` array (Base UI CheckboxGroup).
+ *
+ * ```tsx
+ * <CheckboxGroup aria-label="Toppings" defaultValue={['cheese']}>
+ *   <Checkbox value="cheese" label="Cheese" />
+ *   <Checkbox value="olives" label="Olives" />
+ * </CheckboxGroup>
+ * ```
+ */
 export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps>(
   function CheckboxGroup({ className, ...props }, ref) {
     return (

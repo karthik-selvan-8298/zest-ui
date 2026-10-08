@@ -1,10 +1,22 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { createEvent, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FileUpload, formatBytes } from './FileUpload';
 
-function makeFile(name: string, size: number): File {
-  return new File(['x'.repeat(size)], name, { type: 'text/plain' });
+function makeFile(name: string, size: number, type = 'text/plain'): File {
+  return new File(['x'.repeat(size)], name, { type });
+}
+
+/* jsdom ignores `relatedTarget` in DragEvent init, so set it explicitly. */
+function dragLeave(element: HTMLElement, relatedTarget: EventTarget) {
+  const event = createEvent.dragLeave(element);
+  Object.defineProperty(event, 'relatedTarget', { value: relatedTarget });
+  fireEvent(element, event);
+}
+
+function dropFiles(files: File[]) {
+  const dropzone = screen.getByRole('button', { name: /drop files/i });
+  fireEvent.drop(dropzone, { dataTransfer: { files } });
 }
 
 describe('FileUpload', () => {
@@ -42,6 +54,37 @@ describe('FileUpload', () => {
     await userEvent.upload(input, makeFile('new.txt', 5));
     expect(screen.queryByText('old.txt')).not.toBeInTheDocument();
     expect(screen.getByText('new.txt')).toBeInTheDocument();
+  });
+
+  it('rejects dropped files that do not match accept', () => {
+    const onReject = vi.fn();
+    const onValueChange = vi.fn();
+    render(
+      <FileUpload
+        accept="image/*,.pdf"
+        multiple
+        onReject={onReject}
+        onValueChange={onValueChange}
+      />
+    );
+    const png = makeFile('photo.png', 5, 'image/png');
+    const pdf = makeFile('doc.PDF', 5, 'application/pdf');
+    const txt = makeFile('notes.txt', 5);
+    dropFiles([png, pdf, txt]);
+    expect(onReject).toHaveBeenCalledWith([txt]);
+    expect(onValueChange).toHaveBeenCalledWith([png, pdf]);
+  });
+
+  it('keeps the drag highlight while moving over child elements', () => {
+    render(<FileUpload />);
+    const dropzone = screen.getByRole('button', { name: /drop files/i });
+    const child = dropzone.querySelector('.zest-file-upload__label') as HTMLElement;
+    fireEvent.dragOver(dropzone);
+    expect(dropzone).toHaveAttribute('data-dragging');
+    dragLeave(dropzone, child);
+    expect(dropzone).toHaveAttribute('data-dragging');
+    dragLeave(dropzone, document.body);
+    expect(dropzone).not.toHaveAttribute('data-dragging');
   });
 
   it('formats byte sizes', () => {

@@ -143,6 +143,26 @@ describe('DataGrid', () => {
     expect(screen.getByText('5–5 of 5')).toBeInTheDocument();
   });
 
+  it('clamps to the last page when rows shrink below the current page', async () => {
+    const { container, rerender } = render(
+      <DataGrid columns={columns} rows={fruits} getRowId={getRowId} pageSize={2} />
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Go to page 3' }));
+    expect(bodyRowTexts(container)).toEqual(['Elderberry']);
+
+    rerender(
+      <DataGrid columns={columns} rows={fruits.slice(0, 3)} getRowId={getRowId} pageSize={2} />
+    );
+    expect(bodyRowTexts(container)).toEqual(['Cherry']);
+    expect(screen.getByText('3–3 of 3')).toBeInTheDocument();
+  });
+
+  it('derives sortable columns from the first row when columns are omitted', () => {
+    render(<DataGrid rows={[{ id: 'a', first_name: 'Ada' }]} getRowId={(row) => row.id} />);
+    const header = screen.getByRole('columnheader', { name: 'First name' });
+    expect(within(header).getByRole('button')).toBeInTheDocument();
+  });
+
   it('shows the default empty state when there are no rows', () => {
     render(<DataGrid columns={columns} rows={[]} getRowId={getRowId} />);
     expect(screen.getByText('No data')).toBeInTheDocument();

@@ -13,6 +13,7 @@ export interface TimePickerProps extends Omit<
   value?: string | null;
   /** Initially selected time (uncontrolled). */
   defaultValue?: string | null;
+  /** Fired with the picked "HH:mm" value. */
   onValueChange?: (value: string | null) => void;
   /** Minutes between generated options. Defaults to 30. */
   step?: number;
@@ -20,24 +21,30 @@ export interface TimePickerProps extends Omit<
   minTime?: string;
   /** Latest selectable time, "HH:mm" inclusive. */
   maxTime?: string;
+  /** Shown while no time is selected. */
   placeholder?: React.ReactNode;
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
+  /** Error styling (pair with FormField for the message). */
   error?: boolean;
+  /** Stretch to the container width. */
   fullWidth?: boolean;
   disabled?: boolean;
   /** 12-hour clock display. Defaults to the locale's convention. */
   hour12?: boolean;
   /** BCP 47 locale for time formatting. Defaults to the browser locale. */
   locale?: string;
+  /** Form field name; submits the "HH:mm" value. */
   name?: string;
 }
 
+/** "HH:mm" → minutes since midnight. */
 function parseTime(time: string): number {
   const [hours = 0, minutes = 0] = time.split(':').map(Number);
   return hours * 60 + minutes;
 }
 
+/** Minutes since midnight → zero-padded "HH:mm". */
 function toTimeValue(totalMinutes: number): string {
   const hours = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
   const minutes = String(totalMinutes % 60).padStart(2, '0');

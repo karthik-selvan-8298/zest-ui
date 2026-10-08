@@ -5,23 +5,6 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './Fieldset.css';
 
-/*
- * Fieldset — groups related fields under a legend on Base UI Fieldset.
- *
- * <Fieldset legend="Billing address" description="Where we send invoices.">
- *   <TextField label="Street" />
- *   <TextField label="City" />
- * </Fieldset>
- *
- * or composed:
- *
- * <Fieldset.Root>
- *   <Fieldset.Legend>Notifications</Fieldset.Legend>
- *   <Fieldset.Description>Choose what we email you about.</Fieldset.Description>
- *   …
- * </Fieldset.Root>
- */
-
 export type FieldsetLegendProps = WithClassName<React.ComponentProps<typeof BaseFieldset.Legend>>;
 
 /** Legend styled like Typography `subtitle2`; auto-associated with the fieldset. */
@@ -75,6 +58,8 @@ const FieldsetRoot = React.forwardRef<HTMLFieldSetElement, FieldsetProps>(functi
   },
   ref
 ) {
+  // Only the convenience `description` is auto-wired; a composed
+  // Fieldset.Description needs an explicit id + aria-describedby.
   const descriptionId = React.useId();
   const hasHeader = Boolean(legend || description);
 
@@ -100,8 +85,21 @@ const FieldsetRoot = React.forwardRef<HTMLFieldSetElement, FieldsetProps>(functi
 });
 
 /**
- * Callable as `<Fieldset legend="…">` or composed via `Fieldset.Root` /
- * `Fieldset.Legend` / `Fieldset.Description`.
+ * Fieldset — groups related fields under a legend on Base UI Fieldset.
+ * Callable directly with the convenience props, or composed from its parts.
+ *
+ * ```tsx
+ * <Fieldset legend="Billing address" description="Where we send invoices.">
+ *   <TextField label="Street" />
+ *   <TextField label="City" />
+ * </Fieldset>
+ *
+ * <Fieldset.Root>
+ *   <Fieldset.Legend>Notifications</Fieldset.Legend>
+ *   <Fieldset.Description>Choose what we email you about.</Fieldset.Description>
+ *   …
+ * </Fieldset.Root>
+ * ```
  */
 export const Fieldset = Object.assign(FieldsetRoot, {
   Root: FieldsetRoot,

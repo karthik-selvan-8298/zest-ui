@@ -15,7 +15,20 @@ export interface DetailHeaderProps extends Omit<React.HTMLAttributes<HTMLElement
   media?: React.ReactNode;
 }
 
-/** Standard page/detail header with breadcrumbs, title, and actions. */
+/**
+ * Standard page/detail header: optional breadcrumbs above an `h1` title row
+ * with leading media and end-aligned actions (which wrap under the title on
+ * narrow screens).
+ *
+ * ```tsx
+ * <DetailHeader
+ *   breadcrumbs={<Breadcrumbs …/>}
+ *   title="Payments service"
+ *   subtitle="Last deployed 2 hours ago"
+ *   actions={<Button>Deploy</Button>}
+ * />
+ * ```
+ */
 export const DetailHeader = React.forwardRef<HTMLElement, DetailHeaderProps>(function DetailHeader(
   { title, subtitle, breadcrumbs, actions, media, className, ...props },
   ref

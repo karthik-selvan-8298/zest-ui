@@ -32,6 +32,7 @@ export interface CalendarProps extends Omit<
   month?: Date;
   /** Initially displayed month (uncontrolled). */
   defaultMonth?: Date;
+  /** Fired with the 1st of the newly displayed month. */
   onMonthChange?: (month: Date) => void;
   /** Days before this are disabled. */
   minDate?: Date;
@@ -48,7 +49,9 @@ export interface CalendarProps extends Omit<
    * calendar highlights `rangeStart`/`rangeEnd` as endpoints instead of
    * `value`; clicks still arrive through `onValueChange`.
    */
+  /** Range start (range mode). */
   rangeStart?: Date | null;
+  /** Range end (range mode). */
   rangeEnd?: Date | null;
   /** Hovered candidate for the range end — days in between get a soft tint. */
   rangeHover?: Date | null;
@@ -57,8 +60,10 @@ export interface CalendarProps extends Omit<
 }
 
 const WEEK_LENGTH = 7;
+/** Always six weeks so the calendar keeps a fixed height across months. */
 const GRID_ROWS = 6;
 
+/** Local-time "YYYY-MM-DD" — a stable key and focus-lookup id per day. */
 function toISODay(date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -66,8 +71,9 @@ function toISODay(date: Date): string {
 }
 
 /**
- * Month-grid calendar. Fully keyboard operable: arrows move the focused day,
- * PageUp/PageDown change month, Enter/Space select (roving tabindex).
+ * Month-grid calendar (Sunday-first). Fully keyboard operable: arrows move
+ * the focused day, PageUp/PageDown change month, Enter/Space select (roving
+ * tabindex).
  *
  * ```tsx
  * <Calendar defaultValue={new Date()} minDate={new Date()} />
@@ -126,6 +132,9 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(function
   const pendingFocus = React.useRef(false);
   const gridRef = React.useRef<HTMLDivElement | null>(null);
 
+  // Keyboard moves can change the month, so the target button may not exist
+  // until after the next commit — focus it then. Runs after every render but
+  // is a no-op unless a keyboard move is pending.
   React.useEffect(() => {
     if (!pendingFocus.current) return;
     pendingFocus.current = false;

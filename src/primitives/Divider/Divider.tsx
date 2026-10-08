@@ -3,6 +3,7 @@ import { cx } from '../../utils';
 import './Divider.css';
 
 export interface DividerProps extends React.HTMLAttributes<HTMLElement> {
+  /** Rule direction; vertical rules stretch to the flex row's height. @default 'horizontal' */
   orientation?: 'horizontal' | 'vertical';
   /** Dashed rule, as used by Sigma card sections. */
   variant?: 'solid' | 'dashed';

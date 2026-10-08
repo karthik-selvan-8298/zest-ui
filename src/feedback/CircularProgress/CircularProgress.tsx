@@ -14,6 +14,7 @@ interface CircularProgressBaseProps extends Omit<
   size?: number;
   /** Stroke width in px. @default 3.6 */
   thickness?: number;
+  /** Tone of the arc. @default 'primary' */
   color?: ZestColor;
 }
 

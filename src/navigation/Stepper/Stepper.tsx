@@ -4,20 +4,6 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './Stepper.css';
 
-/*
- * Stepper — process steps indicator.
- *
- * <Stepper.Root activeStep={1}>
- *   <Stepper.Step label="Account" />
- *   <Stepper.Step label="Shipping" description="Where should we deliver?" />
- *   <Stepper.Step label="Payment" />
- * </Stepper.Root>
- *
- * Steps are index-based: everything before `activeStep` is completed,
- * everything after is upcoming. Passing `onStepClick` turns completed steps
- * into buttons so users can navigate back.
- */
-
 export type StepperOrientation = 'horizontal' | 'vertical';
 
 /** Step shape accepted by the `steps` array alternative to children. */
@@ -33,6 +19,7 @@ interface StepperContextValue {
   onStepClick?: (index: number) => void;
 }
 
+/** Root-level state every step reads. */
 const StepperContext = React.createContext<StepperContextValue | null>(null);
 
 interface StepPositionContextValue {
@@ -40,6 +27,7 @@ interface StepPositionContextValue {
   isLast: boolean;
 }
 
+/** Per-step position, injected by Root so steps need no `index` prop. */
 const StepPositionContext = React.createContext<StepPositionContextValue | null>(null);
 
 export interface StepperRootProps extends React.OlHTMLAttributes<HTMLOListElement> {
@@ -141,6 +129,21 @@ const StepperStep = React.forwardRef<HTMLLIElement, StepperStepProps>(function S
   );
 });
 
+/**
+ * Process steps indicator. Steps are index-based: everything before
+ * `activeStep` is completed, everything after is upcoming. Passing
+ * `onStepClick` turns completed steps into buttons so users can navigate back.
+ *
+ * ```tsx
+ * <Stepper.Root activeStep={1}>
+ *   <Stepper.Step label="Account" />
+ *   <Stepper.Step label="Shipping" description="Where should we deliver?" />
+ *   <Stepper.Step label="Payment" />
+ * </Stepper.Root>
+ *
+ * <Stepper.Root activeStep={step} steps={[{ label: 'Account' }, { label: 'Payment' }]} />
+ * ```
+ */
 export const Stepper = {
   Root: StepperRoot,
   Step: StepperStep,

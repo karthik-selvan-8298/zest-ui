@@ -3,15 +3,17 @@ import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { cx } from '../../utils';
 import './Tooltip.css';
 
+/** Remaining HTML attributes are forwarded to the tooltip popup. */
 export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Tooltip text. */
   title: React.ReactNode;
   /** The element the tooltip describes. */
   children: React.ReactElement;
+  /** Side of the anchor the tooltip is placed on. @default 'top' */
   side?: 'top' | 'bottom' | 'left' | 'right';
-  /** Delay in ms before opening on hover. */
+  /** Delay in ms before opening on hover. @default 300 */
   delay?: number;
-  /** Show an arrow pointing at the anchor. */
+  /** Show an arrow pointing at the anchor. @default true */
   arrow?: boolean;
 }
 

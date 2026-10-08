@@ -12,6 +12,10 @@ export interface UseControllableStateOptions<T> {
 /**
  * Standard controlled/uncontrolled state helper.
  * Used by Zest components that don't delegate state to Base UI.
+ *
+ * ```ts
+ * const [value, setValue] = useControllableState({ value, defaultValue: '', onChange });
+ * ```
  */
 export function useControllableState<T>({
   value,
@@ -22,6 +26,9 @@ export function useControllableState<T>({
   const isControlled = value !== undefined;
   const current = isControlled ? (value as T) : internal;
 
+  // Latest-callback ref: keeps `setValue` stable across renders even when the
+  // consumer passes an inline `onChange`. Insertion effects run before layout
+  // effects, so the ref is current before any child effect can call setValue.
   const onChangeRef = React.useRef(onChange);
   React.useInsertionEffect(() => {
     onChangeRef.current = onChange;

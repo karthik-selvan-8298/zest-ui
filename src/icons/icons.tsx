@@ -55,7 +55,7 @@ function zestify(name: string, Lucide: LucideIcon) {
     return (
       <Lucide
         ref={ref}
-        size={size as number | string}
+        size={size}
         strokeWidth={2.2}
         aria-hidden={title ? undefined : true}
         role={title ? 'img' : undefined}

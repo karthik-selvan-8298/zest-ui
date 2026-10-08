@@ -8,12 +8,16 @@ export interface LinkOwnProps {
   external?: boolean;
   /**
    * Underline treatment. Defaults to `hover` — no underline at rest, text
-   * darkens two rungs on the primary ramp on hover (500 → 900). Sigma
+   * darkens one rung on the primary ramp on hover (500 → 700). Sigma
    * "clickable text" language. `underline-hover` adds the classic hover
    * underline on top; `always` keeps a permanent underline; `none` removes
    * all underline states. Color always darkens on hover regardless of prop.
    */
   underline?: 'always' | 'hover' | 'underline-hover' | 'none';
+  /**
+   * `primary` uses the brand link color; `inherit` takes the surrounding text color.
+   * @default 'primary'
+   */
   color?: 'primary' | 'inherit';
   className?: string;
   children?: React.ReactNode;

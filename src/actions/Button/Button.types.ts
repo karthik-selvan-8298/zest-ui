@@ -1,15 +1,11 @@
 import type * as React from 'react';
 import type { ZestColor, ZestSize } from '../../types';
 
-export type ButtonVariant =
-  | 'solid'
-  | 'outlined'
-  | 'ghost'
-  | 'soft'
-  /** Convenience alias: solid + color="primary". */
-  | 'primary'
-  /** Convenience alias: solid + color="error". */
-  | 'danger';
+/**
+ * Visual style. `primary` and `danger` are convenience aliases for `solid`
+ * with `color="primary"` / `color="error"` (an explicit `color` still wins).
+ */
+export type ButtonVariant = 'solid' | 'outlined' | 'ghost' | 'soft' | 'primary' | 'danger';
 
 export interface ButtonOwnProps {
   /** Visual style. Defaults to `solid`. */
@@ -20,6 +16,7 @@ export interface ButtonOwnProps {
   size?: ZestSize;
   /** Shows a spinner and disables interaction while preserving width. */
   loading?: boolean;
+  /** Disables the control. Disabled `href`/`as` buttons render a native `<button disabled>`. */
   disabled?: boolean;
   /** Icon before the label. */
   startIcon?: React.ReactNode;

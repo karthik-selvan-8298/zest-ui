@@ -9,6 +9,14 @@ export interface ZestIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'chil
 
 /**
  * Factory for Zest icons: 24×24 viewBox, stroke-based, inherits `currentColor`.
+ * Use it to add product icons that match the built-in set.
+ *
+ * ```tsx
+ * export const BellIcon = createZestIcon(
+ *   'BellIcon',
+ *   <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+ * );
+ * ```
  */
 export function createZestIcon(name: string, path: React.ReactNode) {
   const Icon = React.forwardRef<SVGSVGElement, ZestIconProps>(function Icon(

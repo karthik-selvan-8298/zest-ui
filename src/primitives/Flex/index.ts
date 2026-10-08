@@ -1,1 +1,1 @@
-export { Flex, type FlexProps, type FlexOwnProps } from './Flex';
+export { Flex, type FlexProps, type FlexOwnProps, type FlexAlign, type FlexJustify } from './Flex';

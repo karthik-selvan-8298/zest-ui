@@ -19,6 +19,9 @@ import './Toast.css';
  * 1. Wrap the app once:      <ZestToastProvider>…<Toaster /></ZestToastProvider>
  * 2. Fire from anywhere:     const toast = useToast();
  *                            toast.add({ title: 'Saved', severity: 'success' });
+ *
+ * Auto-dismiss timers, pause-on-hover, swipe, and live-region announcements
+ * are owned by the Base UI toast manager.
  */
 
 export type ToastSeverity = 'info' | 'success' | 'warning' | 'error';
@@ -30,6 +33,7 @@ const severityIcons: Record<ToastSeverity, React.ReactNode> = {
   error: <ErrorCircleIcon />,
 };
 
+/** Narrows Base UI's free-form `toast.type` back to a Zest severity. */
 function isSeverity(type: string | undefined): type is ToastSeverity {
   return type === 'info' || type === 'success' || type === 'warning' || type === 'error';
 }
@@ -47,6 +51,7 @@ export interface ToasterProps extends WithClassName<
   position?: ToasterPosition;
 }
 
+/** Renders every toast in the manager's stack. */
 function ToastList() {
   const { toasts } = BaseToast.useToastManager();
   return (
@@ -109,25 +114,35 @@ export const Toaster = React.forwardRef<HTMLDivElement, ToasterProps>(function T
 export interface ToastOptions {
   /** Bold first line. */
   title?: React.ReactNode;
+  /** Secondary text under the title. */
   description?: React.ReactNode;
+  /** Tone and leading icon; omit for a plain toast. */
   severity?: ToastSeverity;
   /** Action button rendered under the description. */
   action?: {
     label: React.ReactNode;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
   };
-  /** Auto-dismiss delay in ms; `0` keeps the toast until closed. */
+  /**
+   * Auto-dismiss delay in ms; `0` keeps the toast until closed. Defaults to
+   * the provider's `timeout` (5000).
+   */
   timeout?: number;
 }
 
+/** A promise-stage message: a plain title string or full toast options. */
 type ToastPromiseMessage = string | ToastOptions;
 
 export interface ToastPromiseOptions<Value> {
+  /** Shown while the promise is pending. */
   loading: ToastPromiseMessage;
+  /** Shown on resolve; may derive the message from the result. */
   success: ToastPromiseMessage | ((result: Value) => ToastPromiseMessage);
+  /** Shown on reject; may derive the message from the error. */
   error: ToastPromiseMessage | ((error: unknown) => ToastPromiseMessage);
 }
 
+/** Maps the Zest options shape onto Base UI's toast-manager options. */
 function toManagerOptions({ severity, action, ...rest }: ToastOptions) {
   return {
     ...rest,
@@ -138,7 +153,18 @@ function toManagerOptions({ severity, action, ...rest }: ToastOptions) {
 
 function normalize(message: ToastPromiseMessage, fallbackSeverity?: ToastSeverity) {
   const options = typeof message === 'string' ? { title: message } : message;
-  return toManagerOptions({ severity: fallbackSeverity, ...options });
+  // `??` (not spread order) so an explicit `severity: undefined` still falls back.
+  return toManagerOptions({ ...options, severity: options.severity ?? fallbackSeverity });
+}
+
+/** Resolves a static or result-derived promise-stage message. */
+function stage<Arg>(
+  message: ToastPromiseMessage | ((arg: Arg) => ToastPromiseMessage),
+  fallbackSeverity: ToastSeverity
+) {
+  return typeof message === 'function'
+    ? (arg: Arg) => normalize(message(arg), fallbackSeverity)
+    : normalize(message, fallbackSeverity);
 }
 
 export interface UseToastReturnValue {
@@ -153,31 +179,31 @@ export interface UseToastReturnValue {
   close: (toastId?: string) => void;
 }
 
-/** Imperative toast API. Must be called under `ZestToastProvider`. */
+/**
+ * Imperative toast API. Must be called under `ZestToastProvider`.
+ *
+ * ```tsx
+ * const toast = useToast();
+ * toast.add({ title: 'Saved', severity: 'success' });
+ * toast.promise(save(), { loading: 'Saving…', success: 'Saved', error: 'Save failed' });
+ * ```
+ */
 export function useToast(): UseToastReturnValue {
-  const manager = BaseToast.useToastManager();
+  // Depend on the manager's methods, not the manager object: Base UI rebuilds
+  // that object whenever the toast list changes, which would give `useToast()`
+  // a new identity after every `add` (and loop effects that list it as a dep).
+  const { add, close, promise } = BaseToast.useToastManager();
   return React.useMemo(
     () => ({
-      add: (options: ToastOptions) => manager.add(toManagerOptions(options)),
-      promise: <Value,>(promise: Promise<Value>, options: ToastPromiseOptions<Value>) =>
-        manager.promise(promise, {
+      add: (options: ToastOptions) => add(toManagerOptions(options)),
+      promise: <Value,>(tracked: Promise<Value>, options: ToastPromiseOptions<Value>) =>
+        promise(tracked, {
           loading: normalize(options.loading),
-          success:
-            typeof options.success === 'function'
-              ? (result: Value) =>
-                  normalize(
-                    (options.success as (r: Value) => ToastPromiseMessage)(result),
-                    'success'
-                  )
-              : normalize(options.success, 'success'),
-          error:
-            typeof options.error === 'function'
-              ? (error: unknown) =>
-                  normalize((options.error as (e: unknown) => ToastPromiseMessage)(error), 'error')
-              : normalize(options.error, 'error'),
+          success: stage(options.success, 'success'),
+          error: stage(options.error, 'error'),
         }),
-      close: (toastId?: string) => manager.close(toastId),
+      close: (toastId?: string) => close(toastId),
     }),
-    [manager]
+    [add, close, promise]
   );
 }

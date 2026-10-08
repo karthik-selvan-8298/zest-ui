@@ -11,12 +11,14 @@ export interface NumberInputProps extends WithClassName<
 > {
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
-  /** Error appearance. */
+  /** Error appearance; also sets `aria-invalid` on the inner input. */
   error?: boolean;
   /** Stretch to container width. */
   fullWidth?: boolean;
   /** Placeholder forwarded to the inner input. */
   placeholder?: string;
+  /** Accessible name, forwarded to the inner input (the Root is a plain group). */
+  'aria-label'?: string;
 }
 
 /**
@@ -59,6 +61,7 @@ export const NumberInput = React.forwardRef<HTMLDivElement, NumberInputProps>(
             className="zest-number-input__control"
             placeholder={placeholder}
             aria-label={ariaLabel}
+            aria-invalid={error || undefined}
           />
           <BaseNumberField.Increment
             className="zest-number-input__step zest-focusable"

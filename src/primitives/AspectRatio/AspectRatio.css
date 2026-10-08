@@ -1,0 +1,4 @@
+/* The ratio itself is set inline from the `ratio` prop. */
+.zest-aspect-ratio {
+  overflow: hidden;
+}

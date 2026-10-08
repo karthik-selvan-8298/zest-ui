@@ -9,11 +9,28 @@ import './Radio.css';
 export interface RadioProps extends WithClassName<
   Omit<React.ComponentProps<typeof BaseRadio.Root>, 'color'>
 > {
+  /**
+   * Visible label rendered next to the circle. When set, the control is
+   * wrapped in a `<label>` and `className` moves to that wrapper.
+   */
   label?: React.ReactNode;
+  /** Ring and dot tone when checked. Defaults to `primary`. */
   color?: ZestColor;
+  /** Circle size (16px / 20px). Defaults to `md`. */
   size?: 'sm' | 'md';
 }
 
+/**
+ * Single radio option on Base UI Radio. Must be placed inside a `RadioGroup`,
+ * which owns the selected value.
+ *
+ * ```tsx
+ * <RadioGroup aria-label="Plan" defaultValue="pro">
+ *   <Radio value="free" label="Free" />
+ *   <Radio value="pro" label="Pro" />
+ * </RadioGroup>
+ * ```
+ */
 export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(function Radio(
   { label, color = 'primary', size = 'md', className, ...props },
   ref
@@ -26,6 +43,7 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(function Ra
       data-size={size}
       {...props}
     >
+      {/* Kept mounted so the dot can scale in/out via CSS. */}
       <BaseRadio.Indicator className="zest-radio__indicator" keepMounted />
     </BaseRadio.Root>
   );
@@ -42,6 +60,7 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(function Ra
 export interface RadioGroupProps extends WithClassName<
   React.ComponentProps<typeof BaseRadioGroup>
 > {
+  /** Stack options vertically (default) or lay them out in a wrapping row. */
   orientation?: 'vertical' | 'horizontal';
 }
 

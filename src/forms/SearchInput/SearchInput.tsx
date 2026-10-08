@@ -9,6 +9,7 @@ export interface SearchInputProps extends Omit<
   InputProps,
   'type' | 'startAdornment' | 'endAdornment' | 'startIcon' | 'endIcon' | 'value' | 'onChange'
 > {
+  /** The search text. Use when controlled. */
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -16,7 +17,14 @@ export interface SearchInputProps extends Omit<
   disableClear?: boolean;
 }
 
-/** Search input with a leading search icon and a clear button. */
+/**
+ * Search input with a leading search icon and a clear button that appears
+ * once there is text.
+ *
+ * ```tsx
+ * <SearchInput aria-label="Search members" value={query} onValueChange={setQuery} />
+ * ```
+ */
 export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
   function SearchInput(
     { value: valueProp, defaultValue = '', onValueChange, disableClear, ...props },
@@ -27,9 +35,14 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
       defaultValue,
       onChange: onValueChange,
     });
+    // Owned locally (and exposed as the forwarded ref) so clearing can
+    // return focus to the input — the clear button unmounts once empty.
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+
     return (
       <Input
-        ref={ref}
+        ref={inputRef}
         type="search"
         role="searchbox"
         value={value}
@@ -42,7 +55,10 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
               size="sm"
               variant="ghost"
               color="neutral"
-              onClick={() => setValue('')}
+              onClick={() => {
+                setValue('');
+                inputRef.current?.focus();
+              }}
             >
               <CloseIcon />
             </IconButton>
