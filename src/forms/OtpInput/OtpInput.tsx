@@ -29,7 +29,10 @@ export interface OtpInputProps extends WithClassName<
   mask?: boolean;
   /** Cell size — matches the Input field heights. Defaults to `md`. */
   size?: 'sm' | 'md';
-  /** Error appearance (also set automatically inside an invalid FormField). */
+  /**
+   * Error appearance; also sets `aria-invalid` on every cell. An invalid
+   * surrounding FormField applies the same styling automatically.
+   */
   error?: boolean;
   disabled?: boolean;
   /** Focus the first cell on mount. */
@@ -72,6 +75,7 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(function
   },
   ref
 ) {
+  // Index of the cell the separator follows (the middle), or -1 for none.
   const separatorAfter = separator != null && length > 1 ? Math.floor(length / 2) - 1 : -1;
 
   return (
@@ -94,6 +98,7 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(function
           <OTPField.Input
             className="zest-otp-input__cell"
             autoFocus={index === 0 ? autoFocus : undefined}
+            aria-invalid={error || undefined}
             // The first cell inherits the field label (FormField / <label>);
             // the rest announce their position.
             aria-label={index === 0 ? undefined : `Character ${index + 1} of ${length}`}

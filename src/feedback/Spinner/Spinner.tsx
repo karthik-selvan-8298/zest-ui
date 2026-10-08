@@ -15,7 +15,9 @@ export interface SpinnerProps extends Omit<React.HTMLAttributes<HTMLSpanElement>
 
 /**
  * Small indeterminate spinner for inline use (buttons, empty states).
- * Inherits the surrounding text color by default.
+ * Inherits the surrounding text color by default. It has no implicit role:
+ * standalone, pass `role="status"` plus an `aria-label`, or use
+ * CircularProgress for a labelled `progressbar`.
  *
  * ```tsx
  * <Spinner size="sm" />

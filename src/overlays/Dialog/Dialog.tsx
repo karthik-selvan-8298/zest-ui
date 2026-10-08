@@ -7,19 +7,6 @@ import { IconButton } from '../../actions/IconButton/IconButton';
 import '../../base.css';
 import './Dialog.css';
 
-/*
- * Composable dialog on Base UI — focus trapping, dismissal, and aria wiring
- * come from the primitive.
- *
- * <Dialog.Root>
- *   <Dialog.Trigger render={<Button>Open</Button>} />
- *   <Dialog.Content title="Settings" description="Manage your preferences">
- *     …body…
- *     <Dialog.Footer><Button>Save</Button></Dialog.Footer>
- *   </Dialog.Content>
- * </Dialog.Root>
- */
-
 export interface DialogContentProps extends WithClassName<
   Omit<React.ComponentProps<typeof BaseDialog.Popup>, 'title'>
 > {
@@ -34,6 +21,11 @@ export interface DialogContentProps extends WithClassName<
   children?: React.ReactNode;
 }
 
+/**
+ * Portal + backdrop + popup. Renders a header from `title`/`description`
+ * (plus the corner close button), wraps loose children in a scrollable body,
+ * and pins any direct `Dialog.Footer` child below it.
+ */
 const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
   { title, description, size = 'md', hideClose = false, className, children, ...props },
   ref
@@ -61,7 +53,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(funct
         data-size={size}
         {...props}
       >
-        {title || !hideClose ? (
+        {title || description || !hideClose ? (
           <header className="zest-dialog__header">
             <div className="zest-dialog__heading">
               {title ? (
@@ -91,6 +83,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(funct
   );
 });
 
+/** Right-aligned action row, pinned below the scrollable body. */
 const DialogFooter = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   function DialogFooter({ className, ...props }, ref) {
     return <footer ref={ref} className={cx('zest-dialog__footer', className)} {...props} />;
@@ -101,8 +94,11 @@ const DialogFooter = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElem
    props when a dialog needs a fully custom header or body. */
 
 export interface DialogHeaderProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
+  /** Dialog title (renders an accessible Dialog.Title). */
   title?: React.ReactNode;
+  /** Supporting description under the title. */
   description?: React.ReactNode;
+  /** Extra heading content rendered under the title/description. */
   children?: React.ReactNode;
 }
 
@@ -125,12 +121,29 @@ const DialogHeader = React.forwardRef<HTMLElement, DialogHeaderProps>(function D
   );
 });
 
+/** Scrollable body. Pass explicitly to own the body layout. */
 const DialogBody = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   function DialogBody({ className, ...props }, ref) {
     return <div ref={ref} className={cx('zest-dialog__body', className)} {...props} />;
   }
 );
 
+/**
+ * Composable dialog on Base UI — focus trapping, dismissal, and aria wiring
+ * come from the primitive.
+ *
+ * ```tsx
+ * <Dialog.Root>
+ *   <Dialog.Trigger render={<Button>Open</Button>} />
+ *   <Dialog.Content title="Settings" description="Manage your preferences">
+ *     …body…
+ *     <Dialog.Footer>
+ *       <Button>Save</Button>
+ *     </Dialog.Footer>
+ *   </Dialog.Content>
+ * </Dialog.Root>
+ * ```
+ */
 export const Dialog = {
   Root: BaseDialog.Root,
   Trigger: BaseDialog.Trigger,

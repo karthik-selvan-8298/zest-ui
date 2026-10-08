@@ -6,23 +6,6 @@ import type { WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Segmented.css';
 
-/*
- * Segmented — single-select segmented control on Base UI ToggleGroup.
- * Keyboard navigation (arrow keys), `role="group"` and `aria-pressed` come
- * from the primitive; Zest adds the track/pill look and a string value API
- * that can never be emptied.
- *
- * <Segmented aria-label="View" defaultValue="list"
- *   options={[{ value: 'list', label: 'List' }, { value: 'grid', label: 'Grid' }]} />
- *
- * or composed:
- *
- * <Segmented aria-label="Period" value={period} onValueChange={setPeriod}>
- *   <Segmented.Item value="day">Day</Segmented.Item>
- *   <Segmented.Item value="week">Week</Segmented.Item>
- * </Segmented>
- */
-
 export type SegmentedVariant = 'solid' | 'soft';
 export type SegmentedSize = 'sm' | 'md';
 
@@ -51,6 +34,7 @@ export interface SegmentedItemProps extends WithClassName<
   children?: React.ReactNode;
 }
 
+/** One segment. Use inside `<Segmented>` when composing instead of passing `options`. */
 const SegmentedItem = React.forwardRef<HTMLButtonElement, SegmentedItemProps>(
   function SegmentedItem({ value, icon, className, children, ...props }, ref) {
     return (
@@ -110,6 +94,7 @@ export interface SegmentedProps extends Omit<
   children?: React.ReactNode;
 }
 
+/** Value of the first option/item — the fallback selection when none is given. */
 function firstValue(
   options: ReadonlyArray<SegmentedOption> | undefined,
   children: React.ReactNode
@@ -123,23 +108,6 @@ function firstValue(
   return '';
 }
 
-/**
- * Single-select segmented control — the "List | Grid" / "Day | Week | Month"
- * switch. Sits in a bordered track like ButtonGroup with a sliding accent
- * pill on the selected segment. Exactly one segment is always selected.
- *
- * ```tsx
- * <Segmented
- *   aria-label="View"
- *   defaultValue="list"
- *   options={[
- *     { value: 'list', label: 'List', icon: <MenuIcon /> },
- *     { value: 'grid', label: 'Grid' },
- *   ]}
- *   onValueChange={setView}
- * />
- * ```
- */
 const SegmentedRoot = React.forwardRef<HTMLDivElement, SegmentedProps>(function Segmented(
   {
     value,
@@ -201,6 +169,31 @@ const SegmentedRoot = React.forwardRef<HTMLDivElement, SegmentedProps>(function 
   );
 });
 
+/**
+ * Single-select segmented control — the "List | Grid" / "Day | Week | Month"
+ * switch — on Base UI ToggleGroup. Arrow-key navigation, `role="group"` and
+ * `aria-pressed` come from the primitive; Zest adds the bordered track (same
+ * family as ButtonGroup), the accent pill on the selected segment and a
+ * string value API. Exactly one segment is always selected.
+ *
+ * ```tsx
+ * <Segmented
+ *   aria-label="View"
+ *   defaultValue="list"
+ *   options={[
+ *     { value: 'list', label: 'List', icon: <MenuIcon /> },
+ *     { value: 'grid', label: 'Grid' },
+ *   ]}
+ *   onValueChange={setView}
+ * />
+ *
+ * // or composed:
+ * <Segmented aria-label="Period" value={period} onValueChange={setPeriod}>
+ *   <Segmented.Item value="day">Day</Segmented.Item>
+ *   <Segmented.Item value="week">Week</Segmented.Item>
+ * </Segmented>
+ * ```
+ */
 export const Segmented = Object.assign(SegmentedRoot, {
   Item: SegmentedItem,
 });

@@ -4,11 +4,15 @@ import { SearchInput, type SearchInputProps } from '../../forms/SearchInput/Sear
 import './SearchToolbar.css';
 
 export interface SearchToolbarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  /** Search value (controlled) */
+  /** Controlled search value. */
   value?: string;
+  /** Initial search value for uncontrolled usage. */
   defaultValue?: string;
+  /** Called on every keystroke and when the clear button empties the field. */
   onValueChange?: (value: string) => void;
+  /** Search input placeholder. */
   placeholder?: string;
+  /** Extra props for the inner SearchInput (e.g. `aria-label`, `size`, `disableClear`). */
   searchProps?: Partial<SearchInputProps>;
   /** Filter controls rendered next to the search input. */
   filters?: React.ReactNode;
@@ -46,8 +50,9 @@ export const SearchToolbar = React.forwardRef<HTMLDivElement, SearchToolbarProps
           defaultValue={defaultValue}
           onValueChange={onValueChange}
           placeholder={placeholder}
-          className="zest-search-toolbar__input"
           {...searchProps}
+          // Merged rather than overridden so a custom class keeps the layout hook.
+          className={cx('zest-search-toolbar__input', searchProps?.className)}
         />
         {filters ? <div className="zest-search-toolbar__filters">{filters}</div> : null}
         {actions ? <div className="zest-search-toolbar__actions">{actions}</div> : null}

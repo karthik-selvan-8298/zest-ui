@@ -18,6 +18,7 @@ export type TypographyVariant =
   | 'caption'
   | 'overline';
 
+/** Text color roles — map to `--zest-color-*` tokens; `inherit` emits no color. */
 export type TypographyColor =
   | 'inherit'
   | 'primary'
@@ -29,6 +30,7 @@ export type TypographyColor =
   | 'error'
   | 'info';
 
+/** Semantic element each variant renders when `as` is not given. */
 const defaultElement: Record<TypographyVariant, React.ElementType> = {
   h1: 'h1',
   h2: 'h2',
@@ -45,9 +47,14 @@ const defaultElement: Record<TypographyVariant, React.ElementType> = {
 };
 
 export interface TypographyOwnProps {
+  /**
+   * Type-scale step; also picks the default element (`h1`…`h6`, `p`, `span`).
+   * @default 'body1'
+   */
   variant?: TypographyVariant;
   /** Text color role. `primary`/`secondary`/`disabled` are text tones; `brand` is the primary accent. */
   color?: TypographyColor;
+  /** `text-align`. */
   align?: 'left' | 'center' | 'right';
   /** Truncate to a single line, or clamp to N lines. */
   truncate?: boolean | number;
@@ -62,6 +69,17 @@ export type TypographyProps<E extends React.ElementType = 'p'> = PolymorphicProp
   TypographyOwnProps
 >;
 
+/**
+ * Text on the Zest type scale. The variant sets size/weight/line-height and
+ * the default semantic element; `as` overrides the element without changing
+ * the look.
+ *
+ * ```tsx
+ * <Typography variant="h4">Billing</Typography>
+ * <Typography variant="body2" color="secondary" truncate={2}>…</Typography>
+ * <Typography variant="overline" as="div">Section</Typography>
+ * ```
+ */
 export const Typography = React.forwardRef(function Typography<E extends React.ElementType = 'p'>(
   props: TypographyProps<E>,
   ref: React.ForwardedRef<Element>
@@ -104,5 +122,8 @@ export const Typography = React.forwardRef(function Typography<E extends React.E
   props: TypographyProps<E> & { ref?: React.Ref<Element> }
 ) => React.ReactElement;
 
-/** Convenience aliases */
+/**
+ * Alias of {@link Typography} for codebases that prefer the `<Text>` name.
+ * Same component, same props.
+ */
 export const Text = Typography;

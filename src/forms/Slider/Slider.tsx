@@ -48,6 +48,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(function Sli
   },
   ref
 ) {
+  // One thumb per entry of an array value (range slider), else a single thumb.
   const currentValue = props.value ?? props.defaultValue;
   const thumbCount = Array.isArray(currentValue) ? currentValue.length : 1;
 

@@ -2,16 +2,6 @@ import * as React from 'react';
 import { cx } from '../../utils';
 import './Card.css';
 
-/*
- * Sigma-style card: 16px radius, soft "card" elevation, composable sections.
- *
- * <Card>
- *   <Card.Header title="Team" subtitle="12 members" action={<IconButton …/>} />
- *   <Card.Content>…</Card.Content>
- *   <Card.Footer><Button>Save</Button></Card.Footer>
- * </Card>
- */
-
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Outlined instead of elevated. */
   variant?: 'elevated' | 'outlined';
@@ -39,8 +29,11 @@ const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(function Card(
   );
 });
 
+/** Header row: title/subtitle stack on the left, optional `action` on the right. */
 export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  /** Heading text, rendered as `titleAs`. */
   title?: React.ReactNode;
+  /** Secondary line under the title. */
   subtitle?: React.ReactNode;
   /** Trailing element (menu button, action). */
   action?: React.ReactNode;
@@ -73,6 +66,7 @@ export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement>
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
 }
 
+/** Card title styling on its own — for custom header layouts built from `children`. */
 const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(function CardTitle(
   { as: Tag = 'h3', className, ...props },
   ref
@@ -103,6 +97,7 @@ const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(function 
   );
 });
 
+/** Bottom action row (buttons are laid out inline with a small gap). */
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   function CardFooter({ className, ...props }, ref) {
     return <div ref={ref} className={cx('zest-card__footer', className)} {...props} />;
@@ -116,6 +111,18 @@ const CardMedia = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivE
   }
 );
 
+/**
+ * Sigma-style card: 16px radius, soft "card" elevation, composable sections.
+ * `Card` is itself the root; the sections hang off it as static parts.
+ *
+ * ```tsx
+ * <Card>
+ *   <Card.Header title="Team" subtitle="12 members" action={<IconButton …/>} />
+ *   <Card.Content>…</Card.Content>
+ *   <Card.Footer><Button>Save</Button></Card.Footer>
+ * </Card>
+ * ```
+ */
 export const Card = Object.assign(CardRoot, {
   Header: CardHeader,
   Title: CardTitle,

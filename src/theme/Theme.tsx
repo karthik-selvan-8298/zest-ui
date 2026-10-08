@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cx } from '../utils';
+import { cssDeclarations } from './cssText';
 import type { ZestTheme } from './types';
 
 export interface ThemeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,15 +27,13 @@ export const Theme = React.forwardRef<HTMLDivElement, ThemeProps>(function Theme
   { theme, className, children, ...props },
   ref
 ) {
+  // useId output (`:r0:` / `«r0»`) isn't a safe attribute-selector value;
+  // strip it down to a stable, SSR-consistent identifier.
   const scopeId = React.useId();
   const scope = `zest-${scopeId.replace(/[^a-zA-Z0-9-]/g, '')}`;
 
-  const light = Object.entries(theme.cssVars)
-    .map(([key, value]) => `${key}: ${value};`)
-    .join(' ');
-  const dark = Object.entries(theme.darkCssVars)
-    .map(([key, value]) => `${key}: ${value};`)
-    .join(' ');
+  const light = cssDeclarations(theme.cssVars);
+  const dark = cssDeclarations(theme.darkCssVars);
 
   let css = '';
   if (light) css += `[data-zest-scope='${scope}'] { ${light} }\n`;

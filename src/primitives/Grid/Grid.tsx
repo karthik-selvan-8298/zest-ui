@@ -14,7 +14,9 @@ export interface GridOwnProps {
    * @default 4 (16px — MUI `spacing={2}`)
    */
   gap?: SpaceValue;
+  /** Vertical gutter; overrides `gap` on the row axis. */
   rowGap?: SpaceValue;
+  /** Horizontal gutter; overrides `gap` on the column axis. */
   columnGap?: SpaceValue;
   /** Cross-axis alignment of items within their tracks (`align-items`). */
   align?: React.CSSProperties['alignItems'];
@@ -29,6 +31,16 @@ export interface GridOwnProps {
 
 export type GridProps<E extends React.ElementType = 'div'> = PolymorphicProps<E, GridOwnProps>;
 
+/**
+ * CSS grid layout with token-aware gutters. Numeric `columns` collapse
+ * responsively (≤900px → max two, ≤600px → one); `minChildWidth` produces a
+ * fluid auto-fit grid instead.
+ *
+ * ```tsx
+ * <Grid columns={3} gap={6}>…</Grid>
+ * <Grid minChildWidth="240px">…</Grid>
+ * ```
+ */
 export const Grid = React.forwardRef(function Grid<E extends React.ElementType = 'div'>(
   props: GridProps<E>,
   ref: React.ForwardedRef<Element>
@@ -49,6 +61,7 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
     ...rest
   } = props as GridProps<'div'>;
   const Component = (as ?? 'div') as React.ElementType;
+  const fixedColumns = typeof columns === 'number' && !minChildWidth;
 
   const template = minChildWidth
     ? `repeat(auto-fit, minmax(min(${minChildWidth}, 100%), 1fr))`
@@ -60,14 +73,13 @@ export const Grid = React.forwardRef(function Grid<E extends React.ElementType =
     <Component
       ref={ref}
       className={cx('zest-grid', className)}
-      data-fixed-columns={typeof columns === 'number' && !minChildWidth ? '' : undefined}
+      data-fixed-columns={fixedColumns ? '' : undefined}
       /* All dynamic styling flows through custom properties consumed by
          Grid.css — mixing them with regular props in one inline style object
          proved unreliable (regular props were dropped at commit time). */
       style={{
         ['--zest-grid-columns' as string]: template,
-        ['--zest-grid-fixed-count' as string]:
-          typeof columns === 'number' && !minChildWidth ? String(columns) : undefined,
+        ['--zest-grid-fixed-count' as string]: fixedColumns ? String(columns) : undefined,
         ['--zest-grid-gap' as string]: resolveSpace(gap),
         ['--zest-grid-row-gap' as string]: resolveSpace(rowGap),
         ['--zest-grid-column-gap' as string]: resolveSpace(columnGap),

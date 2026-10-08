@@ -10,8 +10,11 @@ export interface IconButtonProps extends Omit<
 > {
   /** Accessible name — required, icon-only buttons have no visible label. */
   'aria-label': string;
+  /** Visual style. @default 'ghost' */
   variant?: 'solid' | 'outlined' | 'ghost' | 'soft';
+  /** Tone. @default 'neutral' */
   color?: ZestColor;
+  /** Square edge length (`--zest-button-height-*`). @default 'md' */
   size?: ZestSize;
   /** Rounded square (default, the Sigma/QA dashboard style) or circle. */
   shape?: 'square' | 'round';
@@ -19,7 +22,16 @@ export interface IconButtonProps extends Omit<
   children?: React.ReactNode;
 }
 
-/** Square icon-only button. Requires `aria-label`. */
+/**
+ * Square icon-only button. Requires `aria-label`.
+ *
+ * ```tsx
+ * <IconButton aria-label="Settings"><SettingsIcon /></IconButton>
+ * <IconButton aria-label="Add" variant="solid" color="primary" shape="round">
+ *   <PlusIcon />
+ * </IconButton>
+ * ```
+ */
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
   {
     variant = 'ghost',

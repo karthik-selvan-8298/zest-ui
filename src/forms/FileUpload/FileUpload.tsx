@@ -9,24 +9,51 @@ export interface FileUploadProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
   'onChange' | 'defaultValue'
 > {
-  /** Accepted types, native `accept` syntax (e.g. "image/*,.pdf"). */
+  /**
+   * Accepted types, native `accept` syntax (e.g. "image/*,.pdf"). Enforced for
+   * dropped files too — non-matching files go to `onReject`.
+   */
   accept?: string;
+  /** Allow several files; new picks are appended instead of replacing. */
   multiple?: boolean;
   /** Reject files larger than this (in megabytes). */
   maxSizeMB?: number;
+  /** Selected files. Use when controlled. */
   value?: File[];
   defaultValue?: File[];
   onValueChange?: (files: File[]) => void;
   /** Called with files rejected by `accept`/`maxSizeMB`. */
   onReject?: (files: File[]) => void;
   disabled?: boolean;
+  /** Error appearance of the drop zone. */
   error?: boolean;
   /** Drop-zone headline. */
   label?: React.ReactNode;
-  /** Secondary line under the headline. */
+  /** Secondary line under the headline. Defaults to the size limit, if any. */
   description?: React.ReactNode;
 }
 
+/**
+ * Mirrors the native `accept` check for files that bypass the picker (drag
+ * and drop, or the OS dialog's "All files" option). Tokens are extensions
+ * (`.pdf`), wildcards (`image/*`) or exact MIME types.
+ */
+function matchesAccept(file: File, accept: string | undefined): boolean {
+  const tokens = accept
+    ?.split(',')
+    .map((token) => token.trim().toLowerCase())
+    .filter(Boolean);
+  if (!tokens?.length) return true;
+  const name = file.name.toLowerCase();
+  const type = file.type.toLowerCase();
+  return tokens.some((token) => {
+    if (token.startsWith('.')) return name.endsWith(token);
+    if (token.endsWith('/*')) return type.startsWith(token.slice(0, -1));
+    return type === token;
+  });
+}
+
+/** Human-readable size (`512 B`, `2.0 KB`, `3.0 MB`) as shown in the file list. */
 export function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -72,7 +99,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(func
     const rejected: File[] = [];
     for (const file of Array.from(incoming)) {
       const tooBig = maxSizeMB !== undefined && file.size > maxSizeMB * 1024 * 1024;
-      if (tooBig) rejected.push(file);
+      if (tooBig || !matchesAccept(file, accept)) rejected.push(file);
       else accepted.push(file);
     }
     if (rejected.length) onReject?.(rejected);
@@ -104,7 +131,13 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(func
           event.preventDefault();
           if (!disabled) setDragging(true);
         }}
-        onDragLeave={() => setDragging(false)}
+        onDragLeave={(event) => {
+          // dragleave also fires when the pointer moves onto a child (icon,
+          // label); only clear the highlight when it leaves the zone itself.
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            setDragging(false);
+          }
+        }}
         onDrop={(event) => {
           event.preventDefault();
           setDragging(false);
@@ -130,6 +163,7 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(func
           disabled={disabled}
           onChange={(event) => {
             addFiles(event.target.files);
+            // Reset so picking the same file again still fires `change`.
             event.target.value = '';
           }}
         />

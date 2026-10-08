@@ -117,6 +117,8 @@ export function resolveBoxStyle<P extends BoxStyleProps>(
     ...rest
   } = props;
   const style: React.CSSProperties = {};
+  // Tracks whether any shorthand was set, so callers can skip emitting an
+  // empty `style={{}}` attribute.
   let used = false;
   const set = (key: keyof React.CSSProperties, value: string | number | undefined) => {
     if (value !== undefined) {
@@ -154,6 +156,11 @@ export function resolveBoxStyle<P extends BoxStyleProps>(
 /**
  * The lowest-level Zest primitive: a polymorphic element with token-aware
  * spacing and sizing props. Everything else composes on top of it.
+ *
+ * ```tsx
+ * <Box p={4} mx={2}>Padded block</Box>
+ * <Box as="section" flex minWidth={0} overflow="auto">Fills a flex row</Box>
+ * ```
  */
 export const Box = React.forwardRef(function Box<E extends React.ElementType = 'div'>(
   props: BoxProps<E>,

@@ -4,6 +4,9 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './CodeBlock.css';
 
+/** How long the copy button shows "Copied" after a successful copy. */
+const COPIED_RESET_MS = 2000;
+
 export interface CodeBlockProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
   'children' | 'title' | 'onCopy'
@@ -51,6 +54,7 @@ export const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(functi
 ) {
   const [copied, setCopied] = React.useState(false);
   const resetTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  // Drop a pending "Copied" reset on unmount.
   React.useEffect(() => () => clearTimeout(resetTimer.current), []);
 
   const handleCopy = async () => {
@@ -59,7 +63,7 @@ export const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(functi
       setCopied(true);
       onCopy?.(code);
       clearTimeout(resetTimer.current);
-      resetTimer.current = setTimeout(() => setCopied(false), 2000);
+      resetTimer.current = setTimeout(() => setCopied(false), COPIED_RESET_MS);
     } catch {
       /* clipboard unavailable */
     }

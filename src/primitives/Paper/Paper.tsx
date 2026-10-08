@@ -4,10 +4,11 @@ import type { PolymorphicProps } from '../polymorphic';
 import './Paper.css';
 
 export interface PaperOwnProps {
-  /** Elevation shadow token. */
+  /** Elevation shadow token. @default 'none' */
   shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'card';
   /** Outlined surface instead of (or with) elevation. */
   bordered?: boolean;
+  /** Corner radius token. @default 'lg' */
   radius?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   children?: React.ReactNode;
@@ -15,7 +16,14 @@ export interface PaperOwnProps {
 
 export type PaperProps<E extends React.ElementType = 'div'> = PolymorphicProps<E, PaperOwnProps>;
 
-/** A themed surface — the base of cards, menus, and dialogs. */
+/**
+ * A themed surface — the base of cards, menus, and dialogs.
+ *
+ * ```tsx
+ * <Paper shadow="card" radius="xl">…</Paper>
+ * <Paper as="section" bordered>…</Paper>
+ * ```
+ */
 export const Paper = React.forwardRef(function Paper<E extends React.ElementType = 'div'>(
   props: PaperProps<E>,
   ref: React.ForwardedRef<Element>

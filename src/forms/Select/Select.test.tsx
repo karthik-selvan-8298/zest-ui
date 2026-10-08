@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -62,6 +63,23 @@ describe('Select', () => {
       expect(onValueChange.mock.calls[0]?.[0]).toBeNull();
       expect(screen.getByRole('combobox', { name: 'Letter' })).toHaveTextContent('Pick one');
       expect(screen.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+    });
+
+    it('returns focus to the trigger after clearing and still forwards the ref', async () => {
+      const ref = React.createRef<HTMLButtonElement>();
+      render(<Select ref={ref} aria-label="Letter" options={options} defaultValue="a" clearable />);
+      const trigger = screen.getByRole('combobox', { name: 'Letter' });
+      expect(ref.current).toBe(trigger);
+      await userEvent.click(screen.getByRole('button', { name: 'Clear' }));
+      expect(trigger).toHaveFocus();
+    });
+
+    it('marks the trigger aria-invalid when error is set', () => {
+      render(<Select aria-label="Letter" options={options} error />);
+      expect(screen.getByRole('combobox', { name: 'Letter' })).toHaveAttribute(
+        'aria-invalid',
+        'true'
+      );
     });
   });
 

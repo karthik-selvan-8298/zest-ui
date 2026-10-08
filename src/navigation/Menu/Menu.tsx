@@ -6,28 +6,7 @@ import { CheckIcon, ChevronRightIcon } from '../../icons';
 import '../../base.css';
 import './Menu.css';
 
-/*
- * Menu on Base UI — keyboard navigation, typeahead, and aria wiring come
- * from the primitive. Submenus, checkbox items and radio items share the
- * indicator recipe with ContextMenu (same `zest-menu__*` classes).
- *
- * <Menu.Root>
- *   <Menu.Trigger render={<Button variant="outlined">Actions</Button>} />
- *   <Menu.Content>
- *     <Menu.Item onClick={…}><EditIcon /> Rename</Menu.Item>
- *     <Menu.SubmenuRoot>
- *       <Menu.SubmenuTrigger>Share</Menu.SubmenuTrigger>
- *       <Menu.Content><Menu.Item>Email</Menu.Item></Menu.Content>
- *     </Menu.SubmenuRoot>
- *     <Menu.CheckboxItem defaultChecked>Compact rows</Menu.CheckboxItem>
- *     <Menu.RadioGroup defaultValue="light">
- *       <Menu.RadioItem value="light">Light</Menu.RadioItem>
- *     </Menu.RadioGroup>
- *     <Menu.Separator />
- *     <Menu.Item destructive><TrashIcon /> Delete</Menu.Item>
- *   </Menu.Content>
- * </Menu.Root>
- */
+export type MenuRootProps = React.ComponentProps<typeof BaseMenu.Root>;
 
 export interface MenuContentProps extends WithClassName<
   React.ComponentProps<typeof BaseMenu.Popup>
@@ -37,11 +16,17 @@ export interface MenuContentProps extends WithClassName<
    * menu and beside the trigger (`inline-end`) inside a `SubmenuRoot`.
    */
   side?: 'top' | 'bottom' | 'left' | 'right' | 'inline-start' | 'inline-end';
+  /** Alignment of the popup along the anchor. Defaults to `start`. */
   align?: 'start' | 'center' | 'end';
+  /** Gap between the anchor and the popup in px. Defaults to `4`. */
   sideOffset?: number;
   children?: React.ReactNode;
 }
 
+/**
+ * Portal + Positioner + Popup in one part. Also used as the popup of a
+ * `SubmenuRoot`, where it opens beside its trigger.
+ */
 const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(function MenuContent(
   { side, align = 'start', sideOffset = 4, className, children, ...props },
   ref
@@ -67,6 +52,7 @@ export interface MenuItemProps extends WithClassName<React.ComponentProps<typeof
   destructive?: boolean;
 }
 
+/** An actionable row. Leading icons go straight into `children`. */
 const MenuItem = React.forwardRef<HTMLElement, MenuItemProps>(function MenuItem(
   { destructive = false, className, ...props },
   ref
@@ -83,6 +69,7 @@ const MenuItem = React.forwardRef<HTMLElement, MenuItemProps>(function MenuItem(
 
 export type MenuSeparatorProps = WithClassName<React.ComponentProps<typeof BaseMenu.Separator>>;
 
+/** Hairline divider between groups of rows. */
 const MenuSeparator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>(function MenuSeparator(
   { className, ...props },
   ref
@@ -94,6 +81,7 @@ const MenuSeparator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>(funct
 
 export type MenuGroupProps = WithClassName<React.ComponentProps<typeof BaseMenu.Group>>;
 
+/** Groups related rows; label it with `GroupLabel` for screen readers. */
 const MenuGroup = React.forwardRef<HTMLDivElement, MenuGroupProps>(function MenuGroup(
   { className, ...props },
   ref
@@ -103,6 +91,7 @@ const MenuGroup = React.forwardRef<HTMLDivElement, MenuGroupProps>(function Menu
 
 export type MenuGroupLabelProps = WithClassName<React.ComponentProps<typeof BaseMenu.GroupLabel>>;
 
+/** Small secondary heading for a `Group`. */
 const MenuGroupLabel = React.forwardRef<HTMLDivElement, MenuGroupLabelProps>(
   function MenuGroupLabel({ className, ...props }, ref) {
     return (
@@ -190,6 +179,30 @@ const MenuRadioItem = React.forwardRef<HTMLElement, MenuRadioItemProps>(function
   );
 });
 
+/**
+ * Dropdown menu on Base UI — keyboard navigation, typeahead and ARIA wiring
+ * come from the primitive. ContextMenu and Menubar reuse these parts, so the
+ * popup/row recipe (`zest-menu__*`) is defined once, in Menu.css.
+ *
+ * ```tsx
+ * <Menu.Root>
+ *   <Menu.Trigger render={<Button variant="outlined">Actions</Button>} />
+ *   <Menu.Content>
+ *     <Menu.Item onClick={rename}><EditIcon /> Rename</Menu.Item>
+ *     <Menu.SubmenuRoot>
+ *       <Menu.SubmenuTrigger>Share</Menu.SubmenuTrigger>
+ *       <Menu.Content><Menu.Item>Email</Menu.Item></Menu.Content>
+ *     </Menu.SubmenuRoot>
+ *     <Menu.CheckboxItem defaultChecked>Compact rows</Menu.CheckboxItem>
+ *     <Menu.RadioGroup defaultValue="light">
+ *       <Menu.RadioItem value="light">Light</Menu.RadioItem>
+ *     </Menu.RadioGroup>
+ *     <Menu.Separator />
+ *     <Menu.Item destructive><TrashIcon /> Delete</Menu.Item>
+ *   </Menu.Content>
+ * </Menu.Root>
+ * ```
+ */
 export const Menu = {
   Root: BaseMenu.Root,
   Trigger: BaseMenu.Trigger,
@@ -204,5 +217,3 @@ export const Menu = {
   RadioGroup: MenuRadioGroup,
   RadioItem: MenuRadioItem,
 };
-
-export type MenuRootProps = React.ComponentProps<typeof BaseMenu.Root>;

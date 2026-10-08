@@ -17,6 +17,13 @@ describe('Code', () => {
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
+  it('forwards onClick to the plain (non-copyable) <code>', async () => {
+    const onClick = vi.fn();
+    render(<Code onClick={onClick}>id_123</Code>);
+    await userEvent.click(screen.getByText('id_123'));
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
   it('stamps color, variant, size and truncate', () => {
     render(
       <Code color="primary" variant="outlined" size="sm" truncate>

@@ -4,15 +4,6 @@ import type { ZestColor } from '../../types';
 import '../../base.css';
 import './Code.css';
 
-/*
- * Code — inline monospace chip for identifiers that appear in running text:
- * route paths, env var names, IDs, shell flags.
- *
- * Run <Code>npm run build</Code> from the root.
- * <Code copyable>sk_live_••••••••••••••••4242</Code>
- * <Code color="primary" variant="outlined">GET /v1/users</Code>
- */
-
 export type CodeVariant = 'soft' | 'outlined';
 export type CodeSize = 'sm' | 'md';
 
@@ -34,6 +25,7 @@ export interface CodeProps extends Omit<React.HTMLAttributes<HTMLElement>, 'colo
   copyable?: boolean;
 }
 
+/** How long the "Copied" title and success ring stay up after a copy. */
 const COPIED_RESET_MS = 1500;
 
 /** Flattens a ReactNode tree to its text content for the clipboard. */
@@ -48,7 +40,8 @@ function nodeToText(node: React.ReactNode): string {
 }
 
 /**
- * Inline monospace code chip. Sized relative to the surrounding text
+ * Inline monospace code chip for identifiers in running text — route paths,
+ * env var names, IDs, shell flags. Sized relative to the surrounding text
  * (`font-size: 0.875em`) so it sits naturally in prose, table cells and
  * list items. Pass `copyable` for tokens and IDs users need to grab.
  *
@@ -75,6 +68,7 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(function Code(
 ) {
   const [copied, setCopied] = React.useState(false);
   const resetTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  // Drop a pending "Copied" reset on unmount.
   React.useEffect(() => () => clearTimeout(resetTimer.current), []);
 
   const sharedProps = {
@@ -87,13 +81,14 @@ export const Code = React.forwardRef<HTMLElement, CodeProps>(function Code(
 
   if (!copyable) {
     return (
-      <code ref={ref} {...sharedProps} {...props}>
+      <code ref={ref} onClick={onClick} {...sharedProps} {...props}>
         {children}
       </code>
     );
   }
 
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // The consumer's onClick runs first and can opt out with preventDefault().
     onClick?.(event);
     if (event.defaultPrevented) return;
     try {

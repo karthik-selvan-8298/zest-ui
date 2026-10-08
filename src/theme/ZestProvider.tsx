@@ -1,8 +1,10 @@
 import * as React from 'react';
 import '../tokens/fonts';
 import '../tokens/css/tokens.css';
+import { cssDeclarations } from './cssText';
 import type { ZestTheme } from './types';
 
+/** Appearance mode. `system` follows the OS `prefers-color-scheme`. */
 export type ZestMode = 'light' | 'dark' | 'system';
 
 /** localStorage key under which ZestProvider persists the chosen mode. */
@@ -21,21 +23,27 @@ export interface ZestContextValue {
   mode: ZestMode;
   /** The mode actually in effect after resolving 'system'. */
   resolvedMode: 'light' | 'dark';
+  /** Changes the mode (and persists it when `storageKey` is set). */
   setMode: (mode: ZestMode) => void;
+  /** Active layout/type density. */
   density: ZestDensity;
   setDensity: (density: ZestDensity) => void;
+  /** The `theme` passed to the provider, if any. */
   theme: ZestTheme | undefined;
 }
 
 const ZestContext = React.createContext<ZestContextValue | null>(null);
 
 export interface ZestProviderProps {
+  /** App-wide token overrides from `createTheme(...)`. */
   theme?: ZestTheme;
   /** Initial appearance mode. Defaults to 'system'. */
   defaultMode?: ZestMode;
   /** Controlled appearance mode. */
   mode?: ZestMode;
+  /** Called whenever `setMode` runs, in both controlled and uncontrolled use. */
   onModeChange?: (mode: ZestMode) => void;
+  /** Initial density. Defaults to 'comfortable'. */
   defaultDensity?: ZestDensity;
   /**
    * localStorage key used to persist the user's mode choice.
@@ -60,13 +68,10 @@ function readStoredMode(key: string | null): ZestMode | undefined {
   }
 }
 
+/** Global stylesheet for a provider-level theme (mirrors the tokens.css selectors). */
 function themeStyleText(theme: ZestTheme): string {
-  const light = Object.entries(theme.cssVars)
-    .map(([k, v]) => `${k}: ${v};`)
-    .join(' ');
-  const dark = Object.entries(theme.darkCssVars)
-    .map(([k, v]) => `${k}: ${v};`)
-    .join(' ');
+  const light = cssDeclarations(theme.cssVars);
+  const dark = cssDeclarations(theme.darkCssVars);
   let css = '';
   if (light) css += `:root, [data-zest-theme='light'] { ${light} }\n`;
   if (dark) {
@@ -79,6 +84,12 @@ function themeStyleText(theme: ZestTheme): string {
 /**
  * Applies the Zest tokens, theme overrides, appearance mode, and density to
  * the document. Wrap your application root with it.
+ *
+ * ```tsx
+ * <ZestProvider defaultMode="system" theme={createTheme({ radius: { md: '8px' } })}>
+ *   <App />
+ * </ZestProvider>
+ * ```
  */
 export function ZestProvider({
   theme,
@@ -131,13 +142,19 @@ export function ZestProvider({
     root.setAttribute('data-zest-mode', mode);
     if (density === 'comfortable') root.removeAttribute('data-zest-density');
     else root.setAttribute('data-zest-density', density);
-    root.classList.add('zest-root');
     return () => {
       root.removeAttribute('data-zest-theme');
       root.removeAttribute('data-zest-mode');
       root.removeAttribute('data-zest-density');
     };
   }, [mode, systemMode, density]);
+
+  // Document-level base styles (font, scrollbars) for the provider's lifetime.
+  React.useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add('zest-root');
+    return () => root.classList.remove('zest-root');
+  }, []);
 
   const value = React.useMemo<ZestContextValue>(
     () => ({
@@ -174,8 +191,15 @@ export function useZest(): ZestContextValue {
   return context;
 }
 
-/** Convenience hook for appearance switching. */
-export function useColorScheme() {
+/**
+ * Convenience hook for appearance switching.
+ *
+ * ```tsx
+ * const { resolvedMode, setMode } = useColorScheme();
+ * <Button onClick={() => setMode(resolvedMode === 'dark' ? 'light' : 'dark')}>Toggle</Button>
+ * ```
+ */
+export function useColorScheme(): Pick<ZestContextValue, 'mode' | 'resolvedMode' | 'setMode'> {
   const { mode, resolvedMode, setMode } = useZest();
   return { mode, resolvedMode, setMode };
 }

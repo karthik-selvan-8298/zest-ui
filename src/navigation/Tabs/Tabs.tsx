@@ -5,19 +5,6 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './Tabs.css';
 
-/*
- * Tabs on Base UI — roving focus, keyboard activation, aria wiring.
- *
- * <Tabs.Root defaultValue="general">
- *   <Tabs.List>
- *     <Tabs.Tab value="general">General</Tabs.Tab>
- *     <Tabs.Tab value="security">Security</Tabs.Tab>
- *   </Tabs.List>
- *   <Tabs.Panel value="general">…</Tabs.Panel>
- *   <Tabs.Panel value="security">…</Tabs.Panel>
- * </Tabs.Root>
- */
-
 export type TabsRootProps = WithClassName<React.ComponentProps<typeof BaseTabs.Root>>;
 
 const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(function TabsRoot(
@@ -28,7 +15,7 @@ const TabsRoot = React.forwardRef<HTMLDivElement, TabsRootProps>(function TabsRo
 });
 
 export interface TabsListProps extends WithClassName<React.ComponentProps<typeof BaseTabs.List>> {
-  /** Stretch tabs to share the full width equally. */
+  /** Stretch tabs to share the full width equally. Defaults to `false`. */
   fullWidth?: boolean;
   /**
    * Visual style:
@@ -39,6 +26,7 @@ export interface TabsListProps extends WithClassName<React.ComponentProps<typeof
   variant?: 'underline' | 'segmented' | 'soft';
 }
 
+/** Row of tabs; renders the sliding indicator for the `underline` variant. */
 const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(function TabsList(
   { className, fullWidth, variant = 'underline', children, ...props },
   ref
@@ -81,6 +69,21 @@ const TabPanel = React.forwardRef<HTMLDivElement, TabPanelProps>(function TabPan
   return <BaseTabs.Panel ref={ref} className={cx('zest-tabs__panel', className)} {...props} />;
 });
 
+/**
+ * Tabs on Base UI — roving focus, keyboard activation and ARIA wiring come
+ * from the primitive.
+ *
+ * ```tsx
+ * <Tabs.Root defaultValue="general">
+ *   <Tabs.List variant="segmented">
+ *     <Tabs.Tab value="general">General</Tabs.Tab>
+ *     <Tabs.Tab value="security">Security</Tabs.Tab>
+ *   </Tabs.List>
+ *   <Tabs.Panel value="general">…</Tabs.Panel>
+ *   <Tabs.Panel value="security">…</Tabs.Panel>
+ * </Tabs.Root>
+ * ```
+ */
 export const Tabs = {
   Root: TabsRoot,
   List: TabsList,

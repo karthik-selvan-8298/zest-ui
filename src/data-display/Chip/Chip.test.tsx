@@ -40,6 +40,16 @@ describe('Chip', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
+  it('activates the remove button from the keyboard inside a clickable chip', async () => {
+    const onClick = vi.fn();
+    const onDelete = vi.fn();
+    render(<Chip label="Both" onClick={onClick} onDelete={onDelete} />);
+    screen.getByRole('button', { name: 'Remove' }).focus();
+    await userEvent.keyboard('{Enter}');
+    expect(onDelete).toHaveBeenCalledTimes(1);
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
   it('does not fire onClick when disabled', async () => {
     const onClick = vi.fn();
     render(<Chip label="Nope" clickable disabled onClick={onClick} />);

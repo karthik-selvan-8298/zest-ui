@@ -11,6 +11,7 @@ export interface ImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElemen
   alt: string;
   /** object-fit behavior. Defaults to `cover`. */
   fit?: 'cover' | 'contain' | 'fill' | 'none';
+  /** Corner radius token. Defaults to `control`. */
   radius?: 'none' | 'control' | 'surface' | 'full';
   /** Fixed aspect ratio (width / height), e.g. 16/9. Renders a sizing frame around the image. */
   ratio?: number;
@@ -26,9 +27,15 @@ export interface ImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElemen
  * Themed replacement for `<img>`: fit/radius/ratio props and a graceful
  * error fallback. Lazy-loads by default. `className`/`style` always target
  * the `<img>`; use `frameClassName`/`frameStyle` for the ratio frame.
+ *
+ * ```tsx
+ * <Image src={url} alt="Team offsite" ratio={16 / 9} radius="surface" />
+ * <Image src={avatarUrl} alt="" radius="full" fallback="KA" style={{ width: 40 }} />
+ * ```
  */
 export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Image(
   {
+    alt,
     fit = 'cover',
     radius = 'control',
     ratio,
@@ -44,13 +51,31 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(function Ima
 ) {
   const [failed, setFailed] = React.useState(false);
 
+  // A new source deserves a fresh attempt: clear the error state when `src`
+  // or `srcSet` changes. Derived reset during render — no effect round-trip.
+  const source = `${props.src ?? ''}|${props.srcSet ?? ''}`;
+  const [prevSource, setPrevSource] = React.useState(source);
+  if (source !== prevSource) {
+    setPrevSource(source);
+    setFailed(false);
+  }
+
   const content = failed ? (
-    <span className={cx('zest-image__fallback', className)} data-radius={radius}>
+    <span
+      className={cx('zest-image__fallback', className)}
+      data-radius={radius}
+      // Keep the image's accessible name when the <img> is swapped out;
+      // decorative images (alt="") stay out of the accessibility tree.
+      role={alt ? 'img' : undefined}
+      aria-label={alt || undefined}
+      aria-hidden={alt ? undefined : true}
+    >
       {fallback}
     </span>
   ) : (
     <img
       ref={ref}
+      alt={alt}
       loading={loading ?? 'lazy'}
       className={cx('zest-image', className)}
       data-fit={fit}

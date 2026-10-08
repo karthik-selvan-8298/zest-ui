@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Meter as BaseMeter } from '@base-ui/react/meter';
 import { cx } from '../../utils';
-import type { WithClassName, ZestColor } from '../../types';
+import type { AccessibleName, WithClassName, ZestColor } from '../../types';
 import '../../base.css';
 import './Meter.css';
 
@@ -12,6 +12,7 @@ interface MeterBaseProps extends WithClassName<
   value: number;
   /** Tone of the indicator. Overridden by `thresholds` once they are crossed. */
   color?: ZestColor;
+  /** Track thickness. @default 'md' */
   size?: 'sm' | 'md';
   /** Show the formatted value (e.g. "40%") next to the label. */
   showValue?: boolean;
@@ -28,13 +29,11 @@ interface MeterBaseProps extends WithClassName<
   segments?: number;
 }
 
-/** A Meter must have an accessible name: a visible `label`, or an aria name. */
-type MeterLabelling =
-  | { label: React.ReactNode; 'aria-label'?: string; 'aria-labelledby'?: string }
-  | { label?: React.ReactNode; 'aria-label': string; 'aria-labelledby'?: string }
-  | { label?: React.ReactNode; 'aria-label'?: string; 'aria-labelledby': string };
-
-export type MeterProps = MeterBaseProps & MeterLabelling;
+/**
+ * A meter must have an accessible name: a visible `label` (rendered above the
+ * track), `aria-label`, or `aria-labelledby`.
+ */
+export type MeterProps = MeterBaseProps & AccessibleName;
 
 /**
  * Static measurement bar on Base UI Meter — quota used, storage, password

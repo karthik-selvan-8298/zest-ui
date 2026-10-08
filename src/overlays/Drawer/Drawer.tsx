@@ -7,18 +7,6 @@ import { IconButton } from '../../actions/IconButton/IconButton';
 import '../../base.css';
 import './Drawer.css';
 
-/*
- * Drawer — a modal side sheet built on the Base UI dialog primitive
- * (focus trapping, dismissal, and aria wiring come for free).
- *
- * <Drawer.Root>
- *   <Drawer.Trigger render={<Button>Open filters</Button>} />
- *   <Drawer.Content title="Filters" side="right" size="md">
- *     …body…
- *   </Drawer.Content>
- * </Drawer.Root>
- */
-
 export interface DrawerContentProps extends WithClassName<
   Omit<React.ComponentProps<typeof BaseDialog.Popup>, 'title'>
 > {
@@ -35,6 +23,7 @@ export interface DrawerContentProps extends WithClassName<
   children?: React.ReactNode;
 }
 
+/** Portal + backdrop + edge-anchored sheet with an optional header and a scrollable body. */
 const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(function DrawerContent(
   {
     side = 'right',
@@ -58,7 +47,7 @@ const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(funct
         data-size={size}
         {...props}
       >
-        {title || !hideClose ? (
+        {title || description || !hideClose ? (
           <header className="zest-drawer__header">
             <div className="zest-drawer__heading">
               {title ? (
@@ -87,6 +76,19 @@ const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(funct
   );
 });
 
+/**
+ * Drawer — a modal side sheet built on the Base UI dialog primitive
+ * (focus trapping, dismissal, and aria wiring come for free).
+ *
+ * ```tsx
+ * <Drawer.Root>
+ *   <Drawer.Trigger render={<Button>Open filters</Button>} />
+ *   <Drawer.Content title="Filters" side="right" size="md">
+ *     …body…
+ *   </Drawer.Content>
+ * </Drawer.Root>
+ * ```
+ */
 export const Drawer = {
   Root: BaseDialog.Root,
   Trigger: BaseDialog.Trigger,

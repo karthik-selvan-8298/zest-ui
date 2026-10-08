@@ -4,12 +4,6 @@ import { cx, useControllableState } from '../../utils';
 import '../../base.css';
 import './Pagination.css';
 
-/*
- * Pagination — numbered page buttons with sibling/boundary ellipsis logic.
- *
- * <Pagination count={20} defaultPage={1} onPageChange={(page) => …} />
- */
-
 export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
   /** Total number of pages. */
   count: number;
@@ -19,14 +13,17 @@ export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>,
   defaultPage?: number;
   /** Called with the next page on every change. */
   onPageChange?: (page: number) => void;
-  /** Pages shown on each side of the current page. */
+  /** Pages shown on each side of the current page. Defaults to `1`. */
   siblingCount?: number;
-  /** Pages always shown at the start and end. */
+  /** Pages always shown at the start and end. Defaults to `1`. */
   boundaryCount?: number;
+  /** `md` (default) = 32px items; `sm` = 26px. */
   size?: 'sm' | 'md';
+  /** Disables every button, including prev/next. */
   disabled?: boolean;
 }
 
+/** A page number, or an ellipsis standing in for a hidden run of pages. */
 type PaginationEntry = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(start: number, end: number): number[] {
@@ -35,6 +32,11 @@ function range(start: number, end: number): number[] {
   return result;
 }
 
+/**
+ * Builds the visible sequence, e.g. `[1, 'start-ellipsis', 9, 10, 11, 'end-ellipsis', 20]`.
+ * The item count stays constant as `page` moves (MUI's `usePagination`
+ * algorithm): an ellipsis that would hide a single page shows that page instead.
+ */
 function buildEntries(
   count: number,
   page: number,
@@ -70,6 +72,14 @@ function buildEntries(
   ];
 }
 
+/**
+ * Numbered page buttons with prev/next arrows and sibling/boundary ellipses.
+ *
+ * ```tsx
+ * <Pagination count={20} defaultPage={1} onPageChange={(page) => load(page)} />
+ * <Pagination count={20} page={page} onPageChange={setPage} siblingCount={2} size="sm" />
+ * ```
+ */
 export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(function Pagination(
   {
     count,

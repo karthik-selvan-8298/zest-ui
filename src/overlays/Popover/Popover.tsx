@@ -4,24 +4,19 @@ import { cx } from '../../utils';
 import type { WithClassName } from '../../types';
 import './Popover.css';
 
-/*
- * Composable popover on Base UI.
- *
- * <Popover.Root>
- *   <Popover.Trigger render={<Button>Open</Button>} />
- *   <Popover.Content side="bottom">…</Popover.Content>
- * </Popover.Root>
- */
-
 export interface PopoverContentProps extends WithClassName<
   React.ComponentProps<typeof BasePopover.Popup>
 > {
+  /** Side of the trigger the popup is placed on. @default 'bottom' */
   side?: 'top' | 'bottom' | 'left' | 'right';
+  /** Alignment along the chosen side. @default 'center' */
   align?: 'start' | 'center' | 'end';
+  /** Gap between the trigger and the popup, in px. @default 6 */
   sideOffset?: number;
   children?: React.ReactNode;
 }
 
+/** Portal → Positioner → Popup with the shared floating-surface recipe. */
 const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
   function PopoverContent(
     { side = 'bottom', align = 'center', sideOffset = 6, className, children, ...props },
@@ -44,6 +39,17 @@ const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
   }
 );
 
+/**
+ * Composable popover on Base UI — non-modal floating panel anchored to its
+ * trigger, with focus management and dismissal from the primitive.
+ *
+ * ```tsx
+ * <Popover.Root>
+ *   <Popover.Trigger render={<Button>Open</Button>} />
+ *   <Popover.Content side="bottom">…</Popover.Content>
+ * </Popover.Root>
+ * ```
+ */
 export const Popover = {
   Root: BasePopover.Root,
   Trigger: BasePopover.Trigger,

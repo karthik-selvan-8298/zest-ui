@@ -107,7 +107,7 @@ export * from './layout/ScrollArea';
 
 // Utilities
 export * from './utilities/Kbd';
+export * from './utilities/VisuallyHidden';
 
 // Patterns (also available from 'zest-ui/patterns')
 export * from './patterns';
-export * from './utilities/VisuallyHidden';

@@ -3,20 +3,6 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './List.css';
 
-/*
- * List — composable rows with icon / two-line text / trailing action slots.
- *
- * <List.Root bordered>
- *   <List.Item onClick={open}>
- *     <List.ItemIcon><UserIcon /></List.ItemIcon>
- *     <List.ItemText primary="Ada Lovelace" secondary="Engineering" />
- *     <List.ItemAction><IconButton …/></List.ItemAction>
- *   </List.Item>
- *   <List.Row leading={<Avatar …/>} title="Grace Hopper" subtitle="Compilers"
- *     trailing={<IconButton …/>} onClick={open} divider />
- * </List.Root>
- */
-
 export interface ListRootProps extends React.HTMLAttributes<HTMLUListElement> {
   /** Wrap the list in a subtle border with row dividers. */
   bordered?: boolean;
@@ -46,6 +32,10 @@ export interface ListItemProps extends Omit<React.LiHTMLAttributes<HTMLLIElement
   children?: React.ReactNode;
 }
 
+/**
+ * A row. With `onClick` the whole content becomes a `<button>`, so don't put
+ * other interactive controls inside — use `List.Row` with `trailing` for that.
+ */
 const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(function ListItem(
   { onClick, className, children, ...props },
   ref
@@ -68,6 +58,7 @@ const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(function ListIte
   );
 });
 
+/** Leading icon/avatar slot (non-shrinking, secondary tone). */
 const ListItemIcon = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
   function ListItemIcon({ className, ...props }, ref) {
     return <span ref={ref} className={cx('zest-list__item-icon', className)} {...props} />;
@@ -97,6 +88,7 @@ const ListItemText = React.forwardRef<HTMLSpanElement, ListItemTextProps>(functi
   );
 });
 
+/** Trailing slot, pushed to the row's end. */
 const ListItemAction = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
   function ListItemAction({ className, ...props }, ref) {
     return <span ref={ref} className={cx('zest-list__item-action', className)} {...props} />;
@@ -205,6 +197,21 @@ const ListRow = React.forwardRef<HTMLLIElement, ListRowProps>(function ListRow(
   );
 });
 
+/**
+ * Composable list rows with icon / two-line text / trailing action slots.
+ * `List.Row` is the ready-made recipe; the `Item*` parts compose freely.
+ *
+ * ```tsx
+ * <List.Root bordered>
+ *   <List.Item onClick={open}>
+ *     <List.ItemIcon><UserIcon /></List.ItemIcon>
+ *     <List.ItemText primary="Ada Lovelace" secondary="Engineering" />
+ *   </List.Item>
+ *   <List.Row leading={<Avatar …/>} title="Grace Hopper" subtitle="Compilers"
+ *     trailing={<IconButton …/>} onClick={open} divider />
+ * </List.Root>
+ * ```
+ */
 export const List = {
   Root: ListRoot,
   Item: ListItem,

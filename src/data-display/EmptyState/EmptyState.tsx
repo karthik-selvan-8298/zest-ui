@@ -5,20 +5,6 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './EmptyState.css';
 
-/*
- * EmptyState — the standard "nothing here yet" block for tables and lists.
- * `state` switches it into a loading or error placeholder with matching
- * semantics so one slot covers the whole async lifecycle.
- *
- * <EmptyState
- *   title="No projects yet"
- *   description="Create your first project to get started."
- *   action={<Button startIcon={<PlusIcon />}>New project</Button>}
- * />
- * <EmptyState state="loading" />
- * <EmptyState state="error" title="Couldn't load" action={<Button>Retry</Button>} />
- */
-
 export type EmptyStateState = 'empty' | 'loading' | 'error';
 
 export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
@@ -43,12 +29,28 @@ export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   state?: EmptyStateState;
 }
 
+/** Per-state icon used when `icon` is omitted. */
 const defaultIcon = (state: EmptyStateState, size: 'sm' | 'md') => {
   if (state === 'loading') return <Spinner size={size === 'sm' ? 'md' : 'lg'} />;
   if (state === 'error') return <ErrorCircleIcon />;
   return <InboxIcon />;
 };
 
+/**
+ * The standard "nothing here yet" block for tables and lists. `state`
+ * switches it into a loading or error placeholder with matching semantics,
+ * so one slot covers the whole async lifecycle.
+ *
+ * ```tsx
+ * <EmptyState
+ *   title="No projects yet"
+ *   description="Create your first project to get started."
+ *   action={<Button startIcon={<PlusIcon />}>New project</Button>}
+ * />
+ * <EmptyState state="loading" />
+ * <EmptyState state="error" title="Couldn't load" action={<Button>Retry</Button>} />
+ * ```
+ */
 export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
   { icon, title, description, action, size = 'md', state = 'empty', className, ...props },
   ref

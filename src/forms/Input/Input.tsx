@@ -7,7 +7,10 @@ import './Input.css';
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
-  /** Error appearance (also set automatically inside an invalid FormField). */
+  /**
+   * Error appearance; also sets `aria-invalid` on the control. Inside a
+   * `FormField`, pair it with the field's `invalid` state (TextField does this).
+   */
   error?: boolean;
   /** Leading adornment (icon, prefix text). */
   startAdornment?: React.ReactNode;
@@ -28,8 +31,13 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 }
 
 /**
- * Text input. Integrates with FormField (Base UI Field) for automatic
- * label/description/error wiring.
+ * Text input on Base UI Input (a Field control), so a surrounding `FormField`
+ * wires its label, description and validation state automatically.
+ *
+ * ```tsx
+ * <Input placeholder="Search…" startIcon={<SearchIcon />} />
+ * <Input size="sm" error aria-label="Amount" endAdornment="USD" />
+ * ```
  */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
@@ -64,6 +72,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
         ref={ref}
         className="zest-input__control"
         disabled={disabled}
+        aria-invalid={error || undefined}
         // :placeholder-shown drives the floating-label rest position.
         placeholder={floatingLabel ? (placeholder ?? ' ') : placeholder}
         {...props}

@@ -296,14 +296,9 @@
 
 .zest-navigation-menu__link-description {
   display: block;
+  /* Set explicitly (not inherited), so only the label picks up the hover accent. */
   color: var(--zest-color-text-secondary);
   font-size: var(--zest-font-size-xs);
   font-weight: var(--zest-font-weight-regular);
   line-height: var(--zest-line-height-normal);
-}
-
-/* Description keeps its own tone; only the label picks up the accent. */
-.zest-navigation-menu__link:hover .zest-navigation-menu__link-description,
-.zest-navigation-menu__link[data-active] .zest-navigation-menu__link-description {
-  color: var(--zest-color-text-secondary);
 }

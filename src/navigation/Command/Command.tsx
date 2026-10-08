@@ -5,8 +5,11 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './Command.css';
 
+/** One command in the palette. */
 export interface CommandItem {
+  /** Stable unique id — used as the React key and the option's DOM id suffix. */
   id: string;
+  /** Visible text; also the primary term the filter matches. */
   label: string;
   /** Optional group heading the item is rendered under. */
   group?: string;
@@ -15,14 +18,20 @@ export interface CommandItem {
   shortcut?: string;
   /** Extra terms the filter matches in addition to the label. */
   keywords?: string[];
+  /** Runs on click / Enter; the palette closes afterwards. */
   onSelect?: () => void;
 }
 
 export interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Whether the palette is open (always controlled). */
   open: boolean;
+  /** Called on Escape, backdrop click and after a command is selected. */
   onOpenChange: (open: boolean) => void;
+  /** Commands in display order; items sharing a `group` render under one heading. */
   items: ReadonlyArray<CommandItem>;
+  /** Search input placeholder — also its accessible name. Defaults to `Type a command…`. */
   placeholder?: string;
+  /** Shown when nothing matches the query. Defaults to `No results`. */
   emptyMessage?: React.ReactNode;
 }
 
@@ -31,6 +40,7 @@ interface CommandGroup {
   items: CommandItem[];
 }
 
+/** Buckets items by `group`, keeping the first-seen order of both groups and items. */
 function groupItems(items: ReadonlyArray<CommandItem>): CommandGroup[] {
   const groups: CommandGroup[] = [];
   const byLabel = new Map<string | undefined, CommandGroup>();
@@ -103,6 +113,8 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>(function C
     }
   }
 
+  // Focus stays in the input (aria-activedescendant pattern), so the browser
+  // won't scroll the highlighted option into view on its own.
   React.useEffect(() => {
     if (!highlighted) return;
     document.getElementById(`${listboxId}-${highlighted.id}`)?.scrollIntoView({ block: 'nearest' });
@@ -185,6 +197,7 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>(function C
                         aria-selected={isHighlighted}
                         data-highlighted={isHighlighted ? '' : undefined}
                         className="zest-command__item"
+                        // Keep focus (and the caret) in the search input.
                         onMouseDown={(event) => event.preventDefault()}
                         onMouseMove={() => {
                           const index = flat.indexOf(item);

@@ -29,11 +29,6 @@
   padding-inline: var(--zest-space-2);
 }
 
-.zest-sidebar__header[data-mini] {
-  display: flex;
-  justify-content: center;
-}
-
 .zest-sidebar__nav {
   flex: 1;
   padding: var(--zest-space-2) var(--zest-space-3) var(--zest-space-4);
@@ -254,6 +249,8 @@
 /* ── Mini rail (collapsed): icon only, label surfaced via tooltip ─────── */
 .zest-sidebar[data-collapsed] .zest-sidebar__nav {
   padding-inline: var(--zest-space-2);
+  /* Flyouts must escape the nav scroll area. */
+  overflow: visible;
 }
 
 .zest-sidebar[data-collapsed] .zest-sidebar__row {
@@ -272,11 +269,6 @@
 .zest-sidebar[data-collapsed] .zest-sidebar__badge,
 .zest-sidebar[data-collapsed] .zest-sidebar__chevron {
   display: none;
-}
-
-/* Mini rail: flyouts must escape the nav scroll area. */
-.zest-sidebar[data-collapsed] .zest-sidebar__nav {
-  overflow: visible;
 }
 
 .zest-sidebar[data-collapsed] .zest-sidebar__item {
@@ -326,8 +318,6 @@
 }
 
 .zest-sidebar__flyout-header .zest-sidebar__icon {
-  width: 20px;
-  height: 20px;
   color: var(--zest-color-primary);
 }
 

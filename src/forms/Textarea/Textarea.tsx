@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Field } from '@base-ui/react/field';
 import { cx } from '../../utils';
 import '../../base.css';
 import './Textarea.css';
@@ -6,7 +7,7 @@ import './Textarea.css';
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /** Field size — matches `Input`. Defaults to `md`. */
   size?: 'sm' | 'md';
-  /** Error appearance (also set automatically inside an invalid FormField). */
+  /** Error appearance; also sets `aria-invalid` on the control. */
   error?: boolean;
   /** Stretch to container width. */
   fullWidth?: boolean;
@@ -25,14 +26,18 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   ref
 ) {
   return (
-    <textarea
-      ref={ref}
-      rows={rows}
+    // Rendered through Field.Control (as Input is) so a surrounding FormField
+    // can associate its Label, HelperText and validation state with the
+    // <textarea>; standalone it behaves like a plain element.
+    <Field.Control
+      ref={ref as React.Ref<HTMLElement>}
+      render={<textarea rows={rows} />}
       className={cx('zest-textarea', className)}
       data-size={size}
       data-error={error ? '' : undefined}
       data-full-width={fullWidth ? '' : undefined}
-      {...props}
+      aria-invalid={error || undefined}
+      {...(props as Field.Control.Props)}
     />
   );
 });

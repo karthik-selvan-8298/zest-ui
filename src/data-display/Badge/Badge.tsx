@@ -4,15 +4,6 @@ import type { ZestColor } from '../../types';
 import '../../base.css';
 import './Badge.css';
 
-/*
- * Badge — a small count or dot anchored to a child element,
- * or an inline pill when used standalone (no children).
- *
- * <Badge count={5} color="error"><IconButton …/></Badge>
- * <Badge dot color="success"><Avatar …/></Badge>
- * <Badge count={120} max={99} />   // standalone "99+" pill
- */
-
 export type BadgePosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
 export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'> {
@@ -22,6 +13,7 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
   max?: number;
   /** Render a small dot instead of a count. */
   dot?: boolean;
+  /** @default 'error' */
   color?: ZestColor;
   /** Show the badge when `count` is 0. */
   showZero?: boolean;
@@ -31,6 +23,16 @@ export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 
   children?: React.ReactNode;
 }
 
+/**
+ * A small count or dot anchored to a child element, or an inline pill when
+ * used standalone (no children). Hidden when `count` is 0 unless `showZero`.
+ *
+ * ```tsx
+ * <Badge count={5} color="error"><IconButton …/></Badge>
+ * <Badge dot color="success"><Avatar …/></Badge>
+ * <Badge count={120} max={99} />   // standalone "99+" pill
+ * ```
+ */
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   {
     count,
@@ -49,6 +51,8 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
   const visible = dot || hasCount;
   const label = dot ? null : hasCount ? (count > max ? `${max}+` : String(count)) : null;
 
+  const standalone = children === undefined;
+
   const indicator = visible ? (
     <span
       className="zest-badge__indicator"
@@ -60,16 +64,13 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
     </span>
   ) : null;
 
-  if (children === undefined) {
-    return (
-      <span ref={ref} className={cx('zest-badge', className)} data-standalone="" {...props}>
-        {indicator}
-      </span>
-    );
-  }
-
   return (
-    <span ref={ref} className={cx('zest-badge', className)} {...props}>
+    <span
+      ref={ref}
+      className={cx('zest-badge', className)}
+      data-standalone={standalone ? '' : undefined}
+      {...props}
+    >
       {children}
       {indicator}
     </span>

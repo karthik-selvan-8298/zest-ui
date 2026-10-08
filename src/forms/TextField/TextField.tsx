@@ -14,6 +14,7 @@ export interface TextFieldProps extends InputProps {
   helperText?: React.ReactNode;
   /** Error message. When set, the field renders in its error state. */
   errorText?: React.ReactNode;
+  /** Marks the label with an asterisk and sets `required` on the input. */
   required?: boolean;
   /** Name for form submission and Field wiring. */
   name?: string;
@@ -42,6 +43,8 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
   ref
 ) {
   const hasError = Boolean(errorText) || error;
+  // A floating label lives inside the Input (it must follow the <input> for
+  // the :placeholder-shown sibling selector); a top label sits above it.
   const floating = labelPlacement === 'floating' && label;
   return (
     <FormField name={name} disabled={disabled} invalid={hasError || undefined}>
@@ -59,6 +62,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(func
         }
         {...inputProps}
       />
+      {/* `match` shows the message regardless of native validity state. */}
       {errorText ? <FieldError match>{errorText}</FieldError> : null}
       {helperText && !errorText ? <HelperText>{helperText}</HelperText> : null}
     </FormField>

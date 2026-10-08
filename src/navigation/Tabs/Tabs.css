@@ -72,6 +72,12 @@
     width var(--zest-duration-normal) var(--zest-ease-emphasized);
 }
 
+.zest-tabs__panel {
+  padding-top: var(--zest-space-4);
+  font-family: var(--zest-font-family-sans);
+  outline: none;
+}
+
 /* ── Segmented variant — pill container, solid accent active pill ─────── */
 .zest-tabs__list[data-variant='segmented'] {
   display: inline-flex;
@@ -79,7 +85,6 @@
   gap: var(--zest-space-1);
   padding: var(--zest-inset-panel);
   border: 1px solid var(--zest-color-border);
-  border-bottom: 1px solid var(--zest-color-border);
   border-radius: var(--zest-radius-full);
   background: var(--zest-color-surface);
 }
@@ -110,12 +115,6 @@
   color: var(--zest-color-primary-contrast);
 }
 
-.zest-tabs__panel {
-  padding-top: var(--zest-space-4);
-  font-family: var(--zest-font-family-sans);
-  outline: none;
-}
-
 /* ── Soft variant — muted track, active tab raised as a light chip ─────── */
 .zest-tabs__list[data-variant='soft'] {
   display: inline-flex;
@@ -123,7 +122,6 @@
   gap: var(--zest-space-1);
   padding: var(--zest-inset-panel);
   border: 0;
-  border-bottom: 0;
   border-radius: var(--zest-radius-control);
   background: var(--zest-color-background-neutral);
 }

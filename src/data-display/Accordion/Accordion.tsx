@@ -6,17 +6,6 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './Accordion.css';
 
-/*
- * Accordion on Base UI — keyboard support, aria wiring, animated panels.
- *
- * <Accordion.Root defaultValue={['billing']} multiple>
- *   <Accordion.Item value="billing">
- *     <Accordion.Trigger>Billing</Accordion.Trigger>
- *     <Accordion.Panel>…</Accordion.Panel>
- *   </Accordion.Item>
- * </Accordion.Root>
- */
-
 export type AccordionRootProps = WithClassName<React.ComponentProps<typeof BaseAccordion.Root>>;
 
 const AccordionRoot = React.forwardRef<HTMLDivElement, AccordionRootProps>(function AccordionRoot(
@@ -74,6 +63,19 @@ const AccordionPanel = React.forwardRef<HTMLDivElement, AccordionPanelProps>(
   }
 );
 
+/**
+ * Accordion on Base UI — keyboard support, `aria-expanded`/`aria-controls`
+ * wiring and animated panels come from the primitive.
+ *
+ * ```tsx
+ * <Accordion.Root defaultValue={['billing']} multiple>
+ *   <Accordion.Item value="billing">
+ *     <Accordion.Trigger>Billing</Accordion.Trigger>
+ *     <Accordion.Panel>…</Accordion.Panel>
+ *   </Accordion.Item>
+ * </Accordion.Root>
+ * ```
+ */
 export const Accordion = {
   Root: AccordionRoot,
   Item: AccordionItem,

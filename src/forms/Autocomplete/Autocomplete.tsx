@@ -4,6 +4,7 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './Autocomplete.css';
 
+/** A suggestion with a stable `value` distinct from its display `label`. */
 export interface AutocompleteSuggestion {
   value: string;
   /** Plain-text label shown in the list and filled into the input. */
@@ -21,8 +22,11 @@ export interface AutocompleteProps extends Omit<
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   placeholder?: string;
+  /** Field size. @default 'md' */
   size?: 'sm' | 'md';
+  /** Error appearance; also sets `aria-invalid` on the input. */
   error?: boolean;
+  /** Stretch to container width. */
   fullWidth?: boolean;
   disabled?: boolean;
   /** Message shown when no suggestion matches. Defaults to “No results”. */
@@ -55,8 +59,10 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
     },
     ref
   ) {
+    // The popup anchors to the whole input group, matching Combobox.
     const groupRef = React.useRef<HTMLDivElement | null>(null);
 
+    // Normalise plain strings so Base UI always works with one item shape.
     const items = React.useMemo<AutocompleteSuggestion[]>(
       () =>
         suggestions.map((suggestion) =>
@@ -85,6 +91,7 @@ export const Autocomplete = React.forwardRef<HTMLInputElement, AutocompleteProps
             ref={ref}
             placeholder={placeholder}
             className="zest-autocomplete__input"
+            aria-invalid={error || undefined}
             {...inputProps}
           />
         </BaseAutocomplete.InputGroup>

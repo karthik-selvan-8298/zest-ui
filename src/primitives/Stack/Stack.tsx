@@ -14,7 +14,16 @@ export type StackProps<E extends React.ElementType = 'div'> = Omit<FlexProps<E>,
 /**
  * Vertical (by default) one-dimensional layout with consistent spacing.
  * Horizontal stacks (`direction="row"`) can collapse back to a column on
- * phones via `stackOnMobile`.
+ * phones via `stackOnMobile`. Accepts every Flex prop except `gap`
+ * (use `spacing`).
+ *
+ * ```tsx
+ * <Stack spacing={3}>
+ *   <TextField label="Name" />
+ *   <TextField label="Email" />
+ * </Stack>
+ * <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" />}>…</Stack>
+ * ```
  */
 export const Stack = React.forwardRef(function Stack<E extends React.ElementType = 'div'>(
   props: StackProps<E>,
@@ -30,6 +39,7 @@ export const Stack = React.forwardRef(function Stack<E extends React.ElementType
 
   let content = children;
   if (divider) {
+    // Interleave a keyed clone of `divider` between the non-empty children.
     const items = React.Children.toArray(children).filter(Boolean);
     content = items.flatMap((child, index) =>
       index === 0 ? [child] : [React.cloneElement(divider, { key: `divider-${index}` }), child]

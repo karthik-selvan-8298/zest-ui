@@ -1,5 +1,6 @@
 import type { ThemeColors, ZestTheme, ZestThemeOptions } from './types';
 
+/** Tones that accept a `ToneOverride` (mirrors `ZestColor`). */
 const toneKeys = [
   'primary',
   'secondary',
@@ -10,6 +11,7 @@ const toneKeys = [
   'neutral',
 ] as const;
 
+/** Maps a `ThemeColors` object onto the semantic `--zest-color-*` variables. */
 function colorVars(colors: ThemeColors | undefined): Record<string, string> {
   if (!colors) return {};
   const vars: Record<string, string> = {};
@@ -35,7 +37,16 @@ function colorVars(colors: ThemeColors | undefined): Record<string, string> {
 
 /**
  * Creates a Zest theme: a set of semantic CSS-variable overrides applied by
- * `<ZestProvider>`. Components never change — themes only move token values.
+ * `<ZestProvider>` (app-wide) or `<Theme>` (one subtree). Components never
+ * change — themes only move token values.
+ *
+ * ```ts
+ * const theme = createTheme({
+ *   colors: { primary: { main: '#0E9F6E', hover: '#057A55' } },
+ *   radius: { md: '8px' },
+ *   cssVars: { '--zest-button-height-md': '40px' },
+ * });
+ * ```
  */
 export function createTheme(options: ZestThemeOptions = {}): ZestTheme {
   const cssVars: Record<string, string> = { ...colorVars(options.colors) };
@@ -48,7 +59,7 @@ export function createTheme(options: ZestThemeOptions = {}): ZestTheme {
     cssVars['--zest-font-family-mono'] = options.typography.fontFamilyMono;
   }
   for (const [key, value] of Object.entries(options.radius ?? {})) {
-    cssVars[`--zest-radius-${key}`] = value as string;
+    if (value) cssVars[`--zest-radius-${key}`] = value;
   }
   Object.assign(cssVars, options.cssVars);
   Object.assign(darkCssVars, options.darkCssVars);

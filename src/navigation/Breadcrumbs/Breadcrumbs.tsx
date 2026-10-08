@@ -4,19 +4,6 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './Breadcrumbs.css';
 
-/*
- * Breadcrumbs — plain semantic markup, no primitive needed.
- *
- * <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reports' }]} />
- *
- * or composed:
- *
- * <Breadcrumbs>
- *   <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
- *   <Breadcrumbs.Item>Reports</Breadcrumbs.Item>
- * </Breadcrumbs>
- */
-
 interface BreadcrumbsItemBaseProps {
   /**
    * Marks the crumb as the current page (`aria-current="page"`, no link).
@@ -46,6 +33,7 @@ export type BreadcrumbsItemTextProps = BreadcrumbsItemBaseProps &
  */
 export type BreadcrumbsItemProps = BreadcrumbsItemLinkProps | BreadcrumbsItemTextProps;
 
+/** One crumb: a link when it has `href` and isn't current, otherwise plain text. */
 const BreadcrumbsItem = React.forwardRef<HTMLAnchorElement | HTMLSpanElement, BreadcrumbsItemProps>(
   function BreadcrumbsItem({ href, current = false, className, children, ...props }, ref) {
     if (current || href === undefined) {
@@ -79,8 +67,10 @@ const BreadcrumbsItem = React.forwardRef<HTMLAnchorElement | HTMLSpanElement, Br
   }
 );
 
+/** A crumb in the data-driven `items` API. */
 export interface BreadcrumbItem {
   label: React.ReactNode;
+  /** Omit for a non-link crumb (the last crumb is always rendered as text). */
   href?: string;
 }
 
@@ -98,6 +88,7 @@ export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
 }
 
+/** Placeholder for the collapsed middle — a Symbol can't collide with a real crumb. */
 const ELLIPSIS = Symbol('zest-breadcrumbs-ellipsis');
 
 const BreadcrumbsRoot = React.forwardRef<HTMLElement, BreadcrumbsProps>(function Breadcrumbs(
@@ -156,6 +147,19 @@ const BreadcrumbsRoot = React.forwardRef<HTMLElement, BreadcrumbsProps>(function
   );
 });
 
+/**
+ * Breadcrumb trail — plain semantic `<nav>` + `<ol>`, no primitive needed.
+ * The last crumb is marked `aria-current="page"` automatically.
+ *
+ * ```tsx
+ * <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reports' }]} />
+ *
+ * <Breadcrumbs maxItems={3}>
+ *   <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+ *   <Breadcrumbs.Item>Reports</Breadcrumbs.Item>
+ * </Breadcrumbs>
+ * ```
+ */
 export const Breadcrumbs = Object.assign(BreadcrumbsRoot, {
   Item: BreadcrumbsItem,
 });

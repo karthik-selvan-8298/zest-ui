@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { Field } from '@base-ui/react/field';
 import { ChevronDownIcon } from '../../icons';
 import { cx } from '../../utils';
 import '../../base.css';
 import './NativeSelect.css';
 
+/** One `<option>` of a NativeSelect. */
 export interface NativeSelectOption {
   value: string;
   label: string;
@@ -18,7 +20,7 @@ export interface NativeSelectProps extends Omit<
   options: NativeSelectOption[];
   /** Field size. Defaults to `md`. */
   size?: 'sm' | 'md';
-  /** Error appearance. */
+  /** Error appearance; also sets `aria-invalid` on the `<select>`. */
   error?: boolean;
   /** Stretch to container width. */
   fullWidth?: boolean;
@@ -40,7 +42,18 @@ export interface NativeSelectProps extends Omit<
  */
 export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
   function NativeSelect(
-    { options, size = 'md', error, fullWidth, placeholder, className, disabled, ...props },
+    {
+      options,
+      size = 'md',
+      error,
+      fullWidth,
+      placeholder,
+      className,
+      disabled,
+      // Options come from `options`; stray children would replace them.
+      children: _children,
+      ...props
+    },
     ref
   ) {
     const hasValue = props.value !== undefined || props.defaultValue !== undefined;
@@ -53,24 +66,31 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProp
         data-disabled={disabled ? '' : undefined}
         data-full-width={fullWidth ? '' : undefined}
       >
-        <select
-          ref={ref}
+        {/* Field.Control (as Input uses) lets a surrounding FormField label,
+            describe and validate the <select>; standalone it is a plain element. */}
+        <Field.Control
+          ref={ref as React.Ref<HTMLElement>}
+          render={
+            <select>
+              {placeholder !== undefined ? (
+                <option value="" disabled>
+                  {placeholder}
+                </option>
+              ) : null}
+              {options.map((option) => (
+                <option key={option.value} value={option.value} disabled={option.disabled}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          }
           className="zest-native-select__control zest-focusable"
           disabled={disabled}
+          aria-invalid={error || undefined}
+          // Select the empty placeholder option unless a value was given.
           defaultValue={placeholder !== undefined && !hasValue ? '' : undefined}
-          {...props}
-        >
-          {placeholder !== undefined ? (
-            <option value="" disabled>
-              {placeholder}
-            </option>
-          ) : null}
-          {options.map((option) => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          {...(props as Field.Control.Props)}
+        />
         <span className="zest-native-select__icon" aria-hidden>
           <ChevronDownIcon />
         </span>

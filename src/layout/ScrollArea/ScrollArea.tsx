@@ -17,6 +17,13 @@ export interface ScrollAreaProps extends WithClassName<
 /**
  * Themed scroll container — replacement for a raw `overflow: auto` div,
  * with overlay scrollbars that match the design system in every browser.
+ * The size constraints are mirrored onto the viewport (`max-*: inherit`).
+ *
+ * ```tsx
+ * <ScrollArea maxHeight={320}>
+ *   <List>{rows}</List>
+ * </ScrollArea>
+ * ```
  */
 export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(function ScrollArea(
   { maxHeight, maxWidth, className, children, style, ...props },
@@ -26,7 +33,13 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(func
     <BaseScrollArea.Root
       ref={ref}
       className={cx('zest-scroll-area', className)}
-      style={{ maxHeight, maxWidth, ...style }}
+      // Base UI also accepts `style` as a function of component state; keep
+      // that form working while layering the size constraints underneath.
+      style={
+        typeof style === 'function'
+          ? (state) => ({ maxHeight, maxWidth, ...style(state) })
+          : { maxHeight, maxWidth, ...style }
+      }
       {...props}
     >
       <BaseScrollArea.Viewport className="zest-scroll-area__viewport">

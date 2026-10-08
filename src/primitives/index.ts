@@ -6,6 +6,6 @@ export * from './Container';
 export * from './Divider';
 export * from './Paper';
 export * from './Typography';
-export { AspectRatio, type AspectRatioProps } from './misc/AspectRatio';
+export * from './AspectRatio';
 export type { PolymorphicProps } from './polymorphic';
 export { resolveSpace, type SpaceValue } from './space';

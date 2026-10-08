@@ -12,7 +12,11 @@
 .zest-image[data-fit='fill'] {
   object-fit: fill;
 }
+.zest-image[data-fit='none'] {
+  object-fit: none;
+}
 
+/* radius="none" needs no rule: the elements have no radius by default. */
 .zest-image[data-radius='control'],
 .zest-image__frame[data-radius='control'],
 .zest-image__fallback[data-radius='control'] {

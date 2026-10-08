@@ -331,7 +331,9 @@
 }
 
 /* System appearance: apply dark semantics when the OS prefers dark and no
-   explicit choice was made (ZestProvider stamps data-zest-theme for explicit modes). */
+   explicit choice was made (ZestProvider stamps data-zest-theme for explicit modes).
+   CSS can't share a declaration block across selectors with different
+   conditions, so this duplicates the explicit dark block — keep them in sync. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-zest-theme='light']):not([data-zest-theme='dark']) {
     color-scheme: dark;
@@ -345,7 +347,7 @@
     --zest-color-primary-active: var(--zest-primary-300);
     --zest-color-primary-contrast: var(--zest-gray-900);
     /* primary-300 alone is 3.9:1 on the 8% violet tint (active nav row, soft
-     buttons) — lifted toward white to clear AA (≈6:1) while staying lavender. */
+       buttons) — lifted toward white to clear AA (≈6:1) while staying lavender. */
     --zest-color-primary-subtle-text: color-mix(
       in srgb,
       var(--zest-primary-300) 70%,

@@ -5,8 +5,10 @@ import { cx } from '../../utils';
 import '../../base.css';
 import './Select.css';
 
+/** One row of a Select. */
 export interface SelectOption<T extends string = string> {
   value: T;
+  /** Row and trigger content. String labels are also matched by the in-popup search. */
   label: React.ReactNode;
   disabled?: boolean;
   /** Extra terms the in-popup search matches (useful when `label` is not a string). */
@@ -18,9 +20,13 @@ interface SelectBaseProps<T extends string = string> extends Omit<
   'value' | 'defaultValue' | 'onChange' | 'size' | 'name'
 > {
   options: ReadonlyArray<SelectOption<T>>;
+  /** Trigger content while nothing is selected. @default 'Select…' */
   placeholder?: React.ReactNode;
+  /** Field size. @default 'md' */
   size?: 'sm' | 'md';
+  /** Error appearance; also sets `aria-invalid` on the trigger. */
   error?: boolean;
+  /** Stretch to container width. */
   fullWidth?: boolean;
   disabled?: boolean;
   required?: boolean;
@@ -77,21 +83,8 @@ interface SelectInnerProps<T extends string> extends SelectBaseProps<T> {
   renderValue?: (selected: SelectOption<T>[]) => React.ReactNode;
 }
 
-/**
- * Select on Base UI — full keyboard navigation, typeahead, and accessible
- * listbox semantics.
- *
- * ```tsx
- * <Select
- *   placeholder="Choose role"
- *   options={[{ value: 'admin', label: 'Admin' }, { value: 'viewer', label: 'Viewer' }]}
- * />
- * <Select multiple options={tags} value={selected} onValueChange={setSelected} />
- * ```
- *
- * For a long, filterable list use `Combobox` instead — it is this trigger
- * with a built-in search input.
- */
+/* Implementation; exported as `Select` below, whose cast restores the `<T>`
+   generic that `forwardRef` erases. */
 function SelectInner<T extends string = string>(
   props: SelectProps<T>,
   ref: React.Ref<HTMLButtonElement>
@@ -119,6 +112,28 @@ function SelectInner<T extends string = string>(
     className,
     ...triggerProps
   } = props as SelectInnerProps<T>;
+
+  // Value is mirrored locally so the clear button can read and reset it.
+  // Base UI is always driven controlled from here (no controlled/uncontrolled
+  // flip warnings); uncontrolled consumers keep their `defaultValue` semantics.
+  const isControlled = value !== undefined;
+  const [internal, setInternal] = React.useState<T | null | T[]>(
+    () => defaultValue ?? (multiple ? [] : null)
+  );
+  const current = isControlled ? value : internal;
+
+  const handleValueChange = (next: T | null | T[], eventDetails?: unknown) => {
+    if (!isControlled) setInternal(next);
+    onValueChange?.(next, eventDetails);
+  };
+
+  // Owned locally (and exposed as the forwarded ref) so the clear button can
+  // return focus to the trigger.
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  React.useImperativeHandle(ref, () => triggerRef.current as HTMLButtonElement);
+
+  const hasValue = multiple ? Array.isArray(current) && current.length > 0 : current != null;
+  const showClear = Boolean(clearable && hasValue && !disabled);
 
   // ── In-popup search ────────────────────────────────────────────────────
   const showSearch =
@@ -181,23 +196,6 @@ function SelectInner<T extends string = string>(
     event.stopPropagation();
   };
 
-  // Value is mirrored locally so the clear button can read and reset it.
-  // Base UI is always driven controlled from here (no controlled/uncontrolled
-  // flip warnings); uncontrolled consumers keep their `defaultValue` semantics.
-  const isControlled = value !== undefined;
-  const [internal, setInternal] = React.useState<T | null | T[]>(
-    () => defaultValue ?? (multiple ? [] : null)
-  );
-  const current = isControlled ? value : internal;
-
-  const handleValueChange = (next: T | null | T[], eventDetails?: unknown) => {
-    if (!isControlled) setInternal(next);
-    onValueChange?.(next, eventDetails);
-  };
-
-  const hasValue = multiple ? Array.isArray(current) && current.length > 0 : current != null;
-  const showClear = Boolean(clearable && hasValue && !disabled);
-
   const renderTriggerValue = (raw: unknown) => {
     if (multiple) {
       const values = Array.isArray(raw) ? (raw as T[]) : [];
@@ -235,13 +233,14 @@ function SelectInner<T extends string = string>(
 
   const trigger = (
     <BaseSelect.Trigger
-      ref={ref}
+      ref={triggerRef}
       className={cx('zest-select__trigger', 'zest-focusable', className)}
       data-size={size}
       data-error={error ? '' : undefined}
       data-full-width={fullWidth ? '' : undefined}
       data-multiple={multiple ? '' : undefined}
       data-clearable={clearable ? '' : undefined}
+      aria-invalid={error || undefined}
       {...triggerProps}
     >
       <BaseSelect.Value className="zest-select__value">{renderTriggerValue}</BaseSelect.Value>
@@ -261,8 +260,8 @@ function SelectInner<T extends string = string>(
         setOpen(next);
         if (!next) setQuery('');
       }}
-      onOpenChangeComplete={(open) => {
-        if (open && showSearch) searchRef.current?.focus();
+      onOpenChangeComplete={(isOpen) => {
+        if (isOpen && showSearch) searchRef.current?.focus();
       }}
       disabled={disabled}
       required={required}
@@ -278,7 +277,12 @@ function SelectInner<T extends string = string>(
               type="button"
               className="zest-select__clear zest-focusable"
               aria-label="Clear"
-              onClick={() => handleValueChange(multiple ? [] : null)}
+              onClick={() => {
+                handleValueChange(multiple ? [] : null);
+                // The button unmounts once the value is empty; hand focus back
+                // to the trigger instead of dropping it to <body>.
+                triggerRef.current?.focus();
+              }}
             >
               <CloseIcon />
             </button>
@@ -348,7 +352,21 @@ function SelectInner<T extends string = string>(
   );
 }
 
-/** Wrapper preserves the `<T>` generic while still exposing a forwardable ref. */
+/**
+ * Select on Base UI — full keyboard navigation, typeahead, and accessible
+ * listbox semantics.
+ *
+ * ```tsx
+ * <Select
+ *   placeholder="Choose role"
+ *   options={[{ value: 'admin', label: 'Admin' }, { value: 'viewer', label: 'Viewer' }]}
+ * />
+ * <Select multiple options={tags} value={selected} onValueChange={setSelected} />
+ * ```
+ *
+ * For a long, filterable list use `Combobox` instead — it is this trigger
+ * with a built-in search input.
+ */
 export const Select = React.forwardRef(SelectInner) as <T extends string = string>(
   props: SelectProps<T> & { ref?: React.Ref<HTMLButtonElement> }
 ) => React.ReactElement;

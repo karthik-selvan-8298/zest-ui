@@ -6,28 +6,6 @@ import type { WithClassName } from '../../types';
 import '../../base.css';
 import './NavigationMenu.css';
 
-/*
- * Site / product navigation on Base UI NavigationMenu — hover + click
- * flyouts, keyboard navigation and aria wiring come from the primitive.
- * Root renders the Portal → Positioner → Popup → Viewport chain internally,
- * so consumers only compose List / Item / Trigger / Content / Link.
- *
- * <NavigationMenu.Root>
- *   <NavigationMenu.List>
- *     <NavigationMenu.Item>
- *       <NavigationMenu.Trigger>Products</NavigationMenu.Trigger>
- *       <NavigationMenu.Content>
- *         <NavigationMenu.Link href="/crm" description="Sell smarter">CRM</NavigationMenu.Link>
- *         <NavigationMenu.Link render={<RouterLink to="/desk" />}>Desk</NavigationMenu.Link>
- *       </NavigationMenu.Content>
- *     </NavigationMenu.Item>
- *     <NavigationMenu.Item>
- *       <NavigationMenu.Link href="/pricing">Pricing</NavigationMenu.Link>
- *     </NavigationMenu.Item>
- *   </NavigationMenu.List>
- * </NavigationMenu.Root>
- */
-
 export interface NavigationMenuRootProps extends WithClassName<
   React.ComponentProps<typeof BaseNavigationMenu.Root>
 > {
@@ -42,6 +20,10 @@ export interface NavigationMenuRootProps extends WithClassName<
   children?: React.ReactNode;
 }
 
+/**
+ * Owns the shared flyout: Portal → Positioner → Popup → Viewport render here
+ * once, and each item's `Content` is moved into the viewport while active.
+ */
 const NavigationMenuRoot = React.forwardRef<HTMLElement, NavigationMenuRootProps>(
   function NavigationMenuRoot(
     {
@@ -85,6 +67,7 @@ export type NavigationMenuListProps = WithClassName<
   React.ComponentProps<typeof BaseNavigationMenu.List>
 >;
 
+/** Horizontal row of top-level items. */
 const NavigationMenuList = React.forwardRef<HTMLUListElement, NavigationMenuListProps>(
   function NavigationMenuList({ className, ...props }, ref) {
     return (
@@ -101,6 +84,7 @@ export type NavigationMenuItemProps = WithClassName<
   React.ComponentProps<typeof BaseNavigationMenu.Item>
 >;
 
+/** Wraps one `Trigger` + `Content` pair, or a single top-level `Link`. */
 const NavigationMenuItem = React.forwardRef<HTMLLIElement, NavigationMenuItemProps>(
   function NavigationMenuItem({ className, ...props }, ref) {
     return (
@@ -120,6 +104,7 @@ export interface NavigationMenuTriggerProps extends WithClassName<
   hideChevron?: boolean;
 }
 
+/** Ghost button that opens its item's flyout on hover or click. */
 const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, NavigationMenuTriggerProps>(
   function NavigationMenuTrigger({ hideChevron = false, className, children, ...props }, ref) {
     return (
@@ -160,6 +145,7 @@ export type NavigationMenuContentProps = WithClassName<
   React.ComponentProps<typeof BaseNavigationMenu.Content>
 >;
 
+/** Flyout body for one item; slides in from the direction of travel. */
 const NavigationMenuContent = React.forwardRef<HTMLDivElement, NavigationMenuContentProps>(
   function NavigationMenuContent({ className, ...props }, ref) {
     return (
@@ -204,6 +190,28 @@ const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, NavigationMenuLin
   }
 );
 
+/**
+ * Site / product navigation on Base UI NavigationMenu — hover + click
+ * flyouts, keyboard navigation and ARIA wiring come from the primitive.
+ * Consumers only compose List / Item / Trigger / Content / Link.
+ *
+ * ```tsx
+ * <NavigationMenu.Root>
+ *   <NavigationMenu.List>
+ *     <NavigationMenu.Item>
+ *       <NavigationMenu.Trigger>Products</NavigationMenu.Trigger>
+ *       <NavigationMenu.Content>
+ *         <NavigationMenu.Link href="/crm" description="Sell smarter">CRM</NavigationMenu.Link>
+ *         <NavigationMenu.Link render={<RouterLink to="/desk" />}>Desk</NavigationMenu.Link>
+ *       </NavigationMenu.Content>
+ *     </NavigationMenu.Item>
+ *     <NavigationMenu.Item>
+ *       <NavigationMenu.Link href="/pricing">Pricing</NavigationMenu.Link>
+ *     </NavigationMenu.Item>
+ *   </NavigationMenu.List>
+ * </NavigationMenu.Root>
+ * ```
+ */
 export const NavigationMenu = {
   Root: NavigationMenuRoot,
   List: NavigationMenuList,
