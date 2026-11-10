@@ -26,12 +26,12 @@ export default defineConfig({
         'src/icons/icons.tsx',
       ],
       // Ratchet these up as coverage grows — never down. Last measured
-      // 2026-10-08: statements 67 / branches 60 / functions 66 / lines 68.
+      // 2026-11-10: statements 77 / branches 67 / functions 76 / lines 78.
       thresholds: {
-        statements: 65,
-        branches: 58,
-        functions: 64,
-        lines: 65,
+        statements: 75,
+        branches: 65,
+        functions: 74,
+        lines: 76,
       },
     },
   },

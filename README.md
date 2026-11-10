@@ -2,7 +2,7 @@
 
 **A modern, accessible UI component framework for building consistent interfaces.**
 
-One package · ~75 components · zero raw HTML.
+One package · ~80 components · zero raw HTML.
 
 Zest UI is a **violet-forward, grey-neutral** design system built on top of **Base UI** primitives, providing a consistent and production-ready component layer.
 
