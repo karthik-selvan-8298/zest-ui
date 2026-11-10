@@ -67,10 +67,10 @@ breaking changes, patch = fixes only).
 ### Dependencies
 
 - **TypeScript 6.0** (6.0.3) — the newest release `typescript-eslint` supports (`<6.1`). TS 6 enables `noUncheckedSideEffectImports` by default, so `src/css.d.ts` declares `*.css` modules; the redundant `esModuleInterop` flag (always on in TS 6) was dropped from `tsconfig.json`. **TypeScript 7** remains deferred until `typescript-eslint` supports it.
-- **Vitest 5** (5.0.3) + `@vitest/coverage-v8` 5 — adopted now that it has three patch releases (`@storybook/addon-vitest`, the previous blocker, isn't used here).
+- **Vitest 5** (5.0.5) + `@vitest/coverage-v8` 5 — adopted now that it has three patch releases (`@storybook/addon-vitest`, the previous blocker, isn't used here).
 - **`@vitejs/plugin-react` 6** (6.1.2) — no longer depends on Babel (uses Vite 8's oxc transform), which was the earlier conflict with Storybook's Babel 7.
-- **`@storybook/test-runner` 0.26**, Storybook 10.6.1, Vite 8.3.4, ESLint 10.12, typescript-eslint 8.71, `@eslint-react/eslint-plugin` 5.24, `lucide-react` 1.53, jsdom 30.1.2, Prettier 3.9.9, lint-staged 17.6, publint 0.3.25, `@types/node` 26.6.4, npm 11.20.
-- Jest stays pinned `~30.4` via `overrides` — re-verified: 30.5 still fails every story with "module.register() is not supported in Jest" (Storybook's test-runner config loader). `uuid` is overridden to `^11.1.1` to patch GHSA-w5hq-g745-h8pq in `jest-junit`/`nyc` (dev-only; CJS API unchanged). The remaining `npm audit` advisory (`sprintf-js`, GHSA-hp3w-g68c-fv3c) has no patched release and is reachable only through `test-runner → nyc → js-yaml` parsing this repo's own config.
+- **`@base-ui/react` 1.9**, **`@storybook/test-runner` 0.26**, Storybook 10.6.4, Vite 8.3.5, Vitest 5.0.5, React 19.3.1 (dev), ESLint 10.13, typescript-eslint 8.72, `@eslint-react/eslint-plugin` 5.28, `lucide-react` 1.62, jsdom 30.1.3, Prettier 3.9.10, lint-staged 17.6, publint 0.3.25, `@testing-library/user-event` 14.6.8, `@types/node` 26.6.5, npm 11.20.
+- Jest stays pinned `~30.4` via `overrides` — re-verified: 30.5 still fails every story with "module.register() is not supported in Jest" (Storybook's test-runner config loader). `uuid` is overridden to `^11.1.1` to patch GHSA-w5hq-g745-h8pq in `jest-junit`/`nyc` (dev-only; CJS API unchanged). Transitive dev-only `follow-redirects` (GHSA-q3jh-wrc6-jgq8, GHSA-8r9p-f939-6h3c) and `zod` (GHSA-mrhx-c7xc-m3w5) were bumped in the lockfile; `npm audit` reports 0 vulnerabilities.
 
 ## [0.2.0] — 2026-09-09
 
