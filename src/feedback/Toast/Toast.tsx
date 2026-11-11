@@ -38,6 +38,22 @@ function isSeverity(type: string | undefined): type is ToastSeverity {
   return type === 'info' || type === 'success' || type === 'warning' || type === 'error';
 }
 
+/** Zest-owned payload carried in Base UI's free-form `toast.data`. */
+interface ZestToastData {
+  severity?: ToastSeverity;
+}
+
+/**
+ * The tone a toast renders with. An explicit severity travels in `data`
+ * because Base UI's `promise()` overwrites `type` with its own stage name
+ * ('loading' | 'success' | 'error'); that stage name is the fallback, which
+ * is what gives success/error stages their default tone.
+ */
+function toastSeverity(toast: { type?: string; data?: ZestToastData }): ToastSeverity | undefined {
+  if (toast.data?.severity) return toast.data.severity;
+  return isSeverity(toast.type) ? toast.type : undefined;
+}
+
 /** Context provider for the toast stack. Wrap your app (or a subtree) once. */
 export const ZestToastProvider = BaseToast.Provider;
 export type ZestToastProviderProps = React.ComponentProps<typeof BaseToast.Provider>;
@@ -53,11 +69,11 @@ export interface ToasterProps extends WithClassName<
 
 /** Renders every toast in the manager's stack. */
 function ToastList() {
-  const { toasts } = BaseToast.useToastManager();
+  const { toasts } = BaseToast.useToastManager<ZestToastData>();
   return (
     <>
       {toasts.map((toast) => {
-        const severity = isSeverity(toast.type) ? toast.type : undefined;
+        const severity = toastSeverity(toast);
         return (
           <BaseToast.Root
             key={toast.id}
@@ -144,35 +160,36 @@ export interface ToastPromiseOptions<Value> {
 
 /** Maps the Zest options shape onto Base UI's toast-manager options. */
 function toManagerOptions({ severity, action, ...rest }: ToastOptions) {
+  const data: ZestToastData | undefined = severity ? { severity } : undefined;
   return {
     ...rest,
     type: severity,
+    // `data` and `actionProps` are always present (even as `undefined`) so a
+    // promise stage clears the previous stage's values instead of inheriting them.
+    data,
     actionProps: action ? { children: action.label, onClick: action.onClick } : undefined,
   };
 }
 
-function normalize(message: ToastPromiseMessage, fallbackSeverity?: ToastSeverity) {
-  const options = typeof message === 'string' ? { title: message } : message;
-  // `??` (not spread order) so an explicit `severity: undefined` still falls back.
-  return toManagerOptions({ ...options, severity: options.severity ?? fallbackSeverity });
+/** Normalises a promise-stage message; a bare string is the title. */
+function normalize(message: ToastPromiseMessage) {
+  return toManagerOptions(typeof message === 'string' ? { title: message } : message);
 }
 
 /** Resolves a static or result-derived promise-stage message. */
-function stage<Arg>(
-  message: ToastPromiseMessage | ((arg: Arg) => ToastPromiseMessage),
-  fallbackSeverity: ToastSeverity
-) {
-  return typeof message === 'function'
-    ? (arg: Arg) => normalize(message(arg), fallbackSeverity)
-    : normalize(message, fallbackSeverity);
+function stage<Arg>(message: ToastPromiseMessage | ((arg: Arg) => ToastPromiseMessage)) {
+  return typeof message === 'function' ? (arg: Arg) => normalize(message(arg)) : normalize(message);
 }
 
 export interface UseToastReturnValue {
   /** Shows a toast; returns its id. */
   add: (options: ToastOptions) => string;
   /**
-   * Tracks a promise with loading → success/error toasts.
-   * Success and error default to matching severities unless overridden.
+   * Tracks a promise with loading → success/error toasts. The success and
+   * error stages get the matching tone unless the stage sets its own
+   * `severity`; the loading stage is plain unless it sets one. Returns a
+   * promise that settles like the original, so a rejection still needs
+   * handling by the caller (the toast only reports it).
    */
   promise: <Value>(promise: Promise<Value>, options: ToastPromiseOptions<Value>) => Promise<Value>;
   /** Closes one toast by id, or all toasts when called without arguments. */
@@ -199,8 +216,8 @@ export function useToast(): UseToastReturnValue {
       promise: <Value,>(tracked: Promise<Value>, options: ToastPromiseOptions<Value>) =>
         promise(tracked, {
           loading: normalize(options.loading),
-          success: stage(options.success, 'success'),
-          error: stage(options.error, 'error'),
+          success: stage(options.success),
+          error: stage(options.error),
         }),
       close: (toastId?: string) => close(toastId),
     }),

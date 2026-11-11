@@ -34,6 +34,14 @@ describe('OtpInput', () => {
     expect(group).toHaveAttribute('data-full-width');
   });
 
+  it('marks every cell invalid when error is set, and only then', () => {
+    const { rerender } = render(<OtpInput aria-label="PIN" length={4} />);
+    for (const input of cells()) expect(input).not.toHaveAttribute('aria-invalid');
+    rerender(<OtpInput aria-label="PIN" length={4} error />);
+    expect(cells()).toHaveLength(4);
+    for (const input of cells()) expect(input).toHaveAttribute('aria-invalid', 'true');
+  });
+
   it('places the separator after the first half of the cells', () => {
     render(<OtpInput aria-label="Code" length={6} separator="–" />);
     const separator = document.querySelector('.zest-otp-input__separator');

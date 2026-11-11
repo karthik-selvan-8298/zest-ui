@@ -53,4 +53,12 @@ describe('Combobox', () => {
     render(<Combobox aria-label="Fruit" options={options} disabled />);
     expect(screen.getByRole('combobox', { name: 'Fruit' })).toBeDisabled();
   });
+
+  it('marks the input invalid when error is set, and only then', () => {
+    const { rerender } = render(<Combobox aria-label="Fruit" options={options} />);
+    const input = screen.getByRole('combobox', { name: 'Fruit' });
+    expect(input).not.toHaveAttribute('aria-invalid');
+    rerender(<Combobox aria-label="Fruit" options={options} error />);
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+  });
 });

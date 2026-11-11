@@ -124,6 +124,8 @@ NativeSelect: same options API, native <select>.
 Combobox: Select + text filtering. Same options API + emptyMessage. Extra props → the <input>.
 Autocomplete: free text with suggestions: (string | {value,label})[]; value IS the input text.
   Extra props → the <input>. (DatePicker/DateRangePicker/TimePicker: extra props → trigger button.)
+SelectPrimitive / ComboboxPrimitive / AutocompletePrimitive: the raw Base UI parts — escape hatch
+  for a fully custom composition; prefer the components above.
 
 Checkbox: label, checked/defaultChecked/onCheckedChange, indeterminate, color, size, disabled, name.
 CheckboxGroup: value/defaultValue/onValueChange (string[] of child `name`s), wraps Checkboxes.
@@ -135,6 +137,7 @@ Slider: REQUIRES aria-label (or aria-labelledby → a Label id). value/defaultVa
 
 FileUpload: drag-and-drop + click-to-browse. accept, multiple, maxSizeMB (oversized → onReject),
   value/defaultValue/onValueChange (File[]), disabled, error, label, description. Removable list.
+  formatBytes(n) (the size formatter used in the list: '2.0 KB') is exported.
 Fieldset: <Fieldset legend description gap='sm'|'md'|'lg' disabled>…fields…</Fieldset> — or composed
   <Fieldset.Root><Fieldset.Legend/><Fieldset.Description/>…</Fieldset.Root>. Native <fieldset>, chrome reset,
   legend auto-associated (aria-labelledby), description wired via aria-describedby. Disables all controls inside.
@@ -243,6 +246,7 @@ AlertDialog: same parts as Dialog, no corner close, 400px.
 Drawer: Dialog-like; Drawer.Content side='right'(default)|'left'|'bottom', size 'sm'|'md'|'lg', title.
 Popover: <Popover.Root><Popover.Trigger render={…}/><Popover.Content side align>…</Popover.Content></Popover.Root>
 Tooltip: <Tooltip title="Delete" side='top'><IconButton …/></Tooltip> — child must accept a ref.
+  TooltipProvider (optional, wrap the app once): nearby tooltips share their open/close timing.
 PreviewCard: <PreviewCard.Root delay=600 closeDelay=300><PreviewCard.Trigger href>…</PreviewCard.Trigger>
   <PreviewCard.Content side align sideOffset=8 arrow?>…</PreviewCard.Content></PreviewCard.Root>
   — hover card for link/user previews; Trigger renders <a> (pass render= for another element). Sighted-user
@@ -261,6 +265,9 @@ Toasts:
   const toast = useToast();
   toast.add({ title: 'Saved', severity: 'success', description?, action?: {label,onClick}, timeout? });
   toast.promise(fetchPromise, { loading:{title}, success:{title}, error:{title} });
+  // each stage: a string (the title), toast options, or for success/error (result) => either.
+  // success/error get the matching tone unless the stage sets its own severity; loading is plain.
+  toast.close(id?)  // one toast by id, or all
 Progress: REQUIRES label | aria-label | aria-labelledby. value (0-100 or null = indeterminate),
   color, size, showValue.
 CircularProgress: REQUIRES label | aria-label | aria-labelledby (label is announced, not drawn).
@@ -303,7 +310,7 @@ Code: inline monospace chip for identifiers in running text (paths, env vars, ID
 Avatar: src, alt, name (initials fallback), size 'xs'|'sm'|'md'|'lg'|'xl', shape, color,
   variant: 'soft'(default tint)|'solid' (accent bg + white initials)|'gradient' (hero/logo tile).
   Custom children replace initials — use shape="rounded" + an icon for icon-tile emblems.
-AvatarGroup: max? → "+N" overflow.
+AvatarGroup: max? → "+N" overflow. initialsFromName(name) (the initials helper) is exported.
 Badge: count, max=99, dot?, color ('error' default), showZero?, position; wraps children or standalone pill.
 Chip: label OR children (one is required), variant 'soft'(default)|'solid'|'outlined', color ('neutral' default),
   size 'sm'|'md', startIcon, avatar, onDelete?, clickable/onClick, disabled.
@@ -329,7 +336,8 @@ TimePicker: value/defaultValue/onValueChange (string 'HH:mm'), step (minutes, de
 
 Box: polymorphic (as prop) + spacing props p px py pt pr pb pl m mx my mt mr mb ml (Zest steps or CSS strings)
   + flex (true → '1 1 0%'), grow, shrink, width/height/minWidth/minHeight/maxWidth/maxHeight (numbers → px), overflow.
-  resolveBoxStyle(props) → { style, rest } is exported for custom primitives.
+  resolveBoxStyle(props) → { style, rest } is exported for custom primitives; resolveSpace(value)
+  turns one spacing value into its CSS value (4 → var(--zest-space-4)).
 Stack: vertical flex; spacing (gap, default 2), direction, align, justify, divider={<Divider/>},
   stackOnMobile (direction="row" collapses to a column <600px). Takes all Box spacing/size props.
 Flex: horizontal flex; gap, align, justify ('start'|'center'|'end'|'between'|…), wrap, inline, grow,
@@ -339,12 +347,14 @@ Grid: columns (number|template string) or minChildWidth="240px" (auto-fit), gap 
   gutter like MUI spacing; default 4 = 16px). Numeric columns auto-adjust: max 2 <900px, 1 <600px.
 Container: maxWidth 'sm'|'md'|'lg'(default)|'xl'|false, disableGutters.
 Paper: shadow 'none'|'sm'|'md'|'lg'|'xl'|'card', bordered, radius.
+AspectRatio: <AspectRatio ratio={4 / 3}>…</AspectRatio> — locks the box to width/height `ratio`
+  (default 16/9) and clips overflow; for media, embeds, and placeholders.
 Divider: renders a real <hr> (or a labelled <div> when children are given). orientation,
   variant 'solid'|'dashed'.
 Typography: MUI-style variant 'h1'|'h2'|'h3'|'h4'|'h5'|'h6'|'subtitle1'|'subtitle2'|
   'body1'(default)|'body2'|'caption'|'overline'; color 'primary'|'secondary'|'disabled'|
   'brand'|'success'|'warning'|'error'|'info'; align; truncate (true = 1 line, number = clamp);
-  gutterBottom; as (element override).
+  gutterBottom; as (element override). `Text` is an alias of Typography (same component and props).
 
 Spacing props (gap/spacing/p/m…): steps 1|2|3|4|5|6|8|10|12|16 map to --zest-space-*; ANY other
 number is a multiple of 4px (1.5 → 6px, 7 → 28px); strings pass through. NaN throws.
@@ -380,6 +390,7 @@ RUNTIME: <ZestProvider theme={createTheme(...)}> — only for themes computed at
 (multi-tenant branding). Never reach for createTheme when a static CSS file would do.
 
 const { mode, resolvedMode, setMode } = useColorScheme();  // 'light'|'dark'|'system'
+const { density, setDensity, theme, ...scheme } = useZest();  // full context; throws outside ZestProvider
 const theme = createTheme({
   colors: { primary: { main, hover, active, contrast, subtleText }, background, surface,
             textPrimary, textSecondary, border, focusRing, … },

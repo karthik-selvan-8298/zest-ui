@@ -99,18 +99,24 @@ function PromiseDemo() {
   const toast = useToast();
   return (
     <Button
-      onClick={() =>
-        toast.promise(
-          new Promise<string>((resolve, reject) => {
-            setTimeout(() => (Math.random() > 0.4 ? resolve('report.pdf') : reject()), 2000);
-          }),
-          {
+      onClick={() => {
+        const upload = new Promise<string>((resolve, reject) => {
+          setTimeout(
+            () =>
+              Math.random() > 0.4 ? resolve('report.pdf') : reject(new Error('Upload failed')),
+            2000
+          );
+        });
+        toast
+          .promise(upload, {
             loading: { title: 'Uploading…', description: 'This can take a moment.' },
             success: (file) => ({ title: 'Uploaded', description: `${file} is ready.` }),
             error: { title: 'Upload failed', description: 'Please try again.' },
-          }
-        )
-      }
+          })
+          // `promise()` returns the tracked promise, which still rejects — the
+          // toast has already reported the failure, so there is nothing to add.
+          .catch(() => {});
+      }}
     >
       Upload file
     </Button>
